@@ -1307,6 +1307,48 @@
   .preview-hero-emoji.has-bouquet-art .hm-bouquet-art{--art-h:208px;width:min(100%,270px)}
   .flower-gift-display .hm-bouquet-art{--art-h:300px;width:min(100%,360px);margin:0 auto 2px}
   .hm-bouquet-composition-line{max-width:420px;margin:0 auto 6px;color:#a98696;font-size:11px;line-height:1.7}
+
+  /* Manual bouquet composition editor */
+  .hm-bouquet-designer{margin:12px 0 2px;padding:13px;border:1px solid #f0dfe7;border-radius:17px;background:linear-gradient(145deg,#fffafd,#fff7f9)}
+  .hm-bouquet-designer-head{display:flex;align-items:flex-start;gap:9px;margin-bottom:10px}
+  .hm-bouquet-designer-head>span{width:31px;height:31px;display:grid;place-items:center;flex:none;border-radius:10px;background:#ffe8ef;color:#bd6f8b;font-size:16px}
+  .hm-bouquet-designer-head strong{display:block;color:#835f70;font-size:12px}
+  .hm-bouquet-designer-head small{display:block;color:#aa929d;font-size:9px;line-height:1.55;margin-top:2px}
+  .hm-bouquet-art.is-editor{width:min(100%,360px);height:300px;max-width:100%;touch-action:pan-y;overflow:hidden;border-radius:14px;background:radial-gradient(ellipse at 50% 42%,rgba(255,237,244,.7),rgba(255,250,252,.18) 62%,transparent 75%)}
+  .hm-bouquet-art.is-editor .hm-bouquet-head[data-bouquet-item-type],
+  .hm-bouquet-art.is-editor .hm-bouquet-decor[data-bouquet-item-type]{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+  .hm-bouquet-art.is-editor .hm-bouquet-head:active,
+  .hm-bouquet-art.is-editor .hm-bouquet-decor:active{cursor:grabbing}
+  .hm-bouquet-head.is-selected,.hm-bouquet-decor.is-selected{filter:drop-shadow(0 0 7px rgba(219,106,151,.75)) drop-shadow(0 4px 4px rgba(127,75,93,.2))!important}
+  .hm-bouquet-decor{position:absolute;left:var(--decor-x);top:var(--decor-y);z-index:18;font-family:"Apple Color Emoji","Segoe UI Emoji",sans-serif;font-size:var(--decor-size,25px);line-height:1;transform:translate(-50%,-50%) rotate(var(--decor-rot,0deg));filter:drop-shadow(0 4px 4px rgba(123,78,98,.18));white-space:nowrap;animation:hmFlowerHeadFloat 4.2s ease-in-out var(--decor-delay,0s) infinite}
+  .hm-bouquet-decor::after{content:"";position:absolute;inset:-5px;border:1px dashed rgba(218,132,162,0);border-radius:50%;transition:border-color .15s}
+  .hm-bouquet-decor.is-selected::after{border-color:rgba(218,132,162,.9)}
+  .hm-bouquet-head.is-selected{outline:1px dashed rgba(203,111,145,.8);outline-offset:4px;border-radius:9px}
+  .hm-bouquet-editor-hint{display:flex;align-items:center;justify-content:center;gap:6px;color:#a98b98;font-size:9px;text-align:center;margin:3px 0 10px}
+  .hm-bouquet-editor-toolbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:8px 0 11px}
+  .hm-bouquet-editor-toolbar button{border:1px solid #eed9e2;border-radius:10px;background:#fff;color:#986d80;min-height:34px;padding:6px 3px;font-size:9px}
+  .hm-bouquet-editor-toolbar button:active{background:#ffedf3;transform:scale(.97)}
+  .hm-bouquet-decor-title{font-size:10px;font-weight:700;color:#8b6c7b;margin:8px 0 7px}
+  .hm-bouquet-decor-palette{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+  .hm-bouquet-decor-choice{min-width:0;min-height:52px;border:1px solid #f0dfe7;border-radius:11px;background:#fff;display:grid;place-items:center;gap:1px;padding:5px 2px;color:#9b7a89}
+  .hm-bouquet-decor-choice span{font-size:21px;line-height:1.1}
+  .hm-bouquet-decor-choice small{font-size:7px;white-space:nowrap}
+  .hm-bouquet-decor-choice:active{background:#fff0f5;border-color:#df9ab0}
+  .hm-bouquet-selected-label{min-height:15px;margin-top:8px;text-align:center;color:#b07d93;font-size:9px}
+  .hm-bouquet-edit-note{margin-top:8px;padding:8px 10px;border-radius:10px;background:#fff3f6;color:#a77d8f;font-size:9px;line-height:1.55}
+  .hm-bouquet-art.is-editor .hm-bouquet-head{z-index:10}
+  .hm-bouquet-art.is-editor .hm-bouquet-stem{pointer-events:none}
+  .hm-bouquet-art .hm-bouquet-head{will-change:left,top,transform}
+  @media(max-width:600px){
+    .hm-bouquet-art.is-editor{--art-h:270px;height:270px;width:min(100%,360px)}
+    .hm-bouquet-decor-palette{grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}
+    .hm-bouquet-decor-choice{min-height:48px}
+    .hm-bouquet-editor-toolbar{gap:5px}
+    .hm-bouquet-editor-toolbar button{font-size:8px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .hm-bouquet-decor{animation:none!important}
+  }
   @media(max-width:600px){.hm-flower-catalog-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.hm-flower-choice{padding:8px 3px}.hm-flower-preset-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.hm-bouquet-art{--art-h:270px}.hm-bouquet-art.is-compact{--art-h:198px}.flower-gift-display .hm-bouquet-art{--art-h:260px}}
   @media(prefers-reduced-motion:reduce){.hm-bouquet-head{animation:none!important}}
 </style>
@@ -1889,6 +1931,9 @@ HAPPY MOMENTS ♡
       stickers: ["🌷", "♡"],
       flowerPreset: "romantic",
       flowerSelection: { rose: 2, tulip: 2, babybreath: 2, eucalyptus: 2 },
+      bouquetLayout: { flowers: [], decorations: [] },
+      bouquetSelectedItem: null,
+      bouquetDrag: null,
       selectedSong: null,
       searchResults: [],
       pendingPhotos: [],
@@ -2199,6 +2244,7 @@ HAPPY MOMENTS ♡
     }
 
     function renderFlowerCatalog() {
+      syncBouquetLayoutWithSelection();
       const grid = $("#flowerCatalogGrid");
       if (!grid) return;
       grid.innerHTML = FLOWER_CATALOG.map((flower) => {
@@ -2239,6 +2285,10 @@ HAPPY MOMENTS ♡
       state.flowerSelection[flowerId] = Math.max(0, Math.min(8, current + delta));
       if (!state.flowerSelection[flowerId]) delete state.flowerSelection[flowerId];
       state.flowerPreset = "custom";
+      syncBouquetLayoutWithSelection();
+      if (state.bouquetSelectedItem && state.bouquetSelectedItem.type === "flower" && state.bouquetSelectedItem.index >= state.bouquetLayout.flowers.length) {
+        state.bouquetSelectedItem = null;
+      }
       renderFlowerCatalog();
       renderPreview();
     }
@@ -2279,6 +2329,96 @@ HAPPY MOMENTS ♡
       return legacyMap[legacyId] || legacyMap.classic;
     }
 
+    const BOUQUET_DEFAULT_POSITIONS = [
+      [50, 11, -2], [31, 20, -12], [69, 20, 12], [17, 36, -18], [41, 34, -8],
+      [59, 34, 8], [83, 36, 18], [27, 50, -15], [50, 48, 0], [73, 50, 15],
+      [37, 63, -9], [63, 63, 9], [45, 69, -4], [55, 69, 4], [9, 50, -22],
+      [91, 50, 22], [34, 8, -10], [66, 8, 10]
+    ];
+
+    const BOUQUET_DECOR_CATALOG = [
+      { id: "sparkle", emoji: "✨", label: "ประกาย" },
+      { id: "heart", emoji: "♡", label: "หัวใจ" },
+      { id: "butterfly", emoji: "🦋", label: "ผีเสื้อ" },
+      { id: "leaf", emoji: "🌿", label: "ใบไม้" },
+      { id: "small-flower", emoji: "🌼", label: "ดอกจิ๋ว" },
+      { id: "bow", emoji: "🎀", label: "โบว์" },
+      { id: "star", emoji: "⭐", label: "ดาว" },
+      { id: "pearl", emoji: "🤍", label: "มุก" },
+      { id: "love", emoji: "💗", label: "รัก" },
+      { id: "letter", emoji: "💌", label: "จดหมาย" },
+      { id: "bubble", emoji: "🫧", label: "ฟอง" },
+      { id: "moon", emoji: "🌙", label: "จันทร์" }
+    ];
+    const BOUQUET_DECOR_BY_ID = Object.fromEntries(BOUQUET_DECOR_CATALOG.map((item) => [item.id, item]));
+
+    function clampBouquetValue(value, min, max, fallback) {
+      const number = Number(value);
+      return Number.isFinite(number) ? Math.max(min, Math.min(max, number)) : fallback;
+    }
+
+    function getBouquetUnitIds() {
+      const ids = [];
+      getFlowerSelectionRows().forEach((item) => {
+        for (let i = 0; i < item.count && ids.length < 18; i += 1) ids.push(item.id);
+      });
+      return ids;
+    }
+
+    function syncBouquetLayoutWithSelection() {
+      const previous = state.bouquetLayout && typeof state.bouquetLayout === "object" ? state.bouquetLayout : {};
+      const previousFlowers = Array.isArray(previous.flowers) ? previous.flowers : [];
+      const queues = new Map();
+      previousFlowers.forEach((item) => {
+        if (!item || !FLOWER_BY_ID[item.id]) return;
+        if (!queues.has(item.id)) queues.set(item.id, []);
+        queues.get(item.id).push(item);
+      });
+
+      const ids = getBouquetUnitIds();
+      const flowers = ids.map((id, index) => {
+        const saved = queues.has(id) ? queues.get(id).shift() : null;
+        const position = BOUQUET_DEFAULT_POSITIONS[index % BOUQUET_DEFAULT_POSITIONS.length];
+        return {
+          id,
+          x: clampBouquetValue(saved && saved.x, 5, 95, position[0]),
+          y: clampBouquetValue(saved && saved.y, 5, 83, position[1]),
+          rot: clampBouquetValue(saved && saved.rot, -45, 45, position[2]),
+          scale: clampBouquetValue(saved && saved.scale, 0.55, 1.65, 1),
+          z: clampBouquetValue(saved && saved.z, 1, 30, index + 1)
+        };
+      });
+
+      const decorations = Array.isArray(previous.decorations)
+        ? previous.decorations.slice(0, 24).map((item, index) => {
+            const allowed = BOUQUET_DECOR_BY_ID[item && item.id] || BOUQUET_DECOR_CATALOG[0];
+            return {
+              id: allowed.id,
+              x: clampBouquetValue(item && item.x, 4, 96, 20 + (index * 13) % 60),
+              y: clampBouquetValue(item && item.y, 5, 86, 25 + (index * 11) % 45),
+              rot: clampBouquetValue(item && item.rot, -180, 180, 0),
+              scale: clampBouquetValue(item && item.scale, 0.55, 1.8, 1),
+              z: clampBouquetValue(item && item.z, 1, 40, index + 20)
+            };
+          })
+        : [];
+
+      state.bouquetLayout = { flowers, decorations };
+      return state.bouquetLayout;
+    }
+
+    function getBouquetLayoutSnapshot() {
+      const layout = syncBouquetLayoutWithSelection();
+      return {
+        flowers: layout.flowers.map((item) => ({
+          id: item.id, x: item.x, y: item.y, rot: item.rot, scale: item.scale, z: item.z
+        })),
+        decorations: layout.decorations.map((item) => ({
+          id: item.id, x: item.x, y: item.y, rot: item.rot, scale: item.scale, z: item.z
+        }))
+      };
+    }
+
     function createBouquetArtHtml(config, compact) {
       const options = config || {};
       const flowers = Array.isArray(options.flowers) && options.flowers.length
@@ -2294,29 +2434,62 @@ HAPPY MOMENTS ♡
       const fallback = FLOWER_BY_ID.rose;
       if (!units.length) units.push(fallback, FLOWER_BY_ID.tulip, FLOWER_BY_ID.babybreath);
 
-      const positions = [
-        [50, 10, -2], [32, 20, -12], [68, 20, 12], [17, 35, -18], [41, 34, -8], [59, 34, 8], [83, 35, 18],
-        [27, 50, -15], [50, 48, 0], [73, 50, 15], [37, 63, -9], [63, 63, 9], [45, 69, -4], [55, 69, 4], [9, 50, -22], [91, 50, 22], [34, 8, -10], [66, 8, 10]
-      ];
+      const rawLayout = options.layout && typeof options.layout === "object"
+        ? options.layout
+        : (options.content && options.content.flower_layout && typeof options.content.flower_layout === "object" ? options.content.flower_layout : {});
+      const savedFlowers = Array.isArray(rawLayout.flowers) ? rawLayout.flowers : [];
+      const savedDecorations = Array.isArray(rawLayout.decorations) ? rawLayout.decorations : [];
+      const isEditor = options.interactive === true;
+
+      const positions = units.map((flower, index) => {
+        const saved = savedFlowers[index] && savedFlowers[index].id === flower.id ? savedFlowers[index] : null;
+        const fallbackPos = BOUQUET_DEFAULT_POSITIONS[index % BOUQUET_DEFAULT_POSITIONS.length];
+        return {
+          x: clampBouquetValue(saved && saved.x, 5, 95, fallbackPos[0]),
+          y: clampBouquetValue(saved && saved.y, 5, 83, fallbackPos[1]),
+          rot: clampBouquetValue(saved && saved.rot, -45, 45, fallbackPos[2]),
+          scale: clampBouquetValue(saved && saved.scale, 0.55, 1.65, flower.kind === "greenery" ? 0.82 : 1),
+          z: clampBouquetValue(saved && saved.z, 1, 30, index + 1)
+        };
+      });
+
       const stems = units.map((flower, index) => {
-        const pos = positions[index] || positions[index % positions.length];
-        const stemHeight = Math.max(13, 83 - pos[1]);
-        const angle = Math.max(-25, Math.min(25, (50 - pos[0]) * 0.55));
-        return `<span class="hm-bouquet-stem" style="--stem-x:${pos[0]}%;--stem-y:${pos[1] + 7}%;--stem-h:${stemHeight}%;--stem-angle:${angle}deg"></span>`;
+        const pos = positions[index];
+        const stemHeight = Math.max(13, 85 - pos.y);
+        const angle = Math.max(-32, Math.min(32, (50 - pos.x) * 0.65));
+        return `<span class="hm-bouquet-stem" ${isEditor ? `data-bouquet-stem-index="${index}"` : ""} style="left:${pos.x}%;top:${pos.y + 7}%;height:${stemHeight}%;transform:rotate(${angle}deg);z-index:${Math.max(1, pos.z - 1)}"></span>`;
       }).join("");
+
       const heads = units.map((flower, index) => {
-        const pos = positions[index] || positions[index % positions.length];
-        const scale = flower.kind === "greenery" ? 0.82 : 1;
-        return `<span class="hm-bouquet-head ${flower.kind === "greenery" ? "is-greenery" : ""}" title="${escapeHtml(flower.name)}" style="--flower-x:${pos[0]}%;--flower-y:${pos[1]}%;--flower-rot:${pos[2]}deg;--flower-scale:${scale};--flower-delay:${-(index % 6) * 0.23}s">${flower.emoji}</span>`;
+        const pos = positions[index];
+        const selected = isEditor && state.bouquetSelectedItem && state.bouquetSelectedItem.type === "flower" && state.bouquetSelectedItem.index === index;
+        const size = flower.kind === "greenery" ? 0.82 : 1;
+        const indexAttr = isEditor ? `data-bouquet-item-type="flower" data-bouquet-item-index="${index}"` : "";
+        return `<span class="hm-bouquet-head ${flower.kind === "greenery" ? "is-greenery" : ""} ${selected ? "is-selected" : ""}" ${indexAttr} title="${escapeHtml(flower.name)}" style="--flower-x:${pos.x}%;--flower-y:${pos.y}%;--flower-rot:${pos.rot}deg;--flower-scale:${pos.scale * size};--flower-delay:${-(index % 6) * 0.23}s;z-index:${10 + pos.z}">${flower.emoji}</span>`;
       }).join("");
+
+      const decorHtml = savedDecorations.slice(0, 24).map((item, index) => {
+        const decor = BOUQUET_DECOR_BY_ID[item && item.id];
+        if (!decor) return "";
+        const x = clampBouquetValue(item.x, 4, 96, 20 + (index * 13) % 60);
+        const y = clampBouquetValue(item.y, 5, 86, 25 + (index * 11) % 45);
+        const rot = clampBouquetValue(item.rot, -180, 180, 0);
+        const scale = clampBouquetValue(item.scale, 0.55, 1.8, 1);
+        const z = clampBouquetValue(item.z, 1, 40, index + 20);
+        const selected = isEditor && state.bouquetSelectedItem && state.bouquetSelectedItem.type === "decor" && state.bouquetSelectedItem.index === index;
+        const indexAttr = isEditor ? `data-bouquet-item-type="decor" data-bouquet-item-index="${index}"` : "";
+        return `<span class="hm-bouquet-decor ${selected ? "is-selected" : ""}" ${indexAttr} title="${escapeHtml(decor.label)}" style="--decor-x:${x}%;--decor-y:${y}%;--decor-rot:${rot}deg;--decor-size:${25 * scale}px;z-index:${18 + z}">${decor.emoji}</span>`;
+      }).join("");
+
       const wrap = ["cream", "pink", "kraft", "lilac", "milk", "newspaper", "transparent", "gingham", "butter"].includes(options.wrap) ? options.wrap : "cream";
       const ribbon = ["satin-pink", "satin-white", "velvet", "lace", "gold", "lavender", "mint", "none"].includes(options.ribbon) ? options.ribbon : "satin-pink";
       const shape = ["round", "wide", "long", "basket", "garden"].includes(options.shape) ? options.shape : "round";
       const label = units.map((item) => item.name).filter((name, index, list) => list.indexOf(name) === index).join(", ");
-      return `<div class="hm-bouquet-art ${compact ? "is-compact" : ""} shape-${shape} wrap-${wrap} ribbon-${ribbon}" role="img" aria-label="ช่อดอกไม้ประกอบด้วย ${escapeHtml(label)}">
+      return `<div class="hm-bouquet-art ${compact ? "is-compact" : ""} ${isEditor ? "is-editor" : ""} shape-${shape} wrap-${wrap} ribbon-${ribbon}" role="img" aria-label="ช่อดอกไม้ประกอบด้วย ${escapeHtml(label)}">
         <div class="hm-bouquet-aura"></div>
         <div class="hm-bouquet-stem-layer">${stems}</div>
         <div class="hm-bouquet-head-layer">${heads}</div>
+        ${decorHtml}
         <div class="hm-bouquet-paper"><span class="hm-bouquet-paper-fold"></span><span class="hm-bouquet-paper-edge"></span></div>
         <div class="hm-bouquet-ribbon-tail hm-bouquet-ribbon-tail-left"></div><div class="hm-bouquet-ribbon-tail hm-bouquet-ribbon-tail-right"></div>
         <div class="hm-bouquet-bow"><span></span><span></span><i></i></div>
@@ -2330,15 +2503,172 @@ HAPPY MOMENTS ♡
       if (!preview) return;
       preview.innerHTML = createBouquetArtHtml({
         flowers: getFlowerSelectionRows(),
+        layout: getBouquetLayoutSnapshot(),
         wrap: selectValue("flowerWrap", "cream"),
         ribbon: selectValue("flowerRibbon", "satin-pink"),
-        shape: selectValue("flowerShape", "round")
+        shape: selectValue("flowerShape", "round"),
+        interactive: true
       }, true);
       const summary = $("#flowerCompositionNames");
       if (summary) {
         const names = getFlowerSelectionRows().map((item) => `${FLOWER_BY_ID[item.id].name} × ${item.count}`);
         summary.textContent = names.length ? names.join(" · ") : "ยังไม่ได้เลือกดอกไม้ — กด + เพื่อเริ่มจัดช่อ";
       }
+      const selectedLabel = $("#bouquetSelectedLabel");
+      if (selectedLabel) {
+        const selected = state.bouquetSelectedItem;
+        if (!selected) selectedLabel.textContent = "แตะเลือกดอกไม้หรือของตกแต่ง แล้วลากเพื่อจัดตำแหน่ง";
+        else if (selected.type === "flower") selectedLabel.textContent = `เลือกดอกไม้ลำดับที่ ${selected.index + 1} — ลากเพื่อย้ายตำแหน่ง`;
+        else selectedLabel.textContent = "เลือกของตกแต่ง — ลากเพื่อย้ายตำแหน่ง";
+      }
+      const decorCount = $("#bouquetDecorCount");
+      if (decorCount) decorCount.textContent = `ของตกแต่ง ${((state.bouquetLayout && state.bouquetLayout.decorations) || []).length}/24`;
+    }
+
+    function addBouquetDecoration(decorId) {
+      const decor = BOUQUET_DECOR_BY_ID[decorId];
+      if (!decor) return;
+      const layout = syncBouquetLayoutWithSelection();
+      if (layout.decorations.length >= 24) {
+        toast("เพิ่มของตกแต่งได้สูงสุด 24 ชิ้นนะ", "error");
+        return;
+      }
+      const index = layout.decorations.length;
+      const decoration = {
+        id: decor.id,
+        x: 23 + ((index * 19) % 55),
+        y: 24 + ((index * 17) % 48),
+        rot: (index % 5 - 2) * 8,
+        scale: 1,
+        z: 25 + index
+      };
+      layout.decorations.push(decoration);
+      state.bouquetSelectedItem = { type: "decor", index };
+      updateFlowerComposerPreview();
+      renderPreview();
+    }
+
+    function handleBouquetDesignerClick(event) {
+      const decorButton = event.target.closest("[data-bouquet-decor]");
+      if (decorButton) {
+        addBouquetDecoration(decorButton.dataset.bouquetDecor);
+        return;
+      }
+      const actionButton = event.target.closest("[data-bouquet-action]");
+      if (!actionButton) return;
+      const action = actionButton.dataset.bouquetAction;
+      const selected = state.bouquetSelectedItem;
+      const layout = syncBouquetLayoutWithSelection();
+      if (action === "reset") {
+        state.bouquetLayout = { flowers: [], decorations: [] };
+        state.bouquetSelectedItem = null;
+        syncBouquetLayoutWithSelection();
+        updateFlowerComposerPreview();
+        renderPreview();
+        return;
+      }
+      if (action === "clear-decor") {
+        layout.decorations = [];
+        state.bouquetSelectedItem = null;
+        updateFlowerComposerPreview();
+        renderPreview();
+        return;
+      }
+      if (!selected) {
+        toast("แตะเลือกดอกไม้หรือของตกแต่งก่อนนะ", "info");
+        return;
+      }
+      const list = selected.type === "flower" ? layout.flowers : layout.decorations;
+      const item = list[selected.index];
+      if (!item) {
+        state.bouquetSelectedItem = null;
+        updateFlowerComposerPreview();
+        return;
+      }
+      if (action === "rotate-left") item.rot = clampBouquetValue(item.rot, -180, 180, 0) - 15;
+      if (action === "rotate-right") item.rot = clampBouquetValue(item.rot, -180, 180, 0) + 15;
+      if (action === "larger") item.scale = Math.min(selected.type === "flower" ? 1.65 : 1.8, clampBouquetValue(item.scale, .55, 1.8, 1) + .12);
+      if (action === "smaller") item.scale = Math.max(.55, clampBouquetValue(item.scale, .55, 1.8, 1) - .12);
+      if (action === "front") item.z = Math.min(40, clampBouquetValue(item.z, 1, 40, 10) + 2);
+      if (action === "back") item.z = Math.max(1, clampBouquetValue(item.z, 1, 40, 10) - 2);
+      if (action === "delete") {
+        if (selected.type === "decor") {
+          layout.decorations.splice(selected.index, 1);
+          state.bouquetSelectedItem = null;
+        } else {
+          const flower = layout.flowers[selected.index];
+          layout.flowers.splice(selected.index, 1);
+          if (flower && state.flowerSelection[flower.id]) {
+            state.flowerSelection[flower.id] = Math.max(0, Number(state.flowerSelection[flower.id]) - 1);
+            if (!state.flowerSelection[flower.id]) delete state.flowerSelection[flower.id];
+          }
+          state.flowerPreset = "custom";
+          state.bouquetSelectedItem = null;
+          syncBouquetLayoutWithSelection();
+          renderFlowerCatalog();
+        }
+      }
+      updateFlowerComposerPreview();
+      renderPreview();
+    }
+
+    function handleBouquetPointerDown(event) {
+      const itemNode = event.target.closest("[data-bouquet-item-type]");
+      if (!itemNode || !$("#flowerComposerPreviewArt") || !$("#flowerComposerPreviewArt").contains(itemNode)) return;
+      const art = itemNode.closest(".hm-bouquet-art");
+      if (!art) return;
+      event.preventDefault();
+      const type = itemNode.dataset.bouquetItemType;
+      const index = Number(itemNode.dataset.bouquetItemIndex);
+      if (!Number.isInteger(index) || index < 0) return;
+      state.bouquetSelectedItem = { type, index };
+      $$(".hm-bouquet-head.is-selected, .hm-bouquet-decor.is-selected", art).forEach((node) => node.classList.remove("is-selected"));
+      itemNode.classList.add("is-selected");
+      state.bouquetDrag = { pointerId: event.pointerId, type, index, node: itemNode, art };
+      if (itemNode.setPointerCapture) {
+        try { itemNode.setPointerCapture(event.pointerId); } catch (error) {}
+      }
+    }
+
+    function handleBouquetPointerMove(event) {
+      const drag = state.bouquetDrag;
+      if (!drag || event.pointerId !== drag.pointerId) return;
+      event.preventDefault();
+      const rect = drag.art.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const x = clampBouquetValue(((event.clientX - rect.left) / rect.width) * 100, 4, 96, 50);
+      const y = clampBouquetValue(((event.clientY - rect.top) / rect.height) * 100, 5, 86, 40);
+      const layout = syncBouquetLayoutWithSelection();
+      const list = drag.type === "flower" ? layout.flowers : layout.decorations;
+      const item = list[drag.index];
+      if (!item) return;
+      item.x = x;
+      item.y = y;
+      drag.node.style.left = x + "%";
+      drag.node.style.top = y + "%";
+      if (drag.type === "flower") {
+        drag.node.style.setProperty("--flower-x", x + "%");
+        drag.node.style.setProperty("--flower-y", y + "%");
+        const stem = drag.art.querySelector(`[data-bouquet-stem-index="${drag.index}"]`);
+        if (stem) {
+          const angle = Math.max(-32, Math.min(32, (50 - x) * .65));
+          stem.style.left = x + "%";
+          stem.style.top = (y + 7) + "%";
+          stem.style.height = Math.max(13, 85 - y) + "%";
+          stem.style.transform = `rotate(${angle}deg)`;
+        }
+      } else {
+        drag.node.style.setProperty("--decor-x", x + "%");
+        drag.node.style.setProperty("--decor-y", y + "%");
+      }
+    }
+
+    function handleBouquetPointerUp(event) {
+      const drag = state.bouquetDrag;
+      if (!drag || (event && event.pointerId !== undefined && event.pointerId !== drag.pointerId)) return;
+      state.bouquetDrag = null;
+      updateFlowerComposerPreview();
+      renderPreview();
     }
 
     function chooseType(type) {
@@ -2375,6 +2705,27 @@ HAPPY MOMENTS ♡
           <fieldset class="option-fieldset"><legend>1. เลือกไอเดียช่อสำเร็จรูป (ปรับต่อได้)</legend><div class="hm-flower-preset-grid" id="flowerPresetPicker">${presetButtons}<button type="button" class="hm-flower-preset ${state.flowerPreset === "custom" ? "active" : ""}" data-flower-preset="custom"><span>✋</span><strong>เริ่มจัดเอง</strong></button></div></fieldset>
           <fieldset class="option-fieldset"><legend>2. เลือกดอกไม้และจำนวน</legend><div class="hm-flower-catalog-grid" id="flowerCatalogGrid"></div><div class="hm-flower-catalog-footer"><strong id="flowerCountSummary">เลือกแล้ว 0 ก้าน · 0 ชนิด</strong><button type="button" class="hm-flower-clear" id="flowerClearButton">ล้างช่อ</button></div><small class="help-text">เลือกได้หลายชนิด สูงสุด 18 ก้าน และเลือกดอกไม้ชนิดเดียวได้ไม่เกิน 8 ก้าน</small></fieldset>
           <section class="hm-flower-live-card" aria-live="polite"><div class="hm-flower-live-heading"><span>LIVE BOUQUET</span><small>ตัวอย่างช่อของคุณ</small></div><div id="flowerComposerPreviewArt"></div><div id="flowerCompositionNames" class="hm-flower-composition-names"></div></section>
+          <section class="hm-bouquet-designer" aria-label="จัดวางช่อดอกไม้ด้วยตัวเอง">
+            <div class="hm-bouquet-designer-head"><span>✋</span><div><strong>จัดวางและตกแต่งช่อเอง</strong><small>แตะดอกไม้ในตัวอย่างแล้วลากไปวางตำแหน่งที่ชอบได้เลย</small></div></div>
+            <div class="hm-bouquet-editor-hint"><i class="fa-solid fa-hand-pointer"></i> ลากดอกไม้หรือของตกแต่งบนช่อเพื่อจัดตำแหน่ง</div>
+            <div class="hm-bouquet-editor-toolbar">
+              <button type="button" data-bouquet-action="rotate-left">↶ หมุนซ้าย</button>
+              <button type="button" data-bouquet-action="rotate-right">หมุนขวา ↷</button>
+              <button type="button" data-bouquet-action="smaller">－ เล็กลง</button>
+              <button type="button" data-bouquet-action="larger">＋ ขยาย</button>
+              <button type="button" data-bouquet-action="back">ส่งไปหลัง</button>
+              <button type="button" data-bouquet-action="front">นำมาหน้า</button>
+              <button type="button" data-bouquet-action="delete">ลบที่เลือก</button>
+              <button type="button" data-bouquet-action="reset">จัดตำแหน่งใหม่</button>
+            </div>
+            <div class="hm-bouquet-decor-title">เพิ่มของตกแต่งลงบนช่อ <span id="bouquetDecorCount" style="font-weight:400"></span></div>
+            <div class="hm-bouquet-decor-palette" id="bouquetDecorPalette">
+              ${BOUQUET_DECOR_CATALOG.map((item) => `<button type="button" class="hm-bouquet-decor-choice" data-bouquet-decor="${item.id}" title="เพิ่ม${item.label}"><span>${item.emoji}</span><small>${item.label}</small></button>`).join("")}
+            </div>
+            <div class="hm-bouquet-selected-label" id="bouquetSelectedLabel">แตะเลือกดอกไม้หรือของตกแต่ง แล้วลากเพื่อจัดตำแหน่ง</div>
+            <div class="hm-bouquet-edit-note">เคล็ดลับ: เลือกดอกไม้จากรายการด้านบนก่อน จากนั้นลากดอกไม้ในภาพเพื่อวางตำแหน่งได้ตามใจ เพิ่มหัวใจ ผีเสื้อ ประกายดาว และโบว์ได้ด้วย</div>
+          </section>
+
           <div class="option-pair">
             <div class="form-field"><label for="flowerWrap">3. กระดาษห่อช่อ</label><select class="select" id="flowerWrap"><option value="cream">กระดาษครีมเกาหลี</option><option value="pink">ชมพูพาสเทล</option><option value="kraft">คราฟต์ธรรมชาติ</option><option value="lilac">ม่วงลาเวนเดอร์</option><option value="milk">ขาวนม</option><option value="newspaper">หนังสือพิมพ์วินเทจ</option><option value="transparent">ใสเกาหลี</option><option value="gingham">ลายตารางน่ารัก</option><option value="butter">เหลืองเนย</option></select></div>
             <div class="form-field"><label for="flowerRibbon">4. ริบบิ้นผูกช่อ</label><select class="select" id="flowerRibbon"><option value="satin-pink">ซาตินชมพู</option><option value="satin-white">ซาตินขาว</option><option value="velvet">กำมะหยี่</option><option value="lace">ลูกไม้</option><option value="gold">ทองแชมเปญ</option><option value="lavender">ม่วงอ่อน</option><option value="mint">เขียวมิ้นต์</option><option value="none">ไม่ผูกริบบิ้น</option></select></div>
@@ -3383,6 +3734,7 @@ HAPPY MOMENTS ♡
         previewEmoji.classList.add("has-bouquet-art");
         previewEmoji.innerHTML = createBouquetArtHtml({
           flowers: getFlowerSelectionRows(),
+          layout: getBouquetLayoutSnapshot(),
           wrap: selectValue("flowerWrap", "cream"),
           ribbon: selectValue("flowerRibbon", "satin-pink"),
           shape: selectValue("flowerShape", "round")
@@ -4759,6 +5111,7 @@ HAPPY MOMENTS ♡
         content.flower_style = "custom";
         content.flower_preset = state.flowerPreset || "custom";
         content.flower_bouquet = flowerComposition;
+        content.flower_layout = getBouquetLayoutSnapshot();
         content.flower_total_count = flowerComposition.reduce((sum, item) => sum + item.count, 0);
         content.greeting = selectValue("flowerGreeting", "").trim();
         content.flower_meaning = selectValue("flowerMeaning", "").trim();
@@ -5156,6 +5509,7 @@ HAPPY MOMENTS ♡
         const flowerItems = resolveFlowerComposition(content);
         const flowerArt = createBouquetArtHtml({
           flowers: flowerItems,
+          layout: content.flower_layout,
           wrap: content.flower_wrap,
           ribbon: content.flower_ribbon,
           shape: content.flower_shape
@@ -5303,6 +5657,11 @@ HAPPY MOMENTS ♡
       ["#recipientName", "#senderName", "#giftTitle", "#giftMessage"].forEach((selector) => $(selector).addEventListener("input", renderPreview));
       $("#typeSpecificFields").addEventListener("input", renderPreview);
       $("#typeSpecificFields").addEventListener("change", renderPreview);
+      $("#typeSpecificFields").addEventListener("click", handleBouquetDesignerClick);
+      $("#typeSpecificFields").addEventListener("pointerdown", handleBouquetPointerDown);
+      window.addEventListener("pointermove", handleBouquetPointerMove, { passive: false });
+      window.addEventListener("pointerup", handleBouquetPointerUp);
+      window.addEventListener("pointercancel", handleBouquetPointerUp);
       $("#fontChoice").addEventListener("change", (event) => { state.font = event.target.value; renderPreview(); });
       $("#paperTexture").addEventListener("change", renderPreview);
       $("#borderChoice").addEventListener("change", renderPreview);
