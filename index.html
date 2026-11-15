@@ -266,11 +266,70 @@
     .selected-song img { width: 86px; height: 56px; object-fit: cover; border-radius: 9px; }
     .selected-song strong { font-size: 12px; display: block; }
     .selected-song small { color: #7b9b85; font-size: 10px; }
-    .upload-drop { border: 1.5px dashed #e7b4c3; background: #fff9fb; border-radius: 17px; padding: 20px; text-align: center; cursor: pointer; color: #9d7e8c; transition: .2s; }
-    .upload-drop:hover { background: #fff1f5; border-color: #da8ca6; }
-    .upload-drop i { display: block; color: #d98ba4; font-size: 25px; margin-bottom: 8px; }
-    .upload-drop strong { display: block; font-size: 12px; }
-    .upload-drop small { color: #ae9aa4; font-size: 10px; }
+    /* Image picker: force the label to be a single, full-width box.
+       Without display:flex, a label is inline by default and its border can
+       fragment around wrapped Thai text on mobile browsers. */
+    .upload-drop {
+      display: flex !important;
+      flex: 0 0 100%;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      width: 100%;
+      min-width: 0;
+      min-height: 168px;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 24px 16px;
+      border: 1.5px dashed #e7b4c3;
+      border-radius: 18px;
+      background: #fff9fb;
+      color: #9d7e8c;
+      text-align: center;
+      line-height: 1.65;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      cursor: pointer;
+      vertical-align: top;
+      transition: background .2s, border-color .2s, box-shadow .2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .upload-drop:hover,
+    .upload-drop:focus-visible {
+      background: #fff1f5;
+      border-color: #da8ca6;
+      box-shadow: 0 0 0 3px rgba(218,140,166,.10);
+      outline: none;
+    }
+    .upload-drop > * { max-width: 100%; pointer-events: none; }
+    .upload-drop i {
+      display: block;
+      margin: 0 0 2px;
+      color: #d98ba4;
+      font-size: 30px;
+      line-height: 1.2;
+    }
+    .upload-drop strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .upload-drop small {
+      display: block;
+      max-width: 32rem;
+      color: #ae9aa4;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+    @media (max-width: 480px) {
+      .upload-drop {
+        min-height: 158px;
+        padding: 22px 13px;
+        border-radius: 17px;
+      }
+      .upload-drop small { font-size: 10px; }
+    }
     .photo-preview-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
     .photo-preview { position: relative; aspect-ratio: 1; }
     .photo-preview img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
@@ -932,7 +991,7 @@
               <span class="section-number">04</span>
               <div><h3>เพิ่มรูปภาพ</h3><p>แนบรูปเพื่อเพิ่มความพิเศษให้ของขวัญ</p></div>
             </div>
-            <label class="upload-drop" for="giftPhotos">
+            <label class="upload-drop" for="giftPhotos" aria-label="เลือกรูปภาพจากอุปกรณ์">
               <i class="fa-regular fa-images"></i>
               <strong>แตะเพื่อเลือกรูปจากอุปกรณ์</strong>
               <small>รองรับ JPG, PNG, WebP สูงสุด 6 รูป รูปละไม่เกิน 1 MB หลังบีบอัด</small>
