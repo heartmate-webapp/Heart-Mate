@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff4f7">
+  <meta name="description" content="Heart Mate Admin — จัดการของขวัญและความทรงจำออนไลน์">
+  <title>Heart Mate Admin</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    /* ======================================================================
+       01. DESIGN TOKENS
+       ====================================================================== */
+    :root {
+      --pink-50: #fff4f7;
+      --pink-100: #ffe5ed;
+      --pink-200: #ffcbd9;
+      --pink-300: #f7a9c0;
+      --pink-400: #e987a7;
+      --pink-500: #d96f92;
+      --rose-700: #98536d;
+      --cream: #fffaf5;
+      --butter: #fff1c9;
+      --mint: #e5f5ed;
+      --lavender: #eee9ff;
+      --ink: #493b43;
+      --muted: #95838d;
+      --line: #f1e4e9;
+      --white: #ffffff;
+      --green: #3d9670;
+      --red: #cf5368;
+      --shadow: 0 16px 45px rgba(143, 83, 108, .10);
+      --shadow-soft: 0 7px 24px rgba(143, 83, 108, .08);
+      --radius-xl: 25px;
+      --radius-lg: 18px;
+      --radius-md: 13px;
+    }
+
+    /* ======================================================================
+       02. RESET AND BASE
+       ====================================================================== */
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 5%, rgba(255, 220, 232, .55), transparent 24rem),
+        radial-gradient(circle at 95% 90%, rgba(255, 239, 201, .48), transparent 25rem),
+        #fff9fb;
+      font-family: "Kanit", sans-serif;
+      font-weight: 300;
+    }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    img { max-width: 100%; }
+    a { color: inherit; }
+    .hidden { display: none !important; }
+    .muted { color: var(--muted); }
+    .small { font-size: 12px; }
+    .text-danger { color: var(--red); }
+    .text-success { color: var(--green); }
+    .nowrap { white-space: nowrap; }
+
+    /* ======================================================================
+       03. SHARED COMPONENTS
+       ====================================================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 42px;
+      padding: 10px 16px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      color: var(--rose-700);
+      background: var(--pink-100);
+      font-weight: 500;
+      text-decoration: none;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-soft); }
+    .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--pink-400), var(--pink-500));
+      box-shadow: 0 8px 18px rgba(217, 111, 146, .20);
+    }
+    .btn-secondary { color: var(--ink); background: #fff; border-color: var(--line); }
+    .btn-soft { color: var(--rose-700); background: var(--pink-50); border-color: var(--pink-100); }
+    .btn-danger { color: #fff; background: #d66b7c; }
+    .btn-ghost { color: var(--muted); background: transparent; border-color: var(--line); }
+    .btn-sm { min-height: 34px; padding: 7px 12px; font-size: 13px; }
+    .btn-block { width: 100%; }
+    .icon-btn {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: #fff;
+      color: var(--rose-700);
+    }
+    .field { display: grid; gap: 7px; }
+    .field label { color: #765b68; font-size: 13px; font-weight: 500; }
+    .field input, .field textarea, .field select {
+      width: 100%;
+      min-height: 44px;
+      padding: 11px 13px;
+      outline: none;
+      border: 1px solid #efdee5;
+      border-radius: 12px;
+      color: var(--ink);
+      background: #fff;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+    .field textarea { min-height: 100px; resize: vertical; line-height: 1.65; }
+    .field input:focus, .field textarea:focus, .field select:focus {
+      border-color: var(--pink-400);
+      box-shadow: 0 0 0 3px rgba(233, 135, 167, .13);
+    }
+    .field input::placeholder, .field textarea::placeholder { color: #b8a8af; }
+    .field-hint { margin-top: -2px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .form-grid .span-2 { grid-column: 1 / -1; }
+    .panel {
+      border: 1px solid rgba(241, 228, 233, .9);
+      border-radius: var(--radius-xl);
+      background: rgba(255, 255, 255, .92);
+      box-shadow: var(--shadow-soft);
+    }
+    .panel-pad { padding: 22px; }
+    .section-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .section-heading h2 { margin: 0; font-size: 21px; font-weight: 500; }
+    .section-heading p { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--pink-50);
+      color: var(--rose-700);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 11px;
+      font-weight: 400;
+    }
+    .status-published { color: #347d5f; background: #e5f5ed; }
+    .status-draft { color: #9b7435; background: #fff3d8; }
+    .status-archived { color: #80717a; background: #f0ecef; }
+    .empty-state {
+      padding: 38px 18px;
+      text-align: center;
+      color: var(--muted);
+    }
+    .empty-state .empty-icon {
+      display: inline-grid;
+      place-items: center;
+      width: 58px;
+      height: 58px;
+      margin-bottom: 12px;
+      border-radius: 20px;
+      color: var(--pink-500);
+      background: var(--pink-50);
+      font-size: 24px;
+    }
+    .empty-state strong { display: block; margin-bottom: 4px; color: var(--ink); font-weight: 500; }
+    .divider { height: 1px; margin: 18px 0; background: var(--line); }
+
+    /* ======================================================================
+       04. LOGIN
+       ====================================================================== */
+    .login-screen {
+      display: grid;
+      min-height: 100vh;
+      place-items: center;
+      padding: 22px;
+    }
+    .login-card {
+      width: min(100%, 420px);
+      padding: 34px;
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 30px;
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 25px 70px rgba(145, 83, 109, .14);
+    }
+    .login-brand { text-align: center; margin-bottom: 28px; }
+    .brand-mark {
+      display: inline-grid;
+      place-items: center;
+      width: 70px;
+      height: 70px;
+      margin-bottom: 10px;
+      border-radius: 25px;
+      color: #fff;
+      background: linear-gradient(145deg, #f5abc1, #dc7398);
+      box-shadow: 0 12px 24px rgba(217,111,146,.24);
+      font-size: 29px;
+    }
+    .login-brand h1 { margin: 0; color: var(--rose-700); font-family: "Nunito", sans-serif; font-size: 30px; font-weight: 900; }
+    .login-brand p { margin: 3px 0 0; color: var(--muted); font-size: 12px; }
+    .login-note { margin-top: 18px; text-align: center; color: var(--muted); font-size: 11px; line-height: 1.65; }
+
+    /* ======================================================================
+       05. APPLICATION LAYOUT
+       ====================================================================== */
+    .app-shell { min-height: 100vh; }
+    .sidebar {
+      position: fixed;
+      z-index: 20;
+      inset: 0 auto 0 0;
+      display: flex;
+      flex-direction: column;
+      width: 250px;
+      padding: 25px 17px;
+      border-right: 1px solid var(--line);
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(18px);
+    }
+    .sidebar-brand { display: flex; align-items: center; gap: 11px; padding: 0 8px 28px; }
+    .sidebar-brand .brand-mark { flex: 0 0 44px; width: 44px; height: 44px; margin: 0; border-radius: 15px; font-size: 19px; }
+    .sidebar-brand strong { display: block; color: var(--rose-700); font-family: "Nunito", sans-serif; font-size: 19px; font-weight: 900; }
+    .sidebar-brand span { display: block; color: var(--muted); font-size: 10px; }
+    .nav-label { padding: 8px 11px; color: #b49da8; font-size: 10px; letter-spacing: .08em; }
+    .nav-list { display: grid; gap: 5px; }
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 12px 13px;
+      border: 0;
+      border-radius: 13px;
+      color: #8f7b85;
+      background: transparent;
+      text-align: left;
+      font-size: 13px;
+      transition: .18s ease;
+    }
+    .nav-btn i { width: 18px; text-align: center; }
+    .nav-btn:hover { color: var(--rose-700); background: var(--pink-50); }
+    .nav-btn.active { color: var(--rose-700); background: var(--pink-100); font-weight: 500; }
+    .sidebar-bottom { margin-top: auto; }
+    .sidebar-tip { padding: 14px; border-radius: 16px; background: linear-gradient(145deg, #fff2f6, #fff9ed); }
+    .sidebar-tip strong { display: block; margin-bottom: 4px; color: var(--rose-700); font-size: 12px; font-weight: 500; }
+    .sidebar-tip p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
+    .main-area { min-height: 100vh; margin-left: 250px; }
+    .topbar {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 76px;
+      padding: 12px 32px;
+      border-bottom: 1px solid rgba(241,228,233,.8);
+      background: rgba(255,249,251,.84);
+      backdrop-filter: blur(18px);
+    }
+    .topbar-title h1 { margin: 0; font-size: 19px; font-weight: 500; }
+    .topbar-title p { margin: 2px 0 0; color: var(--muted); font-size: 11px; }
+    .topbar-actions { display: flex; align-items: center; gap: 10px; }
+    .admin-chip { display: flex; align-items: center; gap: 8px; padding: 6px 11px 6px 6px; border: 1px solid var(--line); border-radius: 999px; background: #fff; }
+    .admin-avatar { display: grid; place-items: center; width: 29px; height: 29px; border-radius: 50%; color: var(--rose-700); background: var(--pink-100); font-size: 12px; }
+    .admin-chip span { font-size: 11px; }
+    .mobile-menu { display: none; }
+    .content { width: min(100%, 1440px); margin: 0 auto; padding: 28px 32px 50px; }
+    .page { display: none; animation: pageIn .2s ease; }
+    .page.active { display: block; }
+    @keyframes pageIn { from { opacity: .5; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ======================================================================
+       06. OVERVIEW
+       ====================================================================== */
+    .welcome-banner {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      min-height: 150px;
+      margin-bottom: 20px;
+      padding: 27px 30px;
+      border-radius: 24px;
+      color: var(--rose-700);
+      background: linear-gradient(115deg, #ffe3ec 0%, #fff0e7 58%, #fff5d8 100%);
+    }
+    .welcome-banner::after { content: "♡"; position: absolute; right: 28px; bottom: -53px; color: rgba(255,255,255,.55); font-family: "Nunito", sans-serif; font-size: 190px; line-height: 1; }
+    .welcome-banner h2 { position: relative; z-index: 1; margin: 0; font-size: 24px; font-weight: 500; }
+    .welcome-banner p { position: relative; z-index: 1; margin: 5px 0 0; font-size: 12px; color: #a36b80; }
+    .welcome-banner .btn { position: relative; z-index: 2; flex-shrink: 0; background: rgba(255,255,255,.8); }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 20px; }
+    .stat-card { display: flex; align-items: center; gap: 13px; padding: 18px; }
+    .stat-icon { display: grid; place-items: center; width: 46px; height: 46px; flex: 0 0 46px; border-radius: 16px; font-size: 17px; }
+    .stat-icon.pink { color: #c9688c; background: var(--pink-100); }
+    .stat-icon.yellow { color: #b78c36; background: var(--butter); }
+    .stat-icon.green { color: #4c9272; background: var(--mint); }
+    .stat-icon.purple { color: #8c78bd; background: var(--lavender); }
+    .stat-card strong { display: block; font-family: "Nunito", sans-serif; font-size: 24px; font-weight: 900; line-height: 1.15; }
+    .stat-card span { color: var(--muted); font-size: 11px; }
+
+    /* ======================================================================
+       07. GIFT LIST
+       ====================================================================== */
+    .toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+    .toolbar-left, .toolbar-right { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; }
+    .search-box { position: relative; min-width: 230px; }
+    .search-box i { position: absolute; top: 50%; left: 13px; color: #b49da8; transform: translateY(-50%); }
+    .search-box input { width: 100%; height: 40px; padding: 8px 12px 8px 36px; border: 1px solid var(--line); border-radius: 999px; outline: none; background: #fff; }
+    .search-box input:focus { border-color: var(--pink-400); }
+    .filter-select { height: 40px; padding: 7px 12px; border: 1px solid var(--line); border-radius: 999px; outline: none; color: var(--ink); background: #fff; font-size: 12px; }
+    .gift-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; }
+    .gift-card { overflow: hidden; padding: 17px; transition: transform .18s ease, box-shadow .18s ease; }
+    .gift-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .gift-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .gift-kind { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .gift-kind-icon { display: grid; place-items: center; width: 43px; height: 43px; flex: 0 0 43px; border-radius: 15px; color: var(--rose-700); background: var(--pink-50); font-size: 17px; }
+    .gift-card h3 { overflow: hidden; margin: 0; font-size: 14px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+    .gift-card .recipient { margin: 3px 0 0; color: var(--muted); font-size: 11px; }
+    .gift-meta { display: flex; gap: 14px; margin: 17px 0 14px; color: var(--muted); font-size: 10px; }
+    .gift-meta i { margin-right: 4px; }
+    .gift-card-actions { display: flex; flex-wrap: wrap; gap: 7px; padding-top: 12px; border-top: 1px solid var(--line); }
+    .gift-card-actions .btn { flex: 1; min-width: 64px; }
+
+    /* ======================================================================
+       08. GIFT EDITOR
+       ====================================================================== */
+    .editor-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr); gap: 18px; align-items: start; }
+    .editor-section { display: grid; gap: 15px; }
+    .subheading { display: flex; align-items: center; gap: 8px; margin: 0 0 2px; color: var(--rose-700); font-size: 14px; font-weight: 500; }
+    .type-selector { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+    .type-option { display: grid; place-items: center; gap: 6px; min-height: 82px; padding: 9px 5px; border: 1px solid var(--line); border-radius: 14px; color: #927e88; background: #fff; font-size: 10px; }
+    .type-option i { font-size: 19px; }
+    .type-option.selected { border-color: var(--pink-300); color: var(--rose-700); background: var(--pink-50); box-shadow: 0 0 0 2px rgba(247,169,192,.12); }
+    .type-fields { display: none; }
+    .type-fields.active { display: grid; gap: 14px; }
+    .selected-song { display: flex; gap: 12px; align-items: center; padding: 10px; border: 1px solid var(--pink-200); border-radius: 14px; background: var(--pink-50); }
+    .selected-song img { width: 100px; aspect-ratio: 16/9; object-fit: cover; border-radius: 9px; }
+    .selected-song strong { display: block; font-size: 12px; font-weight: 500; }
+    .selected-song span { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; }
+    .youtube-results { display: grid; gap: 9px; max-height: 390px; overflow: auto; }
+    .youtube-result { display: flex; gap: 11px; padding: 9px; border: 1px solid var(--line); border-radius: 13px; background: #fff; }
+    .youtube-result img { width: 112px; flex: 0 0 112px; aspect-ratio: 16/9; object-fit: cover; border-radius: 8px; }
+    .youtube-result-info { min-width: 0; flex: 1; }
+    .youtube-result-info strong { display: -webkit-box; overflow: hidden; color: var(--ink); font-size: 11px; font-weight: 500; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+    .youtube-result-info span { display: block; margin: 4px 0 7px; color: var(--muted); font-size: 10px; }
+    .youtube-result .btn { min-height: 30px; padding: 5px 10px; font-size: 10px; }
+    .memory-entry { padding: 13px; border: 1px solid var(--line); border-radius: 14px; background: #fffdfd; }
+    .memory-entry-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .memory-entry-head strong { color: var(--rose-700); font-size: 12px; font-weight: 500; }
+    .editor-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 9px; margin-top: 18px; }
+    .preview-card { position: sticky; top: 96px; overflow: hidden; }
+    .preview-cover { display: grid; place-items: center; min-height: 185px; padding: 22px; text-align: center; background: linear-gradient(145deg, #ffe6ee, #fff3dd); }
+    .preview-cover .preview-emoji { font-size: 45px; }
+    .preview-cover h3 { margin: 8px 0 2px; color: var(--rose-700); font-size: 18px; font-weight: 500; }
+    .preview-cover p { margin: 0; color: #a7798b; font-size: 11px; }
+    .preview-body { padding: 17px; }
+    .preview-message { min-height: 78px; padding: 13px; border: 1px dashed var(--pink-200); border-radius: 13px; color: #806271; background: #fffafd; font-size: 12px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .photo-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; }
+    .photo-item { position: relative; overflow: hidden; border-radius: 12px; background: var(--pink-50); }
+    .photo-item img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
+    .photo-item button { position: absolute; top: 5px; right: 5px; width: 27px; height: 27px; border: 0; border-radius: 50%; color: #fff; background: rgba(80,40,55,.65); }
+
+    /* ======================================================================
+       09. SETTINGS / TOAST / MODAL
+       ====================================================================== */
+    .settings-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
+    .notice { padding: 13px 15px; border-radius: 13px; color: #806271; background: var(--pink-50); font-size: 11px; line-height: 1.65; }
+    .toast-region { position: fixed; z-index: 100; top: 18px; right: 18px; display: grid; gap: 9px; width: min(360px, calc(100vw - 36px)); }
+    .toast { display: flex; align-items: flex-start; gap: 10px; padding: 13px 15px; border: 1px solid var(--line); border-radius: 14px; background: #fff; box-shadow: var(--shadow); animation: toastIn .2s ease; font-size: 12px; }
+    .toast i { margin-top: 2px; }
+    .toast.success i { color: var(--green); }
+    .toast.error i { color: var(--red); }
+    .toast.info i { color: var(--pink-500); }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(-7px); } to { opacity: 1; transform: translateY(0); } }
+    .modal-backdrop { position: fixed; z-index: 80; inset: 0; display: grid; place-items: center; padding: 18px; background: rgba(66,44,55,.34); backdrop-filter: blur(5px); }
+    .modal-card { width: min(100%, 540px); max-height: min(85vh, 760px); overflow: auto; padding: 22px; border-radius: 22px; background: #fff; box-shadow: var(--shadow); }
+    .modal-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
+    .modal-head h3 { margin: 0; font-size: 17px; font-weight: 500; }
+    .progress-track { overflow: hidden; height: 8px; border-radius: 99px; background: var(--pink-100); }
+    .progress-bar { height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--pink-300), var(--pink-500)); transition: width .15s ease; }
+    .copy-row { display: flex; gap: 8px; }
+    .copy-row input { flex: 1; min-width: 0; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; font-size: 11px; }
+    .loading-inline { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 11px; }
+    .spinner { width: 15px; height: 15px; border: 2px solid var(--pink-100); border-top-color: var(--pink-500); border-radius: 50%; animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ======================================================================
+       10. RESPONSIVE
+       ====================================================================== */
+    @media (max-width: 1150px) {
+      .gift-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .editor-layout { grid-template-columns: minmax(0, 1fr); }
+      .preview-card { position: static; }
+    }
+    @media (max-width: 820px) {
+      .sidebar { width: 225px; transform: translateX(-102%); transition: transform .22s ease; box-shadow: var(--shadow); }
+      .sidebar.open { transform: translateX(0); }
+      .main-area { margin-left: 0; }
+      .mobile-menu { display: inline-grid; }
+      .topbar { padding: 11px 17px; }
+      .content { padding: 20px 17px 40px; }
+      .settings-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .login-card { padding: 27px 22px; }
+      .topbar-title h1 { font-size: 16px; }
+      .topbar-title p { display: none; }
+      .admin-chip span { display: none; }
+      .welcome-banner { align-items: flex-start; flex-direction: column; padding: 22px; }
+      .welcome-banner h2 { font-size: 20px; }
+      .stats-grid { gap: 9px; }
+      .stat-card { padding: 13px; gap: 9px; }
+      .stat-icon { width: 38px; height: 38px; flex-basis: 38px; border-radius: 13px; }
+      .stat-card strong { font-size: 20px; }
+      .stat-card span { font-size: 9px; }
+      .gift-grid { grid-template-columns: 1fr; }
+      .toolbar { align-items: stretch; }
+      .toolbar-left, .toolbar-right { width: 100%; }
+      .search-box { min-width: 0; flex: 1; }
+      .filter-select { flex: 1; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-grid .span-2 { grid-column: auto; }
+      .type-selector { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .panel-pad { padding: 16px; }
+      .youtube-result img { width: 88px; flex-basis: 88px; }
+      .youtube-result { gap: 8px; }
+      .editor-actions .btn { flex: 1; }
+      .copy-row { flex-direction: column; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ======================================================================
+       11. LOGIN SCREEN
+       ====================================================================== -->
+  <section id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <div class="login-brand">
+        <div class="brand-mark"><i class="fa-solid fa-heart"></i></div>
+        <h1>Heart Mate</h1>
+        <p>Little things, Big feelings.</p>
+      </div>
+
+      <form id="loginForm" class="editor-section">
+        <div class="field">
+          <label for="adminPassword">รหัสเข้าใช้งาน</label>
+          <input id="adminPassword" type="password" autocomplete="current-password" placeholder="กรอกรหัสเข้าใช้งาน" required>
+        </div>
+        <button id="loginButton" class="btn btn-primary btn-block" type="submit">
+          <i class="fa-solid fa-unlock-keyhole"></i>
+          เข้าสู่ระบบ
+        </button>
+        <p id="loginError" class="text-danger small hidden" role="alert"></p>
+      </form>
+
+      <div class="login-note">
+        <i class="fa-regular fa-heart"></i>
+        พื้นที่จัดการของขวัญและความทรงจำของ Heart Mate
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       12. MAIN APPLICATION
+       ====================================================================== -->
+  <div id="appShell" class="app-shell hidden">
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-mark"><i class="fa-solid fa-heart"></i></div>
+        <div>
+          <strong>Heart Mate</strong>
+          <span>ADMIN DASHBOARD</span>
+        </div>
+      </div>
+
+      <div class="nav-label">MENU</div>
+      <nav class="nav-list" aria-label="เมนูหลัก">
+        <button class="nav-btn active" data-page="overview"><i class="fa-solid fa-house"></i> ภาพรวม</button>
+        <button class="nav-btn" data-page="gifts"><i class="fa-solid fa-gift"></i> จัดการของขวัญ</button>
+        <button class="nav-btn" data-page="editor"><i class="fa-solid fa-wand-magic-sparkles"></i> สร้างของขวัญ</button>
+        <button class="nav-btn" data-page="settings"><i class="fa-solid fa-sliders"></i> ตั้งค่าระบบ</button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-tip">
+          <strong><i class="fa-regular fa-lightbulb"></i> เกร็ดเล็ก ๆ</strong>
+          <p>ทุกลิงก์ของขวัญมีรหัสเฉพาะ ผู้ที่มีลิงก์จึงสามารถเปิดดูของขวัญที่คุณสร้างให้ได้</p>
+        </div>
+        <button id="sidebarLogout" class="nav-btn" style="margin-top:12px;"><i class="fa-solid fa-arrow-right-from-bracket"></i> ออกจากระบบ</button>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button id="mobileMenuButton" class="icon-btn mobile-menu" aria-label="เปิดเมนู"><i class="fa-solid fa-bars"></i></button>
+          <div class="topbar-title">
+            <h1 id="pageTitle">ภาพรวม</h1>
+            <p id="pageSubtitle">ยินดีต้อนรับกลับมา มาสร้างความทรงจำดี ๆ กัน</p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <div class="admin-chip">
+            <div class="admin-avatar"><i class="fa-solid fa-heart"></i></div>
+            <span>Administrator</span>
+          </div>
+          <button id="topLogout" class="icon-btn" title="ออกจากระบบ" aria-label="ออกจากระบบ"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+        </div>
+      </header>
+
+      <div class="content">
+        <!-- OVERVIEW PAGE -->
+        <section id="page-overview" class="page active">
+          <div class="welcome-banner">
+            <div>
+              <h2>ส่งต่อความรู้สึกดี ๆ ด้วย Heart Mate <span>♡</span></h2>
+              <p>ดอกไม้ การ์ด เพลง และความทรงจำเล็ก ๆ ที่มีความหมาย</p>
+            </div>
+            <button class="btn" data-go-page="editor"><i class="fa-solid fa-plus"></i> สร้างของขวัญใหม่</button>
+          </div>
+
+          <div class="stats-grid">
+            <article class="panel stat-card">
+              <div class="stat-icon pink"><i class="fa-solid fa-gift"></i></div>
+              <div><strong id="statTotal">0</strong><span>ของขวัญทั้งหมด</span></div>
+            </article>
+            <article class="panel stat-card">
+              <div class="stat-icon green"><i class="fa-solid fa-paper-plane"></i></div>
+              <div><strong id="statPublished">0</strong><span>เผยแพร่แล้ว</span></div>
+            </article>
+            <article class="panel stat-card">
+              <div class="stat-icon yellow"><i class="fa-regular fa-eye"></i></div>
+              <div><strong id="statViews">0</strong><span>ยอดเปิดชมรวม</span></div>
+            </article>
+            <article class="panel stat-card">
+              <div class="stat-icon purple"><i class="fa-solid fa-pen-ruler"></i></div>
+              <div><strong id="statDrafts">0</strong><span>ฉบับร่าง</span></div>
+            </article>
+          </div>
+
+          <div class="panel panel-pad">
+            <div class="section-heading">
+              <div>
+                <h2>ของขวัญล่าสุด</h2>
+                <p>รายการที่คุณสร้างหรือแก้ไขล่าสุด</p>
+              </div>
+              <button class="btn btn-soft btn-sm" data-go-page="gifts">ดูทั้งหมด <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+            <div id="recentGifts" class="gift-grid"></div>
+          </div>
+        </section>
+
+        <!-- GIFTS PAGE -->
+        <section id="page-gifts" class="page">
+          <div class="section-heading">
+            <div>
+              <h2>จัดการของขวัญ</h2>
+              <p>ค้นหา แก้ไข คัดลอกลิงก์ หรือจัดการสถานะของขวัญ</p>
+            </div>
+            <button class="btn btn-primary" data-go-page="editor"><i class="fa-solid fa-plus"></i> สร้างของขวัญ</button>
+          </div>
+
+          <div class="toolbar">
+            <div class="toolbar-left">
+              <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input id="giftSearch" type="search" placeholder="ค้นหาชื่อของขวัญหรือผู้รับ">
+              </div>
+            </div>
+            <div class="toolbar-right">
+              <select id="giftTypeFilter" class="filter-select" aria-label="กรองประเภท">
+                <option value="">ทุกประเภท</option>
+                <option value="flower">ดอกไม้</option>
+                <option value="card">การ์ด</option>
+                <option value="song">เพลง YouTube</option>
+                <option value="photobooth">Photo Booth</option>
+                <option value="memory">ความทรงจำ</option>
+              </select>
+              <select id="giftStatusFilter" class="filter-select" aria-label="กรองสถานะ">
+                <option value="">ทุกสถานะ</option>
+                <option value="published">เผยแพร่แล้ว</option>
+                <option value="draft">ฉบับร่าง</option>
+                <option value="archived">เก็บถาวร</option>
+              </select>
+              <button id="refreshGiftsButton" class="btn btn-secondary btn-sm"><i class="fa-solid fa-rotate"></i> รีเฟรช</button>
+            </div>
+          </div>
+          <div id="allGifts" class="gift-grid"></div>
+        </section>
+
+        <!-- EDITOR PAGE -->
+        <section id="page-editor" class="page">
+          <div class="section-heading">
+            <div>
+              <h2 id="editorHeading">สร้างของขวัญชิ้นใหม่</h2>
+              <p>กรอกรายละเอียด เลือกประเภท และบันทึกเพื่อสร้างลิงก์เฉพาะ</p>
+            </div>
+            <button id="cancelEditButton" class="btn btn-secondary btn-sm"><i class="fa-solid fa-arrow-left"></i> กลับไปรายการ</button>
+          </div>
+
+          <div class="editor-layout">
+            <div class="panel panel-pad">
+              <form id="giftForm" class="editor-section">
+                <div>
+                  <h3 class="subheading"><i class="fa-solid fa-swatchbook"></i> เลือกประเภทของขวัญ</h3>
+                  <div id="typeSelector" class="type-selector" style="margin-top:11px;">
+                    <button type="button" class="type-option selected" data-type="flower"><i class="fa-solid fa-spa"></i><span>ดอกไม้</span></button>
+                    <button type="button" class="type-option" data-type="card"><i class="fa-regular fa-envelope"></i><span>การ์ด</span></button>
+                    <button type="button" class="type-option" data-type="song"><i class="fa-brands fa-youtube"></i><span>เพลง</span></button>
+                    <button type="button" class="type-option" data-type="photobooth"><i class="fa-solid fa-camera-retro"></i><span>Photo Booth</span></button>
+                    <button type="button" class="type-option" data-type="memory"><i class="fa-solid fa-book-open"></i><span>ความทรงจำ</span></button>
+                  </div>
+                  <input id="giftType" type="hidden" value="flower">
+                </div>
+
+                <div class="divider"></div>
+
+                <div>
+                  <h3 class="subheading"><i class="fa-regular fa-pen-to-square"></i> รายละเอียดของขวัญ</h3>
+                  <div class="form-grid" style="margin-top:12px;">
+                    <div class="field span-2">
+                      <label for="giftTitle">ชื่อของขวัญ *</label>
+                      <input id="giftTitle" maxlength="160" required placeholder="เช่น ของขวัญเล็ก ๆ สำหรับเธอ">
+                    </div>
+                    <div class="field">
+                      <label for="recipientName">ส่งถึง</label>
+                      <input id="recipientName" maxlength="120" placeholder="ชื่อผู้รับ">
+                    </div>
+                    <div class="field">
+                      <label for="senderName">จาก</label>
+                      <input id="senderName" maxlength="120" placeholder="ชื่อผู้ส่ง">
+                    </div>
+                    <div class="field">
+                      <label for="giftStatus">สถานะ</label>
+                      <select id="giftStatus">
+                        <option value="published">เผยแพร่แล้ว</option>
+                        <option value="draft">ฉบับร่าง</option>
+                        <option value="archived">เก็บถาวร</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label for="giftTheme">ธีม</label>
+                      <select id="giftTheme">
+                        <option value="pastel-pink">Pastel Pink</option>
+                        <option value="peach">Peach</option>
+                        <option value="lavender">Lavender</option>
+                        <option value="mint">Mint</option>
+                        <option value="butter">Butter Cream</option>
+                      </select>
+                    </div>
+                    <div class="field span-2">
+                      <label for="giftMessage">ข้อความหลัก</label>
+                      <textarea id="giftMessage" maxlength="5000" placeholder="เขียนความรู้สึกที่อยากส่งให้คนพิเศษ..."></textarea>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- FLOWER FIELDS -->
+                <div id="fields-flower" class="type-fields active">
+                  <div class="divider"></div>
+                  <h3 class="subheading"><i class="fa-solid fa-spa"></i> รายละเอียดช่อดอกไม้</h3>
+                  <div class="form-grid">
+                    <div class="field">
+                      <label for="flowerStyle">รูปแบบช่อดอกไม้</label>
+                      <select id="flowerStyle">
+                        <option value="pink-roses">กุหลาบสีชมพู</option>
+                        <option value="tulips">ทิวลิป</option>
+                        <option value="sunflowers">ทานตะวัน</option>
+                        <option value="daisies">เดซี่</option>
+                        <option value="mixed">ช่อดอกไม้รวม</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label for="flowerNote">ข้อความบนป้ายช่อ</label>
+                      <input id="flowerNote" maxlength="180" placeholder="วันนี้ขอให้เป็นวันที่ดีนะ">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- CARD FIELDS -->
+                <div id="fields-card" class="type-fields">
+                  <div class="divider"></div>
+                  <h3 class="subheading"><i class="fa-regular fa-envelope"></i> ออกแบบการ์ด</h3>
+                  <div class="form-grid">
+                    <div class="field">
+                      <label for="cardDesign">รูปแบบการ์ด</label>
+                      <select id="cardDesign">
+                        <option value="classic">Classic Letter</option>
+                        <option value="polaroid">Polaroid Note</option>
+                        <option value="cute">Cute Doodle</option>
+                        <option value="birthday">Birthday</option>
+                        <option value="love">With Love</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label for="cardGreeting">คำขึ้นต้น</label>
+                      <input id="cardGreeting" maxlength="300" placeholder="ถึงคนพิเศษของฉัน">
+                    </div>
+                    <div class="field span-2">
+                      <label for="cardBody">ข้อความในการ์ด</label>
+                      <textarea id="cardBody" maxlength="5000" placeholder="เขียนข้อความในการ์ด..."></textarea>
+                    </div>
+                    <div class="field span-2">
+                      <label for="cardClosing">คำลงท้าย</label>
+                      <input id="cardClosing" maxlength="300" placeholder="ด้วยรักและคิดถึง">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- SONG FIELDS -->
+                <div id="fields-song" class="type-fields">
+                  <div class="divider"></div>
+                  <h3 class="subheading"><i class="fa-brands fa-youtube"></i> เลือกเพลงจาก YouTube</h3>
+                  <div class="field">
+                    <label for="youtubeQuery">ค้นหาชื่อเพลงหรือศิลปิน</label>
+                    <div style="display:flex;gap:8px;">
+                      <input id="youtubeQuery" placeholder="เช่น Until I Found You" autocomplete="off">
+                      <button id="youtubeSearchButton" type="button" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> ค้นหา</button>
+                    </div>
+                    <span class="field-hint">ค้นหาเพลงผ่าน YouTube Data API v3 ผลการค้นหาจะเลือกได้จากรายการด้านล่าง</span>
+                  </div>
+                  <div id="youtubeSearchStatus" class="loading-inline hidden"></div>
+                  <div id="youtubeResults" class="youtube-results"></div>
+                  <div id="selectedSongBox" class="selected-song hidden">
+                    <img id="selectedSongImage" src="" alt="ภาพปกเพลง">
+                    <div style="min-width:0;flex:1;">
+                      <strong id="selectedSongTitle"></strong>
+                      <span id="selectedSongChannel"></span>
+                      <span class="text-success"><i class="fa-solid fa-circle-check"></i> เลือกเพลงนี้แล้ว</span>
+                    </div>
+                    <button id="clearSongButton" type="button" class="icon-btn" title="เปลี่ยนเพลง"><i class="fa-solid fa-xmark"></i></button>
+                  </div>
+                  <div class="field">
+                    <label for="songNote">ข้อความประกอบเพลง</label>
+                    <textarea id="songNote" maxlength="5000" placeholder="เพลงนี้ทำให้นึกถึงเธอ เพราะ..."></textarea>
+                  </div>
+                </div>
+
+                <!-- PHOTO BOOTH FIELDS -->
+                <div id="fields-photobooth" class="type-fields">
+                  <div class="divider"></div>
+                  <h3 class="subheading"><i class="fa-solid fa-camera-retro"></i> ตั้งค่า Photo Booth</h3>
+                  <div class="form-grid">
+                    <div class="field">
+                      <label for="photoFrame">กรอบโฟโต้บูธ</label>
+                      <select id="photoFrame">
+                        <option value="pink-film">Pink Film</option>
+                        <option value="cream-retro">Cream Retro</option>
+                        <option value="love-note">Love Note</option>
+                        <option value="polaroid">Polaroid Strip</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label for="photoCaption">ข้อความใต้ภาพ</label>
+                      <input id="photoCaption" maxlength="180" placeholder="Our little memories">
+                    </div>
+                  </div>
+                  <div class="notice">หลังจากสร้างของขวัญแล้ว สามารถเลือกภาพจากเครื่องหรือถ่ายภาพผ่านหน้าบ้าน และจัดเก็บรูปไว้ใน Google Drive ได้</div>
+                </div>
+
+                <!-- MEMORY FIELDS -->
+                <div id="fields-memory" class="type-fields">
+                  <div class="divider"></div>
+                  <div class="section-heading" style="margin-bottom:0;">
+                    <div>
+                      <h3 class="subheading"><i class="fa-solid fa-book-open"></i> เพิ่มเรื่องราวความทรงจำ</h3>
+                      <p>เพิ่มรายการความทรงจำทีละรายการได้สูงสุด 100 รายการ</p>
+                    </div>
+                    <button id="addMemoryEntryButton" type="button" class="btn btn-soft btn-sm"><i class="fa-solid fa-plus"></i> เพิ่มเรื่องราว</button>
+                  </div>
+                  <div id="memoryEntries" class="editor-section"></div>
+                </div>
+
+                <div class="editor-actions">
+                  <button id="resetGiftFormButton" class="btn btn-secondary" type="button">ล้างฟอร์ม</button>
+                  <button id="saveGiftButton" class="btn btn-primary" type="submit"><i class="fa-solid fa-heart"></i> บันทึกและสร้างลิงก์</button>
+                </div>
+              </form>
+            </div>
+
+            <aside class="panel preview-card">
+              <div class="preview-cover">
+                <div>
+                  <div id="previewEmoji" class="preview-emoji">💐</div>
+                  <h3 id="previewTitle">ของขวัญเล็ก ๆ สำหรับเธอ</h3>
+                  <p id="previewRecipient">ถึงคนพิเศษ ♡</p>
+                </div>
+              </div>
+              <div class="preview-body">
+                <div class="small muted" style="margin-bottom:7px;">ตัวอย่างข้อความ</div>
+                <div id="previewMessage" class="preview-message">ข้อความจากใจจะปรากฏตรงนี้...</div>
+                <div class="divider"></div>
+                <div class="small muted">ประเภทของขวัญ</div>
+                <div id="previewType" style="margin-top:4px;font-size:13px;color:var(--rose-700);">ช่อดอกไม้</div>
+                <div id="previewSong" class="hidden" style="margin-top:12px;">
+                  <div class="small muted" style="margin-bottom:6px;">เพลงที่เลือก</div>
+                  <div id="previewSongName" style="font-size:12px;"></div>
+                </div>
+              </div>
+            </aside>
+          </div>
+
+          <!-- PHOTO MANAGEMENT AFTER GIFT CREATION -->
+          <section id="photoManagerPanel" class="panel panel-pad hidden" style="margin-top:18px;">
+            <div class="section-heading">
+              <div>
+                <h2>จัดการรูปภาพของขวัญ</h2>
+                <p id="photoManagerHint">เพิ่มรูปภาพลงในของขวัญ Photo Booth</p>
+              </div>
+              <button id="refreshPhotoListButton" class="btn btn-secondary btn-sm"><i class="fa-solid fa-rotate"></i> โหลดรูปใหม่</button>
+            </div>
+            <div class="form-grid">
+              <div class="field span-2">
+                <label for="photoFiles">เลือกภาพ JPG, PNG หรือ WebP</label>
+                <input id="photoFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+                <span class="field-hint">ระบบจะปรับขนาดและบีบอัดภาพก่อนส่ง ขนาดหลังบีบอัดต้องไม่เกิน 1 MB ต่อภาพ</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;">
+              <button id="uploadPhotosButton" class="btn btn-primary" type="button"><i class="fa-solid fa-cloud-arrow-up"></i> อัปโหลดรูปภาพ</button>
+              <span id="uploadPhotoStatus" class="loading-inline hidden"></span>
+            </div>
+            <div id="uploadProgressWrap" class="hidden" style="margin-top:13px;">
+              <div class="progress-track"><div id="uploadProgressBar" class="progress-bar"></div></div>
+              <div id="uploadProgressText" class="small muted" style="margin-top:5px;">0%</div>
+            </div>
+            <div class="divider"></div>
+            <div id="giftPhotoList" class="photo-list"></div>
+          </section>
+        </section>
+
+        <!-- SETTINGS PAGE -->
+        <section id="page-settings" class="page">
+          <div class="section-heading">
+            <div>
+              <h2>ตั้งค่าระบบ</h2>
+              <p>กำหนด URL ของเว็บไซต์สำหรับสร้างลิงก์ของขวัญ</p>
+            </div>
+          </div>
+          <div class="settings-grid">
+            <div class="panel panel-pad">
+              <h3 class="subheading"><i class="fa-solid fa-link"></i> URL เว็บไซต์ Heart Mate</h3>
+              <div class="field" style="margin-top:14px;">
+                <label for="siteUrlInput">GitHub Pages URL</label>
+                <input id="siteUrlInput" type="url" placeholder="https://username.github.io/repository-name">
+                <span class="field-hint">ใส่ URL หลักของ GitHub Pages โดยไม่ต้องลงท้ายด้วย /dashboard.html</span>
+              </div>
+              <button id="saveSettingsButton" class="btn btn-primary" type="button" style="margin-top:14px;"><i class="fa-solid fa-floppy-disk"></i> บันทึกการตั้งค่า</button>
+            </div>
+            <div class="panel panel-pad">
+              <h3 class="subheading"><i class="fa-solid fa-shield-heart"></i> ความปลอดภัยและการใช้งาน</h3>
+              <div class="notice" style="margin-top:14px;">
+                <strong>การเข้าสู่ระบบ</strong><br>
+                หน้า Dashboard ใช้ challenge และ SHA-256 proof ตามที่ Code.gs กำหนด รหัสผ่านจริงจะไม่ถูกส่งไปกับคำขอ Login
+              </div>
+              <div class="notice" style="margin-top:10px;background:#f0f8f3;">
+                <strong>ลิงก์ของขวัญ</strong><br>
+                ผู้ที่มีลิงก์ของขวัญที่เผยแพร่แล้วสามารถเปิดดูได้ ไม่ควรใส่ข้อมูลส่วนตัวหรือข้อมูลลับลงในของขวัญสาธารณะ
+              </div>
+              <div class="notice" style="margin-top:10px;background:#fff7e7;">
+                <strong>YouTube API</strong><br>
+                การค้นหาเพลงใช้โควตา YouTube Data API v3 ของโปรเจกต์ Google Cloud ที่เชื่อมกับ Apps Script
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- ======================================================================
+       13. MODALS AND TOASTS
+       ====================================================================== -->
+  <div id="modalRoot"></div>
+  <div id="toastRegion" class="toast-region" aria-live="polite"></div>
+
+  <script>
+    "use strict";
+
+    /* ======================================================================
+       14. APPLICATION CONFIGURATION
+       ====================================================================== */
+    const HEART_MATE_CONFIG = Object.freeze({
+      API_URL: "https://script.google.com/macros/s/AKfycbx-IIHu0jcXSW-kxPdBY3nQSlJ_Zq84vPBX3f3QwX5bgj1v2VihBFmwyGxKr0RMCEwGow/exec",
+      APP_NAME: "Heart Mate",
+      JSONP_TIMEOUT_MS: 25000,
+      IMAGE_TARGET_BYTES: 900000,
+      IMAGE_MAX_WIDTH: 1600,
+      IMAGE_MAX_HEIGHT: 1600,
+      IMAGE_QUALITY: 0.82,
+      DEFAULT_CHUNK_SIZE: 4000
+    });
+
+    /* ======================================================================
+       15. APPLICATION STATE
+       ====================================================================== */
+    const state = {
+      token: null,
+      gifts: [],
+      editingGift: null,
+      selectedSong: null,
+      memoryEntries: [],
+      currentPhotoGiftId: null,
+      publicConfig: null,
+      busy: false
+    };
+
+    const TYPE_META = {
+      flower: { label: "ดอกไม้", icon: "fa-spa", emoji: "💐", defaultTitle: "ช่อดอกไม้ของขวัญ" },
+      card: { label: "การ์ด", icon: "fa-envelope", emoji: "💌", defaultTitle: "การ์ดพิเศษ" },
+      song: { label: "เพลง YouTube", icon: "fa-brands fa-youtube", emoji: "🎧", defaultTitle: "เพลงที่อยากส่งให้" },
+      photobooth: { label: "Photo Booth", icon: "fa-camera-retro", emoji: "📸", defaultTitle: "โฟโต้บูธความทรงจำ" },
+      memory: { label: "ความทรงจำ", icon: "fa-book-open", emoji: "📖", defaultTitle: "กล่องความทรงจำ" }
+    };
+
+    const PAGE_META = {
+      overview: { title: "ภาพรวม", subtitle: "ยินดีต้อนรับกลับมา มาสร้างความทรงจำดี ๆ กัน" },
+      gifts: { title: "จัดการของขวัญ", subtitle: "รายการของขวัญและลิงก์ทั้งหมดของคุณ" },
+      editor: { title: "สร้างของขวัญ", subtitle: "ออกแบบของขวัญชิ้นพิเศษให้คนสำคัญ" },
+      settings: { title: "ตั้งค่าระบบ", subtitle: "จัดการการเชื่อมต่อและข้อมูลเว็บไซต์" }
+    };
+
+    /* ======================================================================
+       16. DOM HELPERS AND BASIC UTILITIES
+       ====================================================================== */
+    const $ = (selector, root) => (root || document).querySelector(selector);
+    const $$ = (selector, root) => Array.from((root || document).querySelectorAll(selector));
+
+    function escapeHtml(value) {
+      return String(value === null || value === undefined ? "" : value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function formatDate(value) {
+      if (!value) return "—";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "—";
+      return new Intl.DateTimeFormat("th-TH", {
+        dateStyle: "medium",
+        timeStyle: "short"
+      }).format(date);
+    }
+
+    function notify(message, type) {
+      const region = $("#toastRegion");
+      const toast = document.createElement("div");
+      const icon = type === "error" ? "fa-circle-exclamation" :
+        (type === "success" ? "fa-circle-check" : "fa-circle-info");
+      toast.className = "toast " + (type || "info");
+      toast.innerHTML = '<i class="fa-solid ' + icon + '"></i><div>' + escapeHtml(message) + '</div>';
+      region.appendChild(toast);
+      window.setTimeout(() => toast.remove(), 4500);
+    }
+
+    function setButtonBusy(button, isBusy, busyText) {
+      if (!button) return;
+      if (isBusy) {
+        button.dataset.originalHtml = button.innerHTML;
+        button.disabled = true;
+        button.innerHTML = '<span class="spinner"></span>' + escapeHtml(busyText || "กำลังดำเนินการ...");
+      } else {
+        button.disabled = false;
+        if (button.dataset.originalHtml) {
+          button.innerHTML = button.dataset.originalHtml;
+          delete button.dataset.originalHtml;
+        }
+      }
+    }
+
+    function assertApiSuccess(result) {
+      if (!result || result.ok !== true) {
+        throw new Error(result && result.error ? result.error : "ระบบตอบกลับไม่สมบูรณ์ กรุณาลองใหม่");
+      }
+      return result;
+    }
+
+    /* ======================================================================
+       17. JSONP API CLIENT — MATCHES Code.gs doGet()
+       ====================================================================== */
+    window.HeartMateAPI = window.HeartMateAPI || { callbacks: {} };
+    window.HeartMateAPI.callbacks = window.HeartMateAPI.callbacks || {};
+    let jsonpSequence = 0;
+
+    function apiRequest(action, params, payload) {
+      return new Promise((resolve, reject) => {
+        const baseUrl = HEART_MATE_CONFIG.API_URL.trim();
+        if (!baseUrl || baseUrl.indexOf("PASTE_YOUR_GOOGLE_APPS_SCRIPT") !== -1) {
+          reject(new Error("กรุณาตั้งค่า API_URL ใน dashboard.html ให้เป็น Web App URL ที่ลงท้ายด้วย /exec"));
+          return;
+        }
+
+        const callbackName = "cb_" + Date.now() + "_" + (++jsonpSequence);
+        const callbackPath = "HeartMateAPI.callbacks." + callbackName;
+        const query = new URLSearchParams();
+        query.set("action", action);
+        query.set("callback", callbackPath);
+
+        Object.entries(params || {}).forEach(([key, value]) => {
+          if (value !== undefined && value !== null) query.set(key, String(value));
+        });
+        if (payload !== undefined && payload !== null) {
+          query.set("payload", JSON.stringify(payload));
+        }
+
+        const script = document.createElement("script");
+        let settled = false;
+        const cleanup = () => {
+          if (script.parentNode) script.parentNode.removeChild(script);
+          delete window.HeartMateAPI.callbacks[callbackName];
+          window.clearTimeout(timeoutId);
+        };
+        const finish = (handler, value) => {
+          if (settled) return;
+          settled = true;
+          cleanup();
+          handler(value);
+        };
+
+        window.HeartMateAPI.callbacks[callbackName] = (data) => finish(resolve, data);
+        script.onerror = () => finish(reject, new Error("เชื่อมต่อ Google Apps Script ไม่สำเร็จ กรุณาตรวจสอบ URL และการ Deploy"));
+        const timeoutId = window.setTimeout(() => {
+          finish(reject, new Error("การเชื่อมต่อหมดเวลา กรุณาลองอีกครั้ง"));
+        }, HEART_MATE_CONFIG.JSONP_TIMEOUT_MS);
+
+        script.src = baseUrl + (baseUrl.indexOf("?") >= 0 ? "&" : "?") + query.toString();
+        document.head.appendChild(script);
+      });
+    }
+
+    async function callApi(action, params, payload) {
+      const result = await apiRequest(action, params, payload);
+      return assertApiSuccess(result);
+    }
+
+    /* ======================================================================
+       18. AUTHENTICATION
+       ====================================================================== */
+    function bytesToHex(buffer) {
+      return Array.from(new Uint8Array(buffer))
+        .map(byte => byte.toString(16).padStart(2, "0"))
+        .join("");
+    }
+
+    async function sha256Hex(text) {
+      if (!window.crypto || !window.crypto.subtle) {
+        throw new Error("เบราว์เซอร์นี้ไม่รองรับ Web Crypto กรุณาเปิดเว็บผ่าน HTTPS");
+      }
+      const bytes = new TextEncoder().encode(text);
+      const digest = await window.crypto.subtle.digest("SHA-256", bytes);
+      return bytesToHex(digest);
+    }
+
+    async function handleLogin(event) {
+      event.preventDefault();
+      const button = $("#loginButton");
+      const errorBox = $("#loginError");
+      const password = $("#adminPassword").value;
+      errorBox.classList.add("hidden");
+      errorBox.textContent = "";
+
+      if (!password) {
+        errorBox.textContent = "กรุณากรอกรหัสเข้าใช้งาน";
+        errorBox.classList.remove("hidden");
+        return;
+      }
+
+      setButtonBusy(button, true, "กำลังตรวจสอบ...");
+      try {
+        const challenge = await callApi("getLoginChallenge", {});
+        const proof = await sha256Hex(password + ":" + challenge.salt + ":" + challenge.nonce);
+        const login = await callApi("login", {
+          challenge_id: challenge.challenge_id,
+          proof: proof
+        });
+
+        state.token = login.token; // Keep the token in memory only.
+        $("#adminPassword").value = "";
+        $("#loginScreen").classList.add("hidden");
+        $("#appShell").classList.remove("hidden");
+        try {
+          await initializeDashboard();
+          notify("เข้าสู่ระบบ Heart Mate สำเร็จ", "success");
+        } catch (initializationError) {
+          state.token = null;
+          $("#appShell").classList.add("hidden");
+          $("#loginScreen").classList.remove("hidden");
+          throw initializationError;
+        }
+      } catch (error) {
+        errorBox.textContent = error.message || "เข้าสู่ระบบไม่สำเร็จ";
+        errorBox.classList.remove("hidden");
+      } finally {
+        setButtonBusy(button, false);
+      }
+    }
+
+    async function logout() {
+      const token = state.token;
+      state.token = null;
+      state.gifts = [];
+      state.editingGift = null;
+      state.selectedSong = null;
+      state.currentPhotoGiftId = null;
+
+      try {
+        if (token) await apiRequest("logout", { token });
+      } catch (error) {
+        console.warn("Logout request failed:", error);
+      }
+
+      $("#appShell").classList.add("hidden");
+      $("#loginScreen").classList.remove("hidden");
+      $("#loginError").classList.add("hidden");
+      $("#adminPassword").value = "";
+      closeMobileMenu();
+    }
+
+    /* ======================================================================
+       19. INITIALIZE AND NAVIGATION
+       ====================================================================== */
+    async function initializeDashboard() {
+      await loadPublicConfig();
+      await refreshGifts();
+      renderOverview();
+      showPage("overview");
+    }
+
+    async function loadPublicConfig() {
+      try {
+        state.publicConfig = await callApi("getPublicConfig", {});
+        $("#siteUrlInput").value = state.publicConfig.site_url || inferSiteBaseUrl();
+      } catch (error) {
+        console.warn("Could not load public config:", error);
+        $("#siteUrlInput").value = inferSiteBaseUrl();
+      }
+    }
+
+    function inferSiteBaseUrl() {
+      const url = new URL(window.location.href);
+      url.search = "";
+      url.hash = "";
+      url.pathname = url.pathname.replace(/dashboard\.html$/i, "");
+      return url.href.replace(/\/+$/, "");
+    }
+
+    function showPage(pageName) {
+      if (!PAGE_META[pageName]) return;
+      $$(".page").forEach(page => page.classList.remove("active"));
+      const page = $("#page-" + pageName);
+      if (page) page.classList.add("active");
+
+      $$(".nav-btn[data-page]").forEach(button => {
+        button.classList.toggle("active", button.dataset.page === pageName);
+      });
+      $("#pageTitle").textContent = PAGE_META[pageName].title;
+      $("#pageSubtitle").textContent = PAGE_META[pageName].subtitle;
+      closeMobileMenu();
+      if (pageName === "gifts") renderGiftList();
+      if (pageName === "overview") renderOverview();
+      if (pageName === "editor") updatePreview();
+    }
+
+    function openMobileMenu() {
+      $("#sidebar").classList.add("open");
+    }
+
+    function closeMobileMenu() {
+      $("#sidebar").classList.remove("open");
+    }
+
+    /* ======================================================================
+       20. GIFT DATA LOADING AND RENDERING
+       ====================================================================== */
+    async function refreshGifts() {
+      const response = await callApi("listGifts", { token: state.token });
+      state.gifts = Array.isArray(response.gifts) ? response.gifts : [];
+      renderOverview();
+      renderGiftList();
+      return state.gifts;
+    }
+
+    function getGiftTypeMeta(type) {
+      return TYPE_META[type] || { label: type || "ของขวัญ", icon: "fa-gift", emoji: "🎁", defaultTitle: "ของขวัญพิเศษ" };
+    }
+
+    function statusLabel(status) {
+      const labels = { published: "เผยแพร่แล้ว", draft: "ฉบับร่าง", archived: "เก็บถาวร" };
+      return labels[status] || status || "ไม่ทราบสถานะ";
+    }
+
+    function statusClass(status) {
+      return "status status-" + (["published", "draft", "archived"].includes(status) ? status : "draft");
+    }
+
+    function giftCardMarkup(gift) {
+      const meta = getGiftTypeMeta(gift.gift_type);
+      const url = buildPublicGiftUrl(gift.gift_id);
+      const recipient = gift.recipient_name ? "ถึง " + gift.recipient_name : "ยังไม่ได้ระบุผู้รับ";
+      return `
+        <article class="panel gift-card">
+          <div class="gift-card-top">
+            <div class="gift-kind">
+              <div class="gift-kind-icon"><i class="fa-solid ${escapeHtml(meta.icon)}"></i></div>
+              <div style="min-width:0;">
+                <h3 title="${escapeHtml(gift.title)}">${escapeHtml(gift.title || meta.defaultTitle)}</h3>
+                <p class="recipient">${escapeHtml(recipient)}</p>
+              </div>
+            </div>
+            <span class="${statusClass(gift.status)}">${escapeHtml(statusLabel(gift.status))}</span>
+          </div>
+          <div class="gift-meta">
+            <span><i class="fa-solid ${escapeHtml(meta.icon)}"></i>${escapeHtml(meta.label)}</span>
+            <span><i class="fa-regular fa-eye"></i>${Number(gift.view_count || 0)} ครั้ง</span>
+          </div>
+          <div class="small muted">สร้างเมื่อ ${escapeHtml(formatDate(gift.created_at))}</div>
+          <div class="gift-card-actions">
+            <button class="btn btn-soft btn-sm" data-action="edit-gift" data-id="${escapeHtml(gift.gift_id)}"><i class="fa-regular fa-pen-to-square"></i> แก้ไข</button>
+            <button class="btn btn-secondary btn-sm" data-action="copy-link" data-id="${escapeHtml(gift.gift_id)}"><i class="fa-regular fa-copy"></i> ลิงก์</button>
+            <button class="btn btn-ghost btn-sm" data-action="open-gift" data-url="${escapeHtml(url)}" title="เปิดของขวัญ"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+            <button class="btn btn-ghost btn-sm" data-action="delete-gift" data-id="${escapeHtml(gift.gift_id)}" title="ลบของขวัญ"><i class="fa-solid fa-trash-can"></i></button>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderOverview() {
+      const total = state.gifts.length;
+      const published = state.gifts.filter(gift => gift.status === "published").length;
+      const drafts = state.gifts.filter(gift => gift.status === "draft").length;
+      const views = state.gifts.reduce((sum, gift) => sum + Number(gift.view_count || 0), 0);
+
+      $("#statTotal").textContent = total.toLocaleString("th-TH");
+      $("#statPublished").textContent = published.toLocaleString("th-TH");
+      $("#statDrafts").textContent = drafts.toLocaleString("th-TH");
+      $("#statViews").textContent = views.toLocaleString("th-TH");
+
+      const recent = [...state.gifts]
+        .sort((a, b) => String(b.created_at || "").localeCompare(String(a.created_at || "")))
+        .slice(0, 3);
+      $("#recentGifts").innerHTML = recent.length
+        ? recent.map(giftCardMarkup).join("")
+        : '<div class="empty-state" style="grid-column:1/-1;"><div class="empty-icon"><i class="fa-regular fa-heart"></i></div><strong>ยังไม่มีของขวัญ</strong><span>เริ่มต้นสร้างของขวัญชิ้นแรกได้เลย</span></div>';
+    }
+
+    function filteredGifts() {
+      const keyword = ($("#giftSearch").value || "").trim().toLowerCase();
+      const type = $("#giftTypeFilter").value;
+      const status = $("#giftStatusFilter").value;
+      return state.gifts.filter(gift => {
+        const matchesKeyword = !keyword || [
+          gift.title, gift.recipient_name, gift.sender_name, gift.gift_id
+        ].join(" ").toLowerCase().includes(keyword);
+        const matchesType = !type || gift.gift_type === type;
+        const matchesStatus = !status || gift.status === status;
+        return matchesKeyword && matchesType && matchesStatus;
+      });
+    }
+
+    function renderGiftList() {
+      const target = $("#allGifts");
+      if (!target) return;
+      const gifts = filteredGifts();
+      target.innerHTML = gifts.length
+        ? gifts.map(giftCardMarkup).join("")
+        : '<div class="panel empty-state" style="grid-column:1/-1;"><div class="empty-icon"><i class="fa-solid fa-box-open"></i></div><strong>ไม่พบของขวัญ</strong><span>ลองเปลี่ยนคำค้นหาหรือตัวกรอง</span></div>';
+    }
+
+    function buildPublicGiftUrl(giftId) {
+      const base = (state.publicConfig && state.publicConfig.site_url) || inferSiteBaseUrl();
+      return base.replace(/\/+$/, "") + "/?id=" + encodeURIComponent(giftId);
+    }
+
+    async function copyGiftLink(giftId) {
+      const url = buildPublicGiftUrl(giftId);
+      try {
+        await navigator.clipboard.writeText(url);
+        notify("คัดลอกลิงก์ของขวัญแล้ว", "success");
+      } catch (error) {
+        showLinkModal(url);
+      }
+    }
+
+    function showLinkModal(url) {
+      $("#modalRoot").innerHTML = `
+        <div class="modal-backdrop" data-close-modal>
+          <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="linkModalTitle">
+            <div class="modal-head">
+              <h3 id="linkModalTitle"><i class="fa-solid fa-link"></i> ลิงก์ของขวัญ</h3>
+              <button class="icon-btn" data-close-modal aria-label="ปิด"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p class="small muted">คัดลอกลิงก์นี้เพื่อส่งให้ผู้รับ</p>
+            <div class="copy-row">
+              <input id="giftLinkValue" readonly value="${escapeHtml(url)}">
+              <button id="copyModalLinkButton" class="btn btn-primary"><i class="fa-regular fa-copy"></i> คัดลอก</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    /* ======================================================================
+       21. GIFT EDITOR FORM
+       ====================================================================== */
+    function startNewGift() {
+      state.editingGift = null;
+      state.selectedSong = null;
+      state.memoryEntries = [];
+      state.currentPhotoGiftId = null;
+      $("#giftForm").reset();
+      $("#giftType").value = "flower";
+      $("#giftStatus").value = "published";
+      $("#giftTheme").value = "pastel-pink";
+      $("#giftTitle").value = TYPE_META.flower.defaultTitle;
+      $("#cardBody").value = "";
+      $("#songNote").value = "";
+      $("#youtubeQuery").value = "";
+      $("#youtubeResults").innerHTML = "";
+      $("#selectedSongBox").classList.add("hidden");
+      $("#photoManagerPanel").classList.add("hidden");
+      $("#editorHeading").textContent = "สร้างของขวัญชิ้นใหม่";
+      $("#saveGiftButton").innerHTML = '<i class="fa-solid fa-heart"></i> บันทึกและสร้างลิงก์';
+      renderTypeSelector("flower");
+      renderMemoryEntries();
+      updatePreview();
+      showPage("editor");
+    }
+
+    function renderTypeSelector(selectedType) {
+      $("#giftType").value = selectedType;
+      $$(".type-option").forEach(button => {
+        button.classList.toggle("selected", button.dataset.type === selectedType);
+      });
+      $$(".type-fields").forEach(section => {
+        section.classList.toggle("active", section.id === "fields-" + selectedType);
+      });
+      updatePreview();
+    }
+
+    function updatePreview() {
+      const type = $("#giftType").value || "flower";
+      const meta = getGiftTypeMeta(type);
+      const title = $("#giftTitle").value.trim() || meta.defaultTitle;
+      const recipient = $("#recipientName").value.trim() || "คนพิเศษ";
+      const message = $("#giftMessage").value.trim() || "ข้อความจากใจจะปรากฏตรงนี้...";
+      $("#previewEmoji").textContent = meta.emoji;
+      $("#previewTitle").textContent = title;
+      $("#previewRecipient").textContent = "ถึง " + recipient + " ♡";
+      $("#previewMessage").textContent = message;
+      $("#previewType").textContent = meta.label;
+
+      if (type === "song" && state.selectedSong) {
+        $("#previewSong").classList.remove("hidden");
+        $("#previewSongName").textContent = state.selectedSong.title;
+      } else {
+        $("#previewSong").classList.add("hidden");
+      }
+    }
+
+    function addMemoryEntry(entry) {
+      if (state.memoryEntries.length >= 100) {
+        notify("เพิ่มความทรงจำได้สูงสุด 100 รายการ", "error");
+        return;
+      }
+      state.memoryEntries.push(entry || { title: "", text: "", date: "", photo_url: "" });
+      renderMemoryEntries();
+    }
+
+    function renderMemoryEntries() {
+      const target = $("#memoryEntries");
+      if (!target) return;
+      if (!state.memoryEntries.length) {
+        target.innerHTML = '<div class="empty-state" style="padding:20px;"><span>ยังไม่มีเรื่องราว กด “เพิ่มเรื่องราว” เพื่อเริ่มต้น</span></div>';
+        return;
+      }
+      target.innerHTML = state.memoryEntries.map((entry, index) => `
+        <div class="memory-entry" data-memory-index="${index}">
+          <div class="memory-entry-head">
+            <strong><i class="fa-regular fa-heart"></i> ความทรงจำที่ ${index + 1}</strong>
+            <button type="button" class="icon-btn" data-action="remove-memory" data-index="${index}" title="ลบรายการ"><i class="fa-solid fa-trash-can"></i></button>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label>หัวข้อความทรงจำ</label>
+              <input data-memory-field="title" maxlength="200" value="${escapeHtml(entry.title)}" placeholder="วันแรกที่เราเจอกัน">
+            </div>
+            <div class="field">
+              <label>วันที่ (ไม่บังคับ)</label>
+              <input data-memory-field="date" maxlength="40" value="${escapeHtml(entry.date)}" placeholder="เช่น 14 กุมภาพันธ์ 2026">
+            </div>
+            <div class="field span-2">
+              <label>เรื่องราว</label>
+              <textarea data-memory-field="text" maxlength="2000" placeholder="เล่าเรื่องราวที่อยากเก็บไว้...">${escapeHtml(entry.text)}</textarea>
+            </div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function getGiftContentFromForm() {
+      const type = $("#giftType").value;
+      const current = state.editingGift && state.editingGift.content
+        ? Object.assign({}, state.editingGift.content)
+        : {};
+      let content = current;
+
+      if (type === "flower") {
+        content.flower_style = $("#flowerStyle").value;
+        content.flower_note = $("#flowerNote").value.trim();
+      } else if (type === "card") {
+        content.design_id = $("#cardDesign").value;
+        content.greeting = $("#cardGreeting").value.trim();
+        content.message = $("#cardBody").value.trim() || $("#giftMessage").value.trim();
+        content.closing = $("#cardClosing").value.trim();
+      } else if (type === "song") {
+        if (!state.selectedSong || !state.selectedSong.video_id) {
+          throw new Error("กรุณาค้นหาและเลือกเพลง YouTube ก่อนบันทึก");
+        }
+        content.youtube_video_id = state.selectedSong.video_id;
+        content.video_title = state.selectedSong.title;
+        content.channel_title = state.selectedSong.channel_title;
+        content.thumbnail_url = state.selectedSong.thumbnail_url;
+        content.song_note = $("#songNote").value.trim();
+      } else if (type === "photobooth") {
+        content.frame_style = $("#photoFrame").value;
+        content.photo_caption = $("#photoCaption").value.trim();
+      } else if (type === "memory") {
+        const entries = state.memoryEntries.map(entry => ({
+          title: String(entry.title || "").trim(),
+          text: String(entry.text || "").trim(),
+          date: String(entry.date || "").trim(),
+          photo_url: String(entry.photo_url || "").trim()
+        })).filter(entry => entry.title || entry.text || entry.date || entry.photo_url);
+        content.entries = entries;
+      }
+      return content;
+    }
+
+    async function saveGift(event) {
+      event.preventDefault();
+      if (state.busy) return;
+      const button = $("#saveGiftButton");
+      const type = $("#giftType").value;
+      let content;
+
+      try {
+        content = getGiftContentFromForm();
+      } catch (error) {
+        notify(error.message, "error");
+        return;
+      }
+
+      const payload = {
+        gift_type: type,
+        title: $("#giftTitle").value.trim(),
+        recipient_name: $("#recipientName").value.trim(),
+        sender_name: $("#senderName").value.trim(),
+        status: $("#giftStatus").value,
+        theme: $("#giftTheme").value,
+        message: $("#giftMessage").value.trim(),
+        content: content
+      };
+
+      if (!payload.title) {
+        notify("กรุณากรอกชื่อของขวัญ", "error");
+        $("#giftTitle").focus();
+        return;
+      }
+
+      state.busy = true;
+      setButtonBusy(button, true, "กำลังบันทึก...");
+      try {
+        let result;
+        if (state.editingGift) {
+          result = await callApi("updateGift", {
+            token: state.token,
+            id: state.editingGift.gift_id
+          }, payload);
+          notify("บันทึกการแก้ไขของขวัญแล้ว", "success");
+        } else {
+          result = await callApi("createGift", { token: state.token }, payload);
+          notify("สร้างของขวัญและลิงก์เฉพาะแล้ว", "success");
+        }
+
+        const giftId = result.gift_id || (state.editingGift && state.editingGift.gift_id);
+        await refreshGifts();
+
+        if (giftId) {
+          showLinkModal(buildPublicGiftUrl(giftId));
+          if (type === "photobooth") {
+            state.currentPhotoGiftId = giftId;
+            await loadGiftPhotos(giftId);
+            $("#photoManagerPanel").classList.remove("hidden");
+            $("#photoManagerHint").textContent = "ของขวัญรหัส " + giftId + " — เลือกภาพเพื่ออัปโหลด";
+          } else {
+            $("#photoManagerPanel").classList.add("hidden");
+          }
+        }
+        if (!state.editingGift && type !== "photobooth") {
+          resetEditorAfterSave();
+        } else if (state.editingGift) {
+          state.editingGift = Object.assign({}, state.editingGift, payload);
+          $("#editorHeading").textContent = "แก้ไขของขวัญ";
+          $("#saveGiftButton").innerHTML = '<i class="fa-solid fa-floppy-disk"></i> บันทึกการแก้ไข';
+        }
+      } catch (error) {
+        notify(error.message || "บันทึกของขวัญไม่สำเร็จ", "error");
+      } finally {
+        state.busy = false;
+        setButtonBusy(button, false);
+      }
+    }
+
+    function resetEditorAfterSave() {
+      state.editingGift = null;
+      state.selectedSong = null;
+      state.memoryEntries = [];
+      $("#giftForm").reset();
+      $("#giftType").value = "flower";
+      $("#giftStatus").value = "published";
+      $("#giftTheme").value = "pastel-pink";
+      $("#giftTitle").value = TYPE_META.flower.defaultTitle;
+      $("#photoManagerPanel").classList.add("hidden");
+      $("#selectedSongBox").classList.add("hidden");
+      $("#youtubeResults").innerHTML = "";
+      $("#youtubeQuery").value = "";
+      renderTypeSelector("flower");
+      renderMemoryEntries();
+      updatePreview();
+    }
+
+    async function editGift(giftId) {
+      try {
+        const response = await callApi("getGift", { id: giftId, token: state.token });
+        const gift = response.gift;
+        if (!gift) throw new Error("ไม่พบข้อมูลของขวัญ");
+        state.editingGift = gift;
+        state.selectedSong = null;
+        state.memoryEntries = Array.isArray(gift.content && gift.content.entries) ? gift.content.entries.map(entry => Object.assign({}, entry)) : [];
+        state.currentPhotoGiftId = gift.gift_type === "photobooth" ? giftId : null;
+
+        $("#giftTitle").value = gift.title || "";
+        $("#recipientName").value = gift.recipient_name || "";
+        $("#senderName").value = gift.sender_name || "";
+        $("#giftStatus").value = gift.status || "draft";
+        $("#giftTheme").value = gift.theme || "pastel-pink";
+        $("#giftMessage").value = gift.message || "";
+        renderTypeSelector(gift.gift_type || "flower");
+
+        const content = gift.content || {};
+        $("#flowerStyle").value = content.flower_style || "pink-roses";
+        $("#flowerNote").value = content.flower_note || "";
+        $("#cardDesign").value = content.design_id || "classic";
+        $("#cardGreeting").value = content.greeting || "";
+        $("#cardBody").value = content.message || gift.message || "";
+        $("#cardClosing").value = content.closing || "";
+        $("#songNote").value = content.song_note || "";
+        $("#photoFrame").value = content.frame_style || "pink-film";
+        $("#photoCaption").value = content.photo_caption || "";
+
+        if (gift.gift_type === "song" && content.youtube_video_id) {
+          state.selectedSong = {
+            video_id: content.youtube_video_id,
+            title: content.video_title || "เพลงที่เลือกไว้",
+            channel_title: content.channel_title || "",
+            thumbnail_url: content.thumbnail_url || "https://img.youtube.com/vi/" + content.youtube_video_id + "/hqdefault.jpg"
+          };
+          renderSelectedSong();
+        } else {
+          $("#selectedSongBox").classList.add("hidden");
+        }
+
+        renderMemoryEntries();
+        $("#editorHeading").textContent = "แก้ไขของขวัญ";
+        $("#saveGiftButton").innerHTML = '<i class="fa-solid fa-floppy-disk"></i> บันทึกการแก้ไข';
+        if (gift.gift_type === "photobooth") {
+          $("#photoManagerPanel").classList.remove("hidden");
+          await renderPhotoList(gift.photos || []);
+          $("#photoManagerHint").textContent = "จัดการรูปภาพของ " + (gift.title || giftId);
+        } else {
+          $("#photoManagerPanel").classList.add("hidden");
+        }
+        showPage("editor");
+      } catch (error) {
+        notify(error.message || "โหลดข้อมูลของขวัญไม่สำเร็จ", "error");
+      }
+    }
+
+    /* ======================================================================
+       22. YOUTUBE SEARCH — matches searchYouTube(q, token)
+       ====================================================================== */
+    async function searchYouTube() {
+      const query = $("#youtubeQuery").value.trim();
+      if (query.length < 2) {
+        notify("กรุณาพิมพ์ชื่อเพลงอย่างน้อย 2 ตัวอักษร", "error");
+        return;
+      }
+
+      const button = $("#youtubeSearchButton");
+      const status = $("#youtubeSearchStatus");
+      setButtonBusy(button, true, "กำลังค้นหา...");
+      status.classList.remove("hidden");
+      status.innerHTML = '<span class="spinner"></span> กำลังค้นหาเพลงจาก YouTube...';
+      $("#youtubeResults").innerHTML = "";
+
+      try {
+        const response = await callApi("searchYouTube", {
+          token: state.token,
+          q: query,
+          max_results: 10
+        });
+        const results = Array.isArray(response.results) ? response.results : [];
+        status.classList.add("hidden");
+
+        if (!results.length) {
+          $("#youtubeResults").innerHTML = '<div class="empty-state"><span>ไม่พบเพลงที่ตรงกับคำค้นหา</span></div>';
+          return;
+        }
+
+        $("#youtubeResults").innerHTML = results.map(item => `
+          <article class="youtube-result">
+            <img src="${escapeHtml(item.thumbnail_url)}" alt="" loading="lazy">
+            <div class="youtube-result-info">
+              <strong>${escapeHtml(item.title)}</strong>
+              <span>${escapeHtml(item.channel_title)}</span>
+              <button type="button" class="btn btn-soft btn-sm" data-action="select-song"
+                data-video-id="${escapeHtml(item.video_id)}"
+                data-title="${escapeHtml(item.title)}"
+                data-channel="${escapeHtml(item.channel_title)}"
+                data-thumbnail="${escapeHtml(item.thumbnail_url)}">
+                <i class="fa-solid fa-check"></i> เลือกเพลงนี้
+              </button>
+            </div>
+          </article>
+        `).join("");
+      } catch (error) {
+        status.classList.add("hidden");
+        notify(error.message || "ค้นหาเพลงไม่สำเร็จ", "error");
+      } finally {
+        setButtonBusy(button, false);
+      }
+    }
+
+    function selectSong(song) {
+      state.selectedSong = song;
+      renderSelectedSong();
+      updatePreview();
+      notify("เลือกเพลง " + song.title + " แล้ว", "success");
+    }
+
+    function renderSelectedSong() {
+      if (!state.selectedSong) {
+        $("#selectedSongBox").classList.add("hidden");
+        return;
+      }
+      $("#selectedSongImage").src = state.selectedSong.thumbnail_url || "";
+      $("#selectedSongTitle").textContent = state.selectedSong.title || "";
+      $("#selectedSongChannel").textContent = state.selectedSong.channel_title || "";
+      $("#selectedSongBox").classList.remove("hidden");
+    }
+
+    /* ======================================================================
+       23. PHOTO UPLOAD — CHUNKED JSONP TRANSPORT
+       ====================================================================== */
+    async function compressImage(file) {
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+      if (!allowedTypes.includes(file.type)) {
+        throw new Error("ไฟล์ " + file.name + " ไม่ใช่ JPG, PNG หรือ WebP");
+      }
+
+      const sourceUrl = URL.createObjectURL(file);
+      try {
+        const image = new Image();
+        await new Promise((resolve, reject) => {
+          image.onload = resolve;
+          image.onerror = () => reject(new Error("อ่านรูปภาพ " + file.name + " ไม่สำเร็จ"));
+          image.src = sourceUrl;
+        });
+
+        let width = image.naturalWidth;
+        let height = image.naturalHeight;
+        const ratio = Math.min(
+          1,
+          HEART_MATE_CONFIG.IMAGE_MAX_WIDTH / width,
+          HEART_MATE_CONFIG.IMAGE_MAX_HEIGHT / height
+        );
+        width = Math.max(1, Math.round(width * ratio));
+        height = Math.max(1, Math.round(height * ratio));
+
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d", { alpha: false });
+        canvas.width = width;
+        canvas.height = height;
+        context.fillStyle = "#ffffff";
+        context.fillRect(0, 0, width, height);
+        context.drawImage(image, 0, 0, width, height);
+
+        let quality = HEART_MATE_CONFIG.IMAGE_QUALITY;
+        let blob = await new Promise(resolve => canvas.toBlob(resolve, "image/jpeg", quality));
+        while (blob && blob.size > HEART_MATE_CONFIG.IMAGE_TARGET_BYTES && quality > 0.45) {
+          quality -= 0.08;
+          blob = await new Promise(resolve => canvas.toBlob(resolve, "image/jpeg", quality));
+        }
+        if (!blob || blob.size > 1000000) {
+          throw new Error("ไม่สามารถบีบอัด " + file.name + " ให้มีขนาดต่ำกว่า 1 MB ได้");
+        }
+        return new File([blob], file.name.replace(/\.[^.]+$/, "") + ".jpg", {
+          type: "image/jpeg",
+          lastModified: Date.now()
+        });
+      } finally {
+        URL.revokeObjectURL(sourceUrl);
+      }
+    }
+
+    function blobToBase64(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = String(reader.result || "");
+          resolve(result.substring(result.indexOf(",") + 1));
+        };
+        reader.onerror = () => reject(new Error("อ่านข้อมูลรูปภาพไม่สำเร็จ"));
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    async function uploadAdminImageChunkWithRetry(started, chunkIndex, chunk) {
+      const maxAttempts = 3;
+      let lastError = null;
+      for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+        try {
+          return await callApi("uploadImageChunk", {
+            upload_id: started.upload_id,
+            upload_token: started.upload_token,
+            index: chunkIndex,
+            chunk: chunk
+          });
+        } catch (error) {
+          lastError = error;
+          if (attempt < maxAttempts) {
+            await new Promise(resolve => window.setTimeout(resolve, 600 * attempt));
+          }
+        }
+      }
+      throw new Error(
+        "ส่งรูปภาพชุดที่ " + (chunkIndex + 1) + " ไม่สำเร็จหลังลอง " + maxAttempts + " ครั้ง: " +
+        (lastError && lastError.message ? lastError.message : "กรุณาลองใหม่")
+      );
+    }
+
+    async function uploadOnePhoto(file, giftId, index, total) {
+      const compressed = await compressImage(file);
+      const base64 = await blobToBase64(compressed);
+      const initialChunks = Math.ceil(base64.length / HEART_MATE_CONFIG.DEFAULT_CHUNK_SIZE);
+      const started = await callApi("startImageUpload", {
+        token: state.token
+      }, {
+        gift_id: giftId,
+        file_name: compressed.name,
+        mime_type: compressed.type,
+        expected_bytes: compressed.size,
+        total_chunks: initialChunks,
+        caption: $("#photoCaption").value.trim(),
+        photo_type: "photobooth"
+      });
+
+      const chunkSize = Number(started.chunk_size || HEART_MATE_CONFIG.DEFAULT_CHUNK_SIZE);
+      const chunks = [];
+      for (let offset = 0; offset < base64.length; offset += chunkSize) {
+        chunks.push(base64.substring(offset, offset + chunkSize));
+      }
+
+      // The server validates the count supplied to startImageUpload. Restart if
+      // the configured server chunk size differs from the client's estimate.
+      if (chunks.length !== initialChunks) {
+        throw new Error("ขนาดชิ้นข้อมูลอัปโหลดไม่ตรงกับเซิร์ฟเวอร์ กรุณาลองใหม่");
+      }
+
+      for (let chunkIndex = 0; chunkIndex < chunks.length; chunkIndex += 1) {
+        await uploadAdminImageChunkWithRetry(started, chunkIndex, chunks[chunkIndex]);
+      }
+
+      const finished = await callApi("finishImageUpload", {
+        upload_id: started.upload_id,
+        upload_token: started.upload_token
+      });
+      const percentage = Math.round(((index + 1) / total) * 100);
+      $("#uploadProgressBar").style.width = percentage + "%";
+      $("#uploadProgressText").textContent = "อัปโหลดแล้ว " + (index + 1) + " / " + total + " รูป (" + percentage + "%)";
+      return finished.photo;
+    }
+
+    async function handlePhotoUpload() {
+      const giftId = state.currentPhotoGiftId;
+      const files = Array.from($("#photoFiles").files || []);
+      if (!giftId) {
+        notify("กรุณาบันทึกของขวัญ Photo Booth ก่อนอัปโหลดรูป", "error");
+        return;
+      }
+      if (!files.length) {
+        notify("กรุณาเลือกรูปภาพอย่างน้อย 1 รูป", "error");
+        return;
+      }
+
+      const button = $("#uploadPhotosButton");
+      const status = $("#uploadPhotoStatus");
+      $("#uploadProgressWrap").classList.remove("hidden");
+      $("#uploadProgressBar").style.width = "0%";
+      $("#uploadProgressText").textContent = "กำลังเตรียมรูปภาพ...";
+      setButtonBusy(button, true, "กำลังอัปโหลด...");
+      status.classList.remove("hidden");
+      status.textContent = "กำลังอัปโหลดรูปภาพ";
+
+      try {
+        for (let index = 0; index < files.length; index += 1) {
+          await uploadOnePhoto(files[index], giftId, index, files.length);
+        }
+        $("#photoFiles").value = "";
+        await reloadGiftPhotos(giftId);
+        notify("อัปโหลดรูปภาพเรียบร้อยแล้ว", "success");
+        $("#uploadProgressText").textContent = "อัปโหลดครบทุกภาพแล้ว";
+      } catch (error) {
+        notify(error.message || "อัปโหลดรูปภาพไม่สำเร็จ", "error");
+      } finally {
+        setButtonBusy(button, false);
+        status.classList.add("hidden");
+      }
+    }
+
+    async function loadGiftPhotos(giftId) {
+      const response = await callApi("getGift", { id: giftId, token: state.token });
+      await renderPhotoList(response.gift && response.gift.photos ? response.gift.photos : []);
+    }
+
+    async function reloadGiftPhotos(giftId) {
+      try {
+        await loadGiftPhotos(giftId);
+      } catch (error) {
+        notify(error.message, "error");
+      }
+    }
+
+    async function renderPhotoList(photos) {
+      const target = $("#giftPhotoList");
+      if (!Array.isArray(photos) || !photos.length) {
+        target.innerHTML = '<div class="empty-state" style="grid-column:1/-1;padding:20px;"><span>ยังไม่มีรูปภาพในของขวัญนี้</span></div>';
+        return;
+      }
+      target.innerHTML = photos.map(photo => `
+        <div class="photo-item">
+          <img src="${escapeHtml(photo.thumbnail_url || photo.image_url || "")}" alt="${escapeHtml(photo.caption || "รูปภาพของขวัญ")}" loading="lazy">
+          <button type="button" data-action="delete-photo" data-photo-id="${escapeHtml(photo.photo_id)}" title="ลบรูป"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+      `).join("");
+    }
+
+    async function deletePhoto(photoId) {
+      if (!window.confirm("ต้องการลบรูปภาพนี้ใช่หรือไม่?")) return;
+      try {
+        await callApi("deletePhoto", { token: state.token, photo_id: photoId });
+        await reloadGiftPhotos(state.currentPhotoGiftId);
+        notify("ลบรูปภาพแล้ว", "success");
+      } catch (error) {
+        notify(error.message || "ลบรูปภาพไม่สำเร็จ", "error");
+      }
+    }
+
+    /* ======================================================================
+       24. SETTINGS
+       ====================================================================== */
+    async function saveSettings() {
+      const button = $("#saveSettingsButton");
+      const siteUrl = $("#siteUrlInput").value.trim().replace(/\/+$/, "");
+      if (!/^https:\/\/[A-Za-z0-9.-]+(?::\d+)?(?:\/[A-Za-z0-9._~!$&'()*+,;=:@%-]*)*$/.test(siteUrl)) {
+        notify("กรุณากรอก URL เว็บไซต์แบบ https:// ให้ถูกต้อง", "error");
+        return;
+      }
+
+      setButtonBusy(button, true, "กำลังบันทึก...");
+      try {
+        const response = await callApi("saveSettings", { token: state.token }, { site_url: siteUrl });
+        state.publicConfig = Object.assign({}, state.publicConfig || {}, response.settings || {}, { site_url: siteUrl });
+        notify("บันทึก URL เว็บไซต์แล้ว", "success");
+      } catch (error) {
+        notify(error.message || "บันทึกการตั้งค่าไม่สำเร็จ", "error");
+      } finally {
+        setButtonBusy(button, false);
+      }
+    }
+
+    /* ======================================================================
+       25. DELETE GIFT AND ACTION DISPATCH
+       ====================================================================== */
+    async function deleteGift(giftId) {
+      const gift = state.gifts.find(item => item.gift_id === giftId);
+      const title = gift ? gift.title : giftId;
+      if (!window.confirm("ยืนยันลบของขวัญ “" + title + "” และข้อมูลที่เกี่ยวข้องทั้งหมดหรือไม่? การลบนี้ไม่สามารถย้อนกลับได้")) return;
+
+      try {
+        await callApi("deleteGift", { token: state.token, id: giftId });
+        await refreshGifts();
+        notify("ลบของขวัญแล้ว", "success");
+      } catch (error) {
+        notify(error.message || "ลบของขวัญไม่สำเร็จ", "error");
+      }
+    }
+
+    async function handleDelegatedAction(event) {
+      const button = event.target.closest("[data-action]");
+      if (!button) return;
+      const action = button.dataset.action;
+
+      if (action === "edit-gift") {
+        await editGift(button.dataset.id);
+      } else if (action === "copy-link") {
+        await copyGiftLink(button.dataset.id);
+      } else if (action === "open-gift") {
+        window.open(button.dataset.url, "_blank", "noopener,noreferrer");
+      } else if (action === "delete-gift") {
+        await deleteGift(button.dataset.id);
+      } else if (action === "select-song") {
+        selectSong({
+          video_id: button.dataset.videoId,
+          title: button.dataset.title,
+          channel_title: button.dataset.channel,
+          thumbnail_url: button.dataset.thumbnail
+        });
+      } else if (action === "remove-memory") {
+        const index = Number(button.dataset.index);
+        if (Number.isInteger(index)) {
+          state.memoryEntries.splice(index, 1);
+          renderMemoryEntries();
+        }
+      } else if (action === "delete-photo") {
+        await deletePhoto(button.dataset.photoId);
+      }
+    }
+
+    /* ======================================================================
+       26. EVENT LISTENERS
+       ====================================================================== */
+    function bindEvents() {
+      $("#loginForm").addEventListener("submit", handleLogin);
+      $("#topLogout").addEventListener("click", logout);
+      $("#sidebarLogout").addEventListener("click", logout);
+      $("#mobileMenuButton").addEventListener("click", openMobileMenu);
+
+      $$(".nav-btn[data-page]").forEach(button => {
+        button.addEventListener("click", () => showPage(button.dataset.page));
+      });
+
+      $$("[data-go-page]").forEach(button => {
+        button.addEventListener("click", () => {
+          if (button.dataset.goPage === "editor") startNewGift();
+          else showPage(button.dataset.goPage);
+        });
+      });
+
+      $("#giftForm").addEventListener("submit", saveGift);
+      $("#cancelEditButton").addEventListener("click", () => showPage("gifts"));
+      $("#resetGiftFormButton").addEventListener("click", startNewGift);
+
+      $("#typeSelector").addEventListener("click", event => {
+        const button = event.target.closest("[data-type]");
+        if (!button) return;
+        const nextType = button.dataset.type;
+        if (state.editingGift && nextType !== state.editingGift.gift_type) {
+          if (!window.confirm("การเปลี่ยนประเภทของขวัญอาจแทนที่ข้อมูลเฉพาะของประเภทเดิม ต้องการดำเนินการต่อหรือไม่?")) return;
+        }
+        renderTypeSelector(nextType);
+        if (!state.editingGift) {
+          $("#giftTitle").value = TYPE_META[nextType].defaultTitle;
+        }
+      });
+
+      ["giftTitle", "recipientName", "giftMessage"].forEach(id => {
+        $("#" + id).addEventListener("input", updatePreview);
+      });
+
+      $("#youtubeSearchButton").addEventListener("click", searchYouTube);
+      $("#youtubeQuery").addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          searchYouTube();
+        }
+      });
+      $("#clearSongButton").addEventListener("click", () => {
+        state.selectedSong = null;
+        renderSelectedSong();
+        updatePreview();
+      });
+
+      $("#addMemoryEntryButton").addEventListener("click", () => addMemoryEntry());
+      $("#memoryEntries").addEventListener("input", event => {
+        const field = event.target.dataset.memoryField;
+        const container = event.target.closest("[data-memory-index]");
+        if (!field || !container) return;
+        const index = Number(container.dataset.memoryIndex);
+        if (state.memoryEntries[index]) state.memoryEntries[index][field] = event.target.value;
+      });
+
+      $("#giftSearch").addEventListener("input", renderGiftList);
+      $("#giftTypeFilter").addEventListener("change", renderGiftList);
+      $("#giftStatusFilter").addEventListener("change", renderGiftList);
+      $("#refreshGiftsButton").addEventListener("click", async () => {
+        setButtonBusy($("#refreshGiftsButton"), true, "กำลังโหลด...");
+        try {
+          await refreshGifts();
+          notify("อัปเดตรายการแล้ว", "success");
+        } catch (error) {
+          notify(error.message, "error");
+        } finally {
+          setButtonBusy($("#refreshGiftsButton"), false);
+        }
+      });
+
+      $("#uploadPhotosButton").addEventListener("click", handlePhotoUpload);
+      $("#refreshPhotoListButton").addEventListener("click", () => {
+        if (state.currentPhotoGiftId) reloadGiftPhotos(state.currentPhotoGiftId);
+      });
+      $("#saveSettingsButton").addEventListener("click", saveSettings);
+
+      $("#allGifts").addEventListener("click", handleDelegatedAction);
+      $("#recentGifts").addEventListener("click", handleDelegatedAction);
+      $("#youtubeResults").addEventListener("click", handleDelegatedAction);
+      $("#memoryEntries").addEventListener("click", handleDelegatedAction);
+      $("#giftPhotoList").addEventListener("click", handleDelegatedAction);
+
+      $("#modalRoot").addEventListener("click", async event => {
+        if (event.target.matches("[data-close-modal]")) {
+          $("#modalRoot").innerHTML = "";
+          return;
+        }
+        const copyButton = event.target.closest("#copyModalLinkButton");
+        if (copyButton) {
+          const input = $("#giftLinkValue");
+          try {
+            await navigator.clipboard.writeText(input.value);
+            notify("คัดลอกลิงก์แล้ว", "success");
+            $("#modalRoot").innerHTML = "";
+          } catch (error) {
+            input.focus();
+            input.select();
+            notify("เลือกข้อความลิงก์แล้ว กรุณาคัดลอก", "info");
+          }
+        }
+      });
+
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+          $("#modalRoot").innerHTML = "";
+          closeMobileMenu();
+        }
+      });
+    }
+
+    /* ======================================================================
+       27. APPLICATION STARTUP
+       ====================================================================== */
+    document.addEventListener("DOMContentLoaded", () => {
+      bindEvents();
+      $("#giftTitle").value = TYPE_META.flower.defaultTitle;
+      updatePreview();
+      renderMemoryEntries();
+    });
+  </script>
+</body>
+</html>
