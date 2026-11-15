@@ -1157,6 +1157,99 @@
   </style>
 
 
+
+  <style id="heart-mate-reference-storyboard">
+    /* Reference-inspired cinematic 3D story: welcome card -> galaxy -> heart -> orbit text -> sequential notes. */
+    .surprise-overlay-stage {
+      background: radial-gradient(ellipse at 50% 54%, #250b24 0%, #100711 42%, #020105 100%);
+      isolation: isolate;
+    }
+    #surpriseViewerCanvas { position:absolute; inset:0; width:100%; height:100%; display:block; z-index:1; touch-action:pan-y; }
+    .surprise-stage-vignette { position:absolute; inset:0; z-index:2; pointer-events:none; background:radial-gradient(ellipse at 50% 46%,transparent 18%,rgba(0,0,0,.16) 56%,rgba(0,0,0,.78) 100%),linear-gradient(180deg,rgba(0,0,0,.25),transparent 24%,transparent 75%,rgba(0,0,0,.55)); }
+    .surprise-intro-screen { position:absolute; inset:0; z-index:5; display:grid; place-items:center; padding:calc(24px + env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom)); opacity:1; visibility:visible; transition:opacity .8s ease,visibility .8s ease; background:radial-gradient(ellipse at 50% 55%,rgba(74,19,52,.26),rgba(0,0,0,.25) 56%,rgba(0,0,0,.68)); }
+    .surprise-intro-screen.is-hidden { opacity:0; visibility:hidden; pointer-events:none; }
+    .surprise-intro-card { width:min(410px,calc(100vw - 36px)); box-sizing:border-box; position:relative; overflow:hidden; padding:clamp(22px,5vw,34px) clamp(18px,5vw,30px) 25px; border-radius:22px; text-align:center; color:#fff4fb; background:linear-gradient(145deg,rgba(43,9,27,.96),rgba(15,5,17,.97) 62%,rgba(39,10,37,.96)); border:1px solid rgba(255,126,190,.32); box-shadow:0 30px 100px rgba(0,0,0,.58),0 0 55px rgba(236,40,143,.12),inset 0 1px 0 rgba(255,255,255,.08); transform:translateY(0) scale(1); animation:hmIntroCardIn 1s cubic-bezier(.18,.8,.2,1) both; }
+    .surprise-intro-card::before { content:""; position:absolute; width:270px; height:270px; border-radius:50%; left:50%; top:-190px; transform:translateX(-50%); background:rgba(255,80,170,.18); filter:blur(50px); pointer-events:none; }
+    .surprise-intro-card::after { content:""; position:absolute; inset:9px; border:1px solid rgba(255,199,226,.12); border-radius:16px; pointer-events:none; }
+    .surprise-intro-brand { position:relative; z-index:1; font:700 9px/1.4 system-ui,sans-serif; letter-spacing:2.4px; color:rgba(255,213,234,.68); }
+    .surprise-intro-brand span { color:#ff6eae; padding:0 4px; }
+    .surprise-intro-illustration { position:relative; z-index:1; height:110px; display:flex; align-items:center; justify-content:center; gap:10px; margin:13px auto 8px; filter:drop-shadow(0 0 18px rgba(255,82,164,.3)); }
+    .surprise-intro-illustration span { display:inline-block; font-size:clamp(38px,12vw,62px); animation:hmIntroMascotFloat 4.8s ease-in-out infinite; }
+    .surprise-intro-illustration .intro-heart { font-size:clamp(28px,8vw,44px); animation-delay:-1.4s; transform:translateY(-10px); }
+    .surprise-intro-illustration .intro-bear { animation-delay:-2.1s; }
+    .surprise-intro-card .surprise-kicker { position:relative; z-index:1; margin:7px 0 9px; color:#ff9bc8; font-size:9px; letter-spacing:2.8px; text-shadow:0 0 18px rgba(255,61,157,.72); }
+    .surprise-intro-card h2 { position:relative; z-index:1; max-width:340px; margin:0 auto; color:#fff6fb; font:700 clamp(24px,6.7vw,38px)/1.35 "Mali",sans-serif; letter-spacing:.1px; text-shadow:0 0 24px rgba(255,75,165,.42),0 3px 18px rgba(0,0,0,.7); }
+    .surprise-intro-card p { position:relative; z-index:1; min-height:24px; max-width:320px; margin:10px auto 0; color:rgba(255,214,235,.83); font:500 clamp(13px,3.5vw,16px)/1.6 "Mali",sans-serif; }
+    .surprise-intro-card .surprise-recipient-line { position:relative; z-index:1; min-height:18px; margin-top:8px; color:rgba(255,226,241,.56); font-size:10px; letter-spacing:.6px; }
+    .surprise-intro-card .surprise-overlay-actions { position:relative; z-index:1; width:100%; margin:23px auto 0; display:grid; gap:10px; }
+    .surprise-launch-button { min-height:48px; border:1px solid rgba(255,206,230,.68); border-radius:999px; color:#531434; background:linear-gradient(110deg,#ffd8eb,#ff83bd 48%,#f9c8e5); font:700 13px "Mali",sans-serif; box-shadow:0 10px 36px rgba(255,54,145,.27),inset 0 1px 0 rgba(255,255,255,.85); transition:filter .2s,transform .2s; }
+    .surprise-launch-button:active { transform:scale(.97); }
+    .surprise-skip-button { border:1px solid rgba(255,214,235,.13); border-radius:999px; padding:9px 15px; color:rgba(255,234,245,.65); background:rgba(255,255,255,.035); font:500 11px "Mali",sans-serif; }
+    .surprise-intro-footnote { position:absolute; left:10px; right:10px; bottom:calc(15px + env(safe-area-inset-bottom)); text-align:center; color:rgba(255,212,235,.3); font:700 8px system-ui,sans-serif; letter-spacing:2px; }
+    .surprise-run-hud { position:absolute; z-index:4; left:0; right:0; bottom:calc(18px + env(safe-area-inset-bottom)); display:flex; flex-direction:column; align-items:center; gap:9px; padding:0 20px; pointer-events:none; text-align:center; }
+    .surprise-run-hud.hidden { display:none!important; }
+    .surprise-run-kicker { color:rgba(255,193,223,.66); font:700 8px system-ui,sans-serif; letter-spacing:2.6px; text-shadow:0 1px 12px #000; }
+    .surprise-run-phrase { max-width:90vw; color:#ffe6f3; font:600 clamp(13px,3.5vw,18px) "Mali",sans-serif; text-shadow:0 0 16px rgba(255,57,164,.8),0 2px 12px #000; }
+    .surprise-progress-track { width:min(260px,72vw); height:3px; border-radius:9px; overflow:hidden; background:rgba(255,255,255,.16); box-shadow:0 0 12px rgba(255,100,180,.12); }
+    .surprise-progress-track span { display:block; width:0; height:100%; background:linear-gradient(90deg,#f7449b,#ffd8f0); box-shadow:0 0 14px #ff70bd; transition:width .1s linear; }
+    .surprise-open-gift-button { pointer-events:auto; min-height:45px; padding:0 25px; border:1px solid rgba(255,218,239,.75); border-radius:999px; color:#4c1237; background:linear-gradient(115deg,#fff0f8,#f18abd); box-shadow:0 0 30px rgba(255,57,159,.38); font:700 13px "Mali",sans-serif; }
+    .surprise-story-layer { position:absolute; z-index:8; inset:0; display:grid; place-items:center; padding:calc(18px + env(safe-area-inset-top)) 20px calc(22px + env(safe-area-inset-bottom)); background:rgba(3,1,8,.5); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); opacity:0; visibility:hidden; pointer-events:none; transition:opacity .34s ease,visibility .34s ease; }
+    .surprise-story-layer.hidden { display:none!important; }
+    .surprise-story-layer.is-visible { opacity:1; visibility:visible; pointer-events:auto; }
+    .surprise-story-card { width:min(390px,calc(100vw - 40px)); max-height:min(76svh,660px); overflow:hidden; box-sizing:border-box; padding:13px 14px 15px; border-radius:19px; border:1px solid rgba(255,103,176,.56); color:#fff1f8; background:linear-gradient(145deg,#2b0a1a,#100610 56%,#210b25); box-shadow:0 25px 90px rgba(0,0,0,.62),0 0 44px rgba(250,48,149,.19),inset 0 1px 0 rgba(255,255,255,.1); transform:perspective(1100px) rotateY(-12deg) rotateX(5deg) translateY(30px) scale(.92); transition:transform .6s cubic-bezier(.16,.85,.22,1),opacity .45s ease; opacity:0; }
+    .surprise-story-layer.is-visible .surprise-story-card { transform:perspective(1100px) rotateY(0) rotateX(0) translateY(0) scale(1); opacity:1; }
+    .surprise-story-card[data-card-style="midnight"] { background:linear-gradient(145deg,#17132d,#070710 58%,#1a1231); border-color:rgba(171,151,255,.62); box-shadow:0 25px 90px rgba(0,0,0,.68),0 0 48px rgba(127,100,255,.22),inset 0 1px 0 rgba(255,255,255,.12); }
+    .surprise-story-card[data-card-style="rose"] { background:linear-gradient(145deg,rgba(111,25,70,.96),rgba(35,7,29,.97) 58%,rgba(72,18,54,.97)); border-color:rgba(255,174,216,.78); box-shadow:0 25px 90px rgba(0,0,0,.62),0 0 48px rgba(255,114,188,.28),inset 0 1px 0 rgba(255,255,255,.17); }
+    .surprise-story-card[data-card-style="gold"] { background:linear-gradient(145deg,#35240e,#120d08 58%,#2b1b0a); border-color:rgba(255,211,132,.68); box-shadow:0 25px 90px rgba(0,0,0,.68),0 0 48px rgba(255,190,91,.2),inset 0 1px 0 rgba(255,255,255,.14); }
+    .surprise-story-topline,.surprise-story-footer { display:flex; justify-content:space-between; align-items:center; gap:10px; color:rgba(255,207,230,.55); font:700 8px system-ui,sans-serif; letter-spacing:1.5px; }
+    .surprise-story-art { position:relative; width:100%; height:clamp(145px,34vh,245px); margin:12px auto 13px; display:grid; place-items:center; overflow:hidden; border-radius:11px; border:1px solid rgba(255,141,197,.24); background:radial-gradient(ellipse at 50% 45%,rgba(205,48,133,.35),rgba(25,9,24,.92) 70%); box-shadow:inset 0 0 32px rgba(238,62,153,.13); }
+    .surprise-story-art::after { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(120deg,transparent 20%,rgba(255,255,255,.14) 48%,transparent 72%); transform:translateX(-120%); animation:hmStoryShine 4.5s ease-in-out infinite; }
+    .surprise-story-art img { width:100%; height:100%; object-fit:cover; display:block; }
+    .surprise-story-art span { font-size:clamp(58px,17vw,92px); filter:drop-shadow(0 0 22px rgba(255,83,173,.65)); animation:hmStoryIconFloat 3.8s ease-in-out infinite; }
+    .surprise-story-copy { text-align:center; padding:3px 8px 12px; }
+    .surprise-story-kicker { color:#ff91c3; font:700 8px system-ui,sans-serif; letter-spacing:2px; }
+    .surprise-story-copy h3 { margin:9px 0 6px; color:#fff7fc; font:700 clamp(20px,5.4vw,27px)/1.35 "Mali",sans-serif; text-shadow:0 0 20px rgba(255,76,165,.32); }
+    .surprise-story-copy p { margin:0 auto; max-width:320px; color:rgba(255,225,239,.77); font:400 clamp(12px,3.2vw,15px)/1.75 "Mali",sans-serif; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .surprise-story-footer { padding:11px 3px 0; border-top:1px solid rgba(255,171,211,.15); font-size:7px; letter-spacing:1px; }
+    .surprise-story-footer button { pointer-events:auto; border:0; padding:7px 10px; border-radius:999px; color:#ffdced; background:rgba(255,105,174,.13); font:600 10px "Mali",sans-serif; }
+    .surprise-final-glow { position:absolute; z-index:3; inset:0; display:grid; place-items:center; pointer-events:none; opacity:0; transition:opacity 1s ease; }
+    .surprise-final-glow span { color:#ff7fbd; font-size:clamp(60px,18vw,120px); text-shadow:0 0 25px #ff2d9b,0 0 90px #d51b95; animation:hmFinalHeartPulse 1.8s ease-in-out infinite; }
+    .surprise-overlay-stage.is-final .surprise-final-glow { opacity:.22; }
+    .surprise-footnote-running { position:absolute; z-index:3; bottom:calc(9px + env(safe-area-inset-bottom)); left:0; right:0; color:rgba(255,203,229,.24); text-align:center; font:700 7px system-ui,sans-serif; letter-spacing:2px; pointer-events:none; }
+    @keyframes hmIntroCardIn { from { opacity:0; transform:translateY(24px) scale(.94); filter:blur(8px); } to { opacity:1; transform:translateY(0) scale(1); filter:blur(0); } }
+    @keyframes hmIntroMascotFloat { 0%,100% { transform:translateY(0) rotate(-4deg); } 50% { transform:translateY(-10px) rotate(4deg); } }
+    @keyframes hmStoryShine { 0%,58% { transform:translateX(-120%); } 78%,100% { transform:translateX(120%); } }
+    @keyframes hmStoryIconFloat { 0%,100% { transform:translateY(0) rotate(-3deg) scale(1); } 50% { transform:translateY(-8px) rotate(3deg) scale(1.04); } }
+    @keyframes hmFinalHeartPulse { 0%,100% { transform:scale(.92); } 50% { transform:scale(1.08); } }
+    .surprise-story-editor { margin-top:20px; padding:17px; border:1px solid rgba(215,163,184,.28); border-radius:18px; background:linear-gradient(145deg,rgba(255,247,250,.85),rgba(255,255,255,.72)); }
+    .surprise-story-editor .editor-section-heading { margin:0 0 14px; }
+    .surprise-textarea { min-height:96px; line-height:1.7; resize:vertical; }
+    .surprise-story-cards-editor { display:grid; gap:9px; margin-top:15px; }
+    .surprise-story-editor-title { display:flex; flex-direction:column; gap:3px; margin-bottom:2px; color:var(--ink); }
+    .surprise-story-editor-title small { color:var(--muted); font-size:11px; }
+    .surprise-card-edit { border:1px solid rgba(218,169,189,.35); border-radius:13px; overflow:hidden; background:rgba(255,255,255,.74); }
+    .surprise-card-edit summary { display:flex; align-items:center; gap:9px; padding:11px 13px; color:var(--ink); font-weight:600; font-size:12px; cursor:pointer; list-style:none; }
+    .surprise-card-edit summary::-webkit-details-marker { display:none; }
+    .surprise-card-edit summary span { display:grid; place-items:center; width:27px; height:27px; border-radius:9px; background:#ffe8f0; color:#bf6688; font-size:10px; }
+    .surprise-card-edit-fields { display:grid; grid-template-columns:minmax(0,1fr) 90px; gap:10px; padding:0 12px 12px; }
+    .surprise-card-edit-fields .full { grid-column:1/-1; }
+    .surprise-card-edit-fields .form-field { min-width:0; }
+    @media(max-width:600px) {
+      .surprise-intro-screen { padding-left:14px; padding-right:14px; }
+      .surprise-intro-card { width:min(390px,calc(100vw - 28px)); padding:20px 17px 21px; }
+      .surprise-intro-illustration { height:85px; margin:8px auto 5px; }
+      .surprise-intro-card h2 { font-size:clamp(22px,6.5vw,31px); }
+      .surprise-run-hud { bottom:calc(14px + env(safe-area-inset-bottom)); }
+      .surprise-story-layer { padding-left:13px; padding-right:13px; }
+      .surprise-story-card { width:min(390px,calc(100vw - 26px)); padding:11px 11px 12px; }
+      .surprise-story-art { height:clamp(130px,31vh,205px); }
+      .surprise-card-edit-fields { grid-template-columns:minmax(0,1fr) 80px; }
+    }
+    @media(prefers-reduced-motion:reduce) {
+      .surprise-intro-card,.surprise-intro-illustration span,.surprise-story-art::after,.surprise-story-art span,.surprise-story-card { animation:none!important; transition:none!important; }
+    }
+  </style>
+
 </head>
 <body>
   <div id="ambientLayer" aria-hidden="true"></div>
@@ -1447,8 +1540,8 @@
                 <label for="surpriseDensity">ความหนาแน่นของอนุภาค</label>
                 <select class="select" id="surpriseDensity">
                   <option value="360">เบา ๆ · 360 จุด</option>
-                  <option value="600" selected>กำลังสวย · 600 จุด</option>
-                  <option value="900">แน่นอลังการ · 900 จุด</option>
+                  <option value="600">กำลังสวย · 600 จุด</option>
+                  <option value="900" selected>แน่นอลังการ · 900 จุด</option>
                   <option value="1200">จัดเต็ม · 1,200 จุด</option>
                 </select>
               </div>
@@ -1458,9 +1551,9 @@
                 <div class="surprise-range-labels"><span>ช้า ละมุน</span><span>เร็ว ตื่นเต้น</span></div>
               </div>
               <div class="form-field">
-                <label for="surpriseDuration">ระยะเวลาเซอร์ไพรส์ <output id="surpriseDurationValue">8 วินาที</output></label>
-                <input class="surprise-range" id="surpriseDuration" type="range" min="5" max="14" step="1" value="8">
-                <div class="surprise-range-labels"><span>5 วินาที</span><span>14 วินาที</span></div>
+                <label for="surpriseDuration">ระยะเวลาเรื่องราว <output id="surpriseDurationValue">16 วินาที</output></label>
+                <input class="surprise-range" id="surpriseDuration" type="range" min="12" max="30" step="1" value="16">
+                <div class="surprise-range-labels"><span>12 วินาที</span><span>30 วินาที</span></div>
               </div>
             </div>
 
@@ -1469,7 +1562,76 @@
               <input class="input" id="surprisePhrase" maxlength="64" value="จักรวาลนี้มีเธอเสมอ ♡" placeholder="เช่น เธอคือดาวดวงโปรดของเรา">
               <span class="help-text">ข้อความนี้จะแสดงในฉากเซอร์ไพรส์ก่อนเปิดของขวัญ</span>
             </div>
-            <div class="notice surprise-note"><i class="fa-solid fa-wand-magic-sparkles"></i> คนรับจะเห็นฉากนี้ก่อนเปิดของขวัญ สามารถแตะเพื่อเริ่มหรือกดข้ามได้ทุกเมื่อ</div>
+            <div class="surprise-story-editor">
+              <div class="editor-section-heading" style="margin-top:18px;">
+                <span class="section-number">✦</span>
+                <div><h3>ออกแบบเรื่องราวในจักรวาล</h3><p>แก้ข้อความหน้าเปิด คำที่โคจรรอบกาแล็กซี และการ์ดเซอร์ไพรส์ทีละใบ</p></div>
+              </div>
+              <div class="surprise-custom-grid">
+                <div class="form-field">
+                  <label for="surpriseIntroTitle">หัวข้อบนการ์ดเปิดตัว</label>
+                  <input class="input" id="surpriseIntroTitle" maxlength="80" value="จักรวาลแห่งรัก...เพื่อเธอ" placeholder="เช่น จักรวาลแห่งรักเพื่อเธอ">
+                </div>
+                <div class="form-field">
+                  <label for="surpriseIntroSubtitle">คำโปรยบนการ์ดเปิดตัว</label>
+                  <input class="input" id="surpriseIntroSubtitle" maxlength="120" value="A little universe made just for you" placeholder="ข้อความสั้น ๆ ก่อนเริ่มเซอร์ไพรส์">
+                </div>
+                <div class="form-field">
+                  <label for="surpriseDecorSet">ของตกแต่งที่ลอยรอบกาแล็กซี</label>
+                  <select class="select" id="surpriseDecorSet">
+                    <option value="romance">หัวใจ ดอกกุหลาบ ประกายดาว</option>
+                    <option value="kawaii">กระต่าย หมี โบว์ สตรอว์เบอร์รี</option>
+                    <option value="stardust">ดาวเคราะห์ ดาวตก และละอองดาว</option>
+                    <option value="birthday">ลูกโป่ง เค้ก ของขวัญ และดาว</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label for="surpriseCardStyle">สไตล์การ์ดเซอร์ไพรส์</label>
+                  <select class="select" id="surpriseCardStyle">
+                    <option value="wine">Wine Glow — เบอร์กันดีเรืองแสง</option>
+                    <option value="midnight">Midnight — ดำอมม่วง</option>
+                    <option value="rose">Rose Glass — ชมพูใส</option>
+                    <option value="gold">Golden Night — ทองแชมเปญ</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-field">
+                <label for="surpriseOrbitMessages">ข้อความที่วางบนวงโคจร (หนึ่งบรรทัดต่อหนึ่งข้อความ)</label>
+                <textarea class="input surprise-textarea" id="surpriseOrbitMessages" rows="4" maxlength="640" placeholder="AMOR ETERNO&#10;FOREVER WITH YOU&#10;มีเธอในจักรวาลนี้">AMOR ETERNO
+FOREVER WITH YOU
+HAPPY MOMENTS ♡
+มีเธอในจักรวาลนี้</textarea>
+                <span class="help-text">ระบบจะแสดงข้อความเหล่านี้บนพื้นกาแล็กซีในมุมมอง 3D</span>
+              </div>
+              <div class="surprise-story-cards-editor">
+                <div class="surprise-story-editor-title"><strong>การ์ดข้อความที่จะปรากฏทีละใบ</strong><small>แนะนำ 3 ใบ เพื่อให้จังหวะใกล้เคียงวิดีโอตัวอย่าง</small></div>
+                <details class="surprise-card-edit" open>
+                  <summary><span>01</span> การ์ดใบที่หนึ่ง</summary>
+                  <div class="surprise-card-edit-fields">
+                    <div class="form-field"><label for="surpriseCard1Title">หัวข้อ</label><input class="input" id="surpriseCard1Title" maxlength="48" value="มีเธอในจักรวาลนี้"></div>
+                    <div class="form-field"><label for="surpriseCard1Icon">สัญลักษณ์</label><input class="input" id="surpriseCard1Icon" maxlength="8" value="💗"></div>
+                    <div class="form-field full"><label for="surpriseCard1Body">ข้อความ</label><textarea class="input" id="surpriseCard1Body" rows="2" maxlength="180">ทุกช่วงเวลาที่มีเธอ คือเรื่องราวที่สวยงาม</textarea></div>
+                  </div>
+                </details>
+                <details class="surprise-card-edit">
+                  <summary><span>02</span> การ์ดใบที่สอง</summary>
+                  <div class="surprise-card-edit-fields">
+                    <div class="form-field"><label for="surpriseCard2Title">หัวข้อ</label><input class="input" id="surpriseCard2Title" maxlength="48" value="ขอบคุณที่เข้ามา"></div>
+                    <div class="form-field"><label for="surpriseCard2Icon">สัญลักษณ์</label><input class="input" id="surpriseCard2Icon" maxlength="8" value="✨"></div>
+                    <div class="form-field full"><label for="surpriseCard2Body">ข้อความ</label><textarea class="input" id="surpriseCard2Body" rows="2" maxlength="180">ขอบคุณที่ทำให้วันธรรมดากลายเป็นวันที่พิเศษ</textarea></div>
+                  </div>
+                </details>
+                <details class="surprise-card-edit">
+                  <summary><span>03</span> การ์ดใบที่สาม</summary>
+                  <div class="surprise-card-edit-fields">
+                    <div class="form-field"><label for="surpriseCard3Title">หัวข้อ</label><input class="input" id="surpriseCard3Title" maxlength="48" value="จากใจของฉัน"></div>
+                    <div class="form-field"><label for="surpriseCard3Icon">สัญลักษณ์</label><input class="input" id="surpriseCard3Icon" maxlength="8" value="🌷"></div>
+                    <div class="form-field full"><label for="surpriseCard3Body">ข้อความ</label><textarea class="input" id="surpriseCard3Body" rows="2" maxlength="180">ขอให้เธอพบแต่เรื่องราวที่ทำให้ยิ้มได้เสมอ</textarea></div>
+                  </div>
+                </details>
+              </div>
+            </div>
+            <div class="notice surprise-note"><i class="fa-solid fa-wand-magic-sparkles"></i> คนรับจะเห็นการ์ดเปิดตัวก่อน จากนั้นกาแล็กซีจะก่อตัวเป็นหัวใจ ข้อความโคจร และการ์ด 3 ใบจะปรากฏทีละใบ สามารถแตะเพื่อเริ่มหรือข้ามได้ทุกเมื่อ</div>
           </div>
 
           <div class="editor-section" id="typeSpecificSection">
@@ -1548,23 +1710,48 @@
   <footer class="site-footer"><strong>♡ Heart Mate ♡</strong><br>Little things, Big feelings. Made with love.</footer>
 
   <div id="surpriseOverlay" class="surprise-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="surpriseOverlayTitle">
-    <div class="surprise-overlay-stage">
+    <div class="surprise-overlay-stage" id="surpriseOverlayStage">
       <canvas id="surpriseViewerCanvas" aria-hidden="true"></canvas>
       <div class="surprise-stage-vignette" aria-hidden="true"></div>
-      <div class="surprise-overlay-content">
-        <div class="surprise-brandline"><span class="surprise-brand-mark">♡</span> HEART MATE · A LITTLE UNIVERSE</div>
-        <div class="surprise-kicker" id="surpriseOverlayKicker">SOMETHING SPECIAL IS WAITING</div>
-        <h2 id="surpriseOverlayTitle">มีจักรวาลเล็ก ๆ เตรียมไว้ให้คุณ</h2>
-        <p id="surpriseOverlayPhrase">จักรวาลนี้มีเธอเสมอ ♡</p>
-        <div class="surprise-recipient-line" id="surpriseRecipientLine"></div>
-        <div class="surprise-overlay-actions">
-          <button type="button" class="surprise-launch-button" id="surpriseStartButton"><i class="fa-solid fa-sparkles"></i> แตะเพื่อเริ่มเซอร์ไพรส์</button>
-          <button type="button" class="surprise-launch-button hidden" id="surpriseOpenGiftButton"><i class="fa-solid fa-heart"></i> เปิดของขวัญของคุณ</button>
-          <button type="button" class="surprise-skip-button" id="surpriseSkipButton">ข้ามไปดูของขวัญ</button>
+
+      <section class="surprise-intro-screen" id="surpriseIntroScreen">
+        <div class="surprise-intro-card">
+          <div class="surprise-intro-brand">♡ HEART MATE <span>·</span> A LITTLE UNIVERSE</div>
+          <div class="surprise-intro-illustration" aria-hidden="true"><span class="intro-bunny">🐰</span><span class="intro-heart">💗</span><span class="intro-bear">🐻</span></div>
+          <div class="surprise-kicker" id="surpriseOverlayKicker">UNA GALAXIA DE AMOR PARA TI</div>
+          <h2 id="surpriseOverlayTitle">จักรวาลแห่งรัก...เพื่อเธอ</h2>
+          <p id="surpriseOverlayPhrase">A little universe made just for you</p>
+          <div class="surprise-recipient-line" id="surpriseRecipientLine"></div>
+          <div class="surprise-overlay-actions">
+            <button type="button" class="surprise-launch-button" id="surpriseStartButton"><i class="fa-solid fa-sparkles"></i> แตะเพื่อเข้าสู่จักรวาล</button>
+            <button type="button" class="surprise-skip-button" id="surpriseSkipButton">ข้ามไปดูของขวัญ</button>
+          </div>
         </div>
-        <div class="surprise-progress-track hidden" id="surpriseProgressTrack"><span id="surpriseProgressBar"></span></div>
-        <div class="surprise-footnote">made with love · Heart Mate</div>
+        <div class="surprise-intro-footnote">A HEART MADE OF STARDUST · MADE WITH LOVE</div>
+      </section>
+
+      <div class="surprise-run-hud hidden" id="surpriseRunHud" aria-live="polite">
+        <div class="surprise-run-kicker" id="surpriseRunKicker">A HEART MADE OF STARDUST</div>
+        <div class="surprise-run-phrase" id="surpriseRunningPhrase">จักรวาลนี้มีเธอเสมอ ♡</div>
+        <div class="surprise-progress-track" id="surpriseProgressTrack"><span id="surpriseProgressBar"></span></div>
+        <button type="button" class="surprise-open-gift-button hidden" id="surpriseOpenGiftButton"><i class="fa-solid fa-heart"></i> เปิดของขวัญของคุณ</button>
       </div>
+
+      <div class="surprise-story-layer hidden" id="surpriseStoryLayer" aria-live="polite">
+        <article class="surprise-story-card" id="surpriseStoryCard">
+          <div class="surprise-story-topline"><span>♡ HEART MATE</span><span id="surpriseStoryCount">01 / 03</span></div>
+          <div class="surprise-story-art" id="surpriseStoryArt"><span id="surpriseStoryIcon">💗</span></div>
+          <div class="surprise-story-copy">
+            <div class="surprise-story-kicker">A LITTLE NOTE FROM THE UNIVERSE</div>
+            <h3 id="surpriseStoryTitle">มีเธอในจักรวาลนี้</h3>
+            <p id="surpriseStoryBody">ทุกช่วงเวลาที่มีเธอ คือเรื่องราวที่สวยงาม</p>
+          </div>
+          <div class="surprise-story-footer"><span>MADE WITH LOVE · JUST FOR YOU</span><button type="button" id="surpriseStoryContinue">กลับสู่จักรวาล <i class="fa-solid fa-arrow-right"></i></button></div>
+        </article>
+      </div>
+
+      <div class="surprise-final-glow" id="surpriseFinalGlow" aria-hidden="true"><span>♡</span></div>
+      <div class="surprise-footnote-running">made with love · Heart Mate</div>
     </div>
   </div>
 
@@ -1622,10 +1809,20 @@
       surprise: {
         scene: "cosmic-heart",
         palette: "rose-nebula",
-        density: 600,
+        density: 900,
         speed: 1,
-        duration: 8,
-        phrase: "จักรวาลนี้มีเธอเสมอ ♡"
+        duration: 16,
+        phrase: "จักรวาลนี้มีเธอเสมอ ♡",
+        introTitle: "จักรวาลแห่งรัก...เพื่อเธอ",
+        introSubtitle: "A little universe made just for you",
+        decorSet: "romance",
+        cardStyle: "wine",
+        orbitMessages: ["AMOR ETERNO", "FOREVER WITH YOU", "HAPPY MOMENTS ♡", "มีเธอในจักรวาลนี้"],
+        cards: [
+          { title: "มีเธอในจักรวาลนี้", body: "ทุกช่วงเวลาที่มีเธอ คือเรื่องราวที่สวยงาม", icon: "💗" },
+          { title: "ขอบคุณที่เข้ามา", body: "ขอบคุณที่ทำให้วันธรรมดากลายเป็นวันที่พิเศษ", icon: "✨" },
+          { title: "จากใจของฉัน", body: "ขอให้เธอพบแต่เรื่องราวที่ทำให้ยิ้มได้เสมอ", icon: "🌷" }
+        ]
       },
       font: "Mali",
       stickers: ["🌷", "♡"],
@@ -2981,14 +3178,34 @@
     function getSurpriseSettings() {
       const scene = SURPRISE_SCENES.includes(state.surprise.scene) ? state.surprise.scene : "cosmic-heart";
       const palette = Object.prototype.hasOwnProperty.call(SURPRISE_PALETTES, state.surprise.palette) ? state.surprise.palette : "rose-nebula";
+      const cards = Array.from({ length: 3 }, function (_, index) {
+        const fallback = state.surprise.cards[index] || { title: "", body: "", icon: "♡" };
+        const titleNode = $("#surpriseCard" + (index + 1) + "Title");
+        const bodyNode = $("#surpriseCard" + (index + 1) + "Body");
+        const iconNode = $("#surpriseCard" + (index + 1) + "Icon");
+        return {
+          title: String(titleNode ? titleNode.value : fallback.title || "").trim().slice(0, 48),
+          body: String(bodyNode ? bodyNode.value : fallback.body || "").trim().slice(0, 180),
+          icon: String(iconNode ? iconNode.value : fallback.icon || "♡").trim().slice(0, 8) || "♡"
+        };
+      });
+      const orbitNode = $("#surpriseOrbitMessages");
+      const orbitMessages = String(orbitNode ? orbitNode.value : (state.surprise.orbitMessages || []).join("\n"))
+        .split(/\r?\n/).map(function (line) { return line.trim().slice(0, 56); }).filter(Boolean).slice(0, 10);
       return {
-        version: 1,
+        version: 2,
         scene: scene,
         palette: palette,
-        density: Math.max(300, Math.min(1200, Number(state.surprise.density) || 600)),
+        density: Math.max(300, Math.min(1200, Number(state.surprise.density) || 900)),
         speed: Math.max(0.6, Math.min(1.8, Number(state.surprise.speed) || 1)),
-        duration: Math.max(5, Math.min(14, Number(state.surprise.duration) || 8)),
-        phrase: String(state.surprise.phrase || "").trim().slice(0, 64),
+        duration: Math.max(12, Math.min(30, Number(state.surprise.duration) || 16)),
+        phrase: String($("#surprisePhrase") ? $("#surprisePhrase").value : state.surprise.phrase || "").trim().slice(0, 64),
+        introTitle: String($("#surpriseIntroTitle") ? $("#surpriseIntroTitle").value : state.surprise.introTitle || "").trim().slice(0, 80),
+        introSubtitle: String($("#surpriseIntroSubtitle") ? $("#surpriseIntroSubtitle").value : state.surprise.introSubtitle || "").trim().slice(0, 120),
+        decorSet: String($("#surpriseDecorSet") ? $("#surpriseDecorSet").value : state.surprise.decorSet || "romance"),
+        cardStyle: String($("#surpriseCardStyle") ? $("#surpriseCardStyle").value : state.surprise.cardStyle || "wine"),
+        orbitMessages: orbitMessages,
+        cards: cards,
         trigger: "tap"
       };
     }
@@ -2999,6 +3216,12 @@
       state.surprise.speed = Number($("#surpriseSpeed").value);
       state.surprise.duration = Number($("#surpriseDuration").value);
       state.surprise.phrase = $("#surprisePhrase").value.slice(0, 64);
+      state.surprise.introTitle = $("#surpriseIntroTitle").value.slice(0, 80);
+      state.surprise.introSubtitle = $("#surpriseIntroSubtitle").value.slice(0, 120);
+      state.surprise.decorSet = $("#surpriseDecorSet").value;
+      state.surprise.cardStyle = $("#surpriseCardStyle").value;
+      state.surprise.orbitMessages = $("#surpriseOrbitMessages").value.split(/\r?\n/).map(function (line) { return line.trim(); }).filter(Boolean).slice(0, 10);
+      state.surprise.cards = getSurpriseSettings().cards;
       $("#surpriseSpeedValue").textContent = state.surprise.speed.toFixed(1) + "×";
       $("#surpriseDurationValue").textContent = state.surprise.duration + " วินาที";
       $("#surprisePreviewPhrase").textContent = state.surprise.phrase || "จักรวาลนี้มีเธอเสมอ ♡";
@@ -3011,9 +3234,17 @@
     }
 
     function refreshSurprisePreview() {
-      const canvas = $("#surprisePreviewCanvas");
+      let canvas = $("#surprisePreviewCanvas");
       if (!canvas) return;
-      if (surprisePreviewEngine) surprisePreviewEngine.stop();
+      if (surprisePreviewEngine) {
+        surprisePreviewEngine.stop();
+        surprisePreviewEngine = null;
+      }
+      // Replace the canvas before changing renderer type. Browsers do not allow
+      // an existing WebGL canvas to later acquire a 2D context (or vice versa).
+      const freshCanvas = canvas.cloneNode(false);
+      canvas.parentNode.replaceChild(freshCanvas, canvas);
+      canvas = freshCanvas;
       if (state.surprise.scene === "off") {
         const context = canvas.getContext("2d");
         const rect = canvas.getBoundingClientRect();
@@ -3038,18 +3269,19 @@
         const button = event.target.closest("[data-surprise-scene]");
         if (!button) return;
         state.surprise.scene = button.dataset.surpriseScene;
-        $$("[data-surprise-scene]", picker).forEach(function (item) {
+        $$ ("[data-surprise-scene]", picker).forEach(function (item) {
           const active = item === button;
           item.classList.toggle("active", active);
           item.setAttribute("aria-pressed", active ? "true" : "false");
         });
         refreshSurprisePreview();
       });
-      ["#surprisePalette", "#surpriseDensity"].forEach(function (selector) {
+      ["#surprisePalette", "#surpriseDensity", "#surpriseDecorSet", "#surpriseCardStyle"].forEach(function (selector) {
         $(selector).addEventListener("change", updateSurpriseSettingsFromControls);
       });
-      ["#surpriseSpeed", "#surpriseDuration", "#surprisePhrase"].forEach(function (selector) {
-        $(selector).addEventListener("input", updateSurpriseSettingsFromControls);
+      ["#surpriseSpeed", "#surpriseDuration", "#surprisePhrase", "#surpriseIntroTitle", "#surpriseIntroSubtitle", "#surpriseOrbitMessages", "#surpriseCard1Title", "#surpriseCard1Body", "#surpriseCard1Icon", "#surpriseCard2Title", "#surpriseCard2Body", "#surpriseCard2Icon", "#surpriseCard3Title", "#surpriseCard3Body", "#surpriseCard3Icon"].forEach(function (selector) {
+        const node = $(selector);
+        if (node) node.addEventListener("input", updateSurpriseSettingsFromControls);
       });
       $("#replaySurprisePreview").addEventListener("click", function () {
         refreshSurprisePreview();
@@ -3428,8 +3660,8 @@
       scene.fog = new THREE.FogExp2(0x05020b, 0.012);
 
       const camera = new THREE.PerspectiveCamera(43, 1, 0.1, 120);
-      camera.position.set(0, 8.2, 23.5);
-      camera.lookAt(0, 0.1, 0);
+      camera.position.set(0, 11.2, preview ? 25.5 : 31.5);
+      camera.lookAt(0, -0.25, 0);
 
       const world = new THREE.Group();
       scene.add(world);
@@ -3440,7 +3672,7 @@
       world.add(galaxyGroup);
 
       const heartGroup = new THREE.Group();
-      heartGroup.position.set(0, 0.0, 0.1);
+      heartGroup.position.set(0, -1.35, 0.1);
       world.add(heartGroup);
 
       const ambient = new THREE.AmbientLight(0x6c477e, 0.42);
@@ -3583,12 +3815,12 @@
           const x = Math.cos(angle) * radius;
           const z = Math.sin(angle) * radius * 0.72;
           const y = (rand() - 0.5) * spread;
-          const burst = 1.25 + rand() * 0.95;
+          const burst = 2.0 + rand() * 2.0;
           items.push({
             x, y, z,
-            sx: x * burst + (rand() - 0.5) * 1.4,
-            sy: y + (rand() - 0.5) * 1.8,
-            sz: z * burst + (rand() - 0.5) * 1.4,
+            sx: x * burst + (rand() - 0.5) * 2.8,
+            sy: y + (rand() - 0.5) * 3.8,
+            sz: z * burst + (rand() - 0.5) * 2.8,
             color: randomPaletteColor(),
             size: 2.0 + rand() * (preview ? 2.1 : 3.6)
           });
@@ -3619,9 +3851,9 @@
             x: target.x,
             y: target.y,
             z: target.z,
-            sx: (rand() - 0.5) * 1.25,
-            sy: -1.0 + rand() * 0.65,
-            sz: (rand() - 0.5) * 1.0,
+            sx: (rand() - 0.5) * 0.34,
+            sy: -2.05 + rand() * 0.6,
+            sz: (rand() - 0.5) * 0.34,
             color: randomPaletteColor(),
             size: 2.2 + rand() * (preview ? 2.5 : 4.5)
           });
@@ -3634,9 +3866,9 @@
           const p = heartPoint(t, 1, (rand() - 0.5) * 0.22);
           items.push({
             x: p.x, y: p.y, z: p.z,
-            sx: (rand() - 0.5) * 0.35,
-            sy: -0.9 + rand() * 0.45,
-            sz: (rand() - 0.5) * 0.35,
+            sx: (rand() - 0.5) * 0.20,
+            sy: -2.1 + rand() * 0.35,
+            sz: (rand() - 0.5) * 0.20,
             color: colorAt(i % 2 === 0 ? 0 : 1),
             size: preview ? 3.8 : 5.5
           });
@@ -3821,68 +4053,86 @@
       }
       const starPoints = createParticlePoints(starsItems, world, 0);
 
-      // Text strings travel around the galaxy just like the reference clip.
-      const defaultMessages = [
-        "YOU ARE MY UNIVERSE ♡",
-        "AMOR ETERNO",
-        "FOREVER WITH YOU",
-        "HAPPY MOMENTS ✦",
-        "มีเธอในจักรวาลนี้",
-        "MADE WITH LOVE"
-      ];
+      // Orbit phrases are true 3D planes laid onto the accretion disc (not HUD text).
+      function makeStickerTexture(symbol, accent) {
+        const c = document.createElement("canvas");
+        c.width = 256; c.height = 256;
+        const g = c.getContext("2d");
+        const grad = g.createRadialGradient(128, 128, 8, 128, 128, 116);
+        grad.addColorStop(0, "rgba(255,255,255,.98)");
+        grad.addColorStop(0.34, (accent || palette[0]) + "55");
+        grad.addColorStop(1, "rgba(0,0,0,0)");
+        g.fillStyle = grad; g.fillRect(0, 0, 256, 256);
+        g.textAlign = "center"; g.textBaseline = "middle";
+        g.font = '150px "Apple Color Emoji","Segoe UI Emoji",sans-serif';
+        g.shadowColor = accent || palette[0]; g.shadowBlur = 22;
+        g.fillText(String(symbol || "♡").slice(0, 3), 128, 134);
+        const texture = new THREE.CanvasTexture(c);
+        texture.colorSpace = THREE.SRGBColorSpace;
+        return texture;
+      }
+
+      const defaultMessages = ["AMOR ETERNO", "FOREVER WITH YOU", "HAPPY MOMENTS ♡", "MADE WITH LOVE", "มีเธอในจักรวาลนี้"];
+      const customOrbitMessages = Array.isArray(options.orbitMessages)
+        ? options.orbitMessages.map(function (item) { return String(item || "").trim().slice(0, 56); }).filter(Boolean).slice(0, 10)
+        : [];
       const personalMessages = [
         options.recipientName ? "FOR " + options.recipientName : "",
-        options.giftTitle || "",
-        options.senderName ? "FROM " + options.senderName : "",
-        options.giftMessage || ""
+        options.senderName ? "FROM " + options.senderName : ""
       ].filter(Boolean);
-      const messages = personalMessages.concat(defaultMessages).slice(0, 8);
-      const textSprites = [];
+      const messages = (customOrbitMessages.length ? customOrbitMessages : defaultMessages).concat(personalMessages).slice(0, 12);
+      const orbitLabels = [];
       messages.forEach(function (message, index) {
         const texture = makeTextTexture(message, palette[index % palette.length]);
-        const material = new THREE.SpriteMaterial({
-          map: texture,
-          transparent: true,
-          opacity: 0.0,
-          depthTest: false,
-          depthWrite: false,
-          blending: THREE.AdditiveBlending
+        const material = new THREE.MeshBasicMaterial({
+          map: texture, transparent: true, opacity: 0, depthWrite: false,
+          side: THREE.DoubleSide, blending: THREE.AdditiveBlending, toneMapped: false
         });
-        const sprite = new THREE.Sprite(material);
-        const angle = (index / messages.length) * Math.PI * 2;
-        const radius = 6.3 + (index % 3) * 0.72;
-        sprite.scale.set(3.0 + (index % 2) * 0.8, 0.75, 1);
-        sprite.position.set(Math.cos(angle) * radius, -0.35 + (index % 3) * 0.55, Math.sin(angle) * radius * 0.68);
-        sprite.userData = { angle: angle, radius: radius, baseY: sprite.position.y, index: index };
-        world.add(sprite);
-        textSprites.push(sprite);
+        const plane = new THREE.Mesh(new THREE.PlaneGeometry(3.3 + (index % 3) * 0.55, 0.56), material);
+        const anchor = new THREE.Group();
+        const angle = (index / messages.length) * Math.PI * 2 + (index % 2) * 0.14;
+        const radius = 5.0 + (index % 4) * 1.28;
+        anchor.position.set(Math.cos(angle) * radius, 0.045 + (index % 2) * 0.018, Math.sin(angle) * radius * 0.72);
+        anchor.rotation.x = -Math.PI / 2;
+        plane.rotation.z = (Math.random() - 0.5) * 0.2;
+        anchor.add(plane);
+        anchor.userData = { angle: angle, radius: radius, index: index, baseY: anchor.position.y };
+        galaxyGroup.add(anchor);
+        orbitLabels.push({ anchor: anchor, material: material });
       });
 
-      // Small holographic greeting panels fade in near the end of the reveal.
-      const cardSprites = [];
-      const cardTitles = [
-        options.recipientName ? "FOR " + options.recipientName : "JUST FOR YOU",
-        options.giftTitle || "A LITTLE GIFT",
-        options.senderName ? "FROM " + options.senderName : "MADE WITH LOVE"
-      ];
-      cardTitles.forEach(function (title, index) {
-        const texture = makeMessageCard(title, index === 0 ? "A HEART MADE OF STARDUST" : "A LITTLE UNIVERSE");
-        const material = new THREE.SpriteMaterial({
-          map: texture,
-          transparent: true,
-          opacity: 0,
-          depthTest: false,
-          depthWrite: false
+      // Tiny sticker-like objects orbit low above the disc, like the reference clip.
+      const decorSets = {
+        romance: ["💗", "♡", "🌹", "✨", "💞", "✦", "🌷", "♥"],
+        kawaii: ["🐰", "🐻", "🎀", "🍓", "💗", "✨", "🐱", "♡"],
+        stardust: ["✦", "✧", "🪐", "☄", "⭐", "💫", "♡", "✨"],
+        birthday: ["🎂", "🎈", "🎁", "⭐", "💗", "🎉", "🧸", "✦"]
+      };
+      const symbols = decorSets[options.decorSet] || decorSets.romance;
+      const orbitStickers = [];
+      const stickerCount = preview ? 7 : 13;
+      for (let index = 0; index < stickerCount; index += 1) {
+        const symbol = symbols[index % symbols.length];
+        const angle = (index / stickerCount) * Math.PI * 2 + rand() * 0.3;
+        const radius = 4.1 + rand() * 5.8;
+        const texture = makeStickerTexture(symbol, palette[index % palette.length]);
+        const material = new THREE.MeshBasicMaterial({
+          map: texture, transparent: true, opacity: 0, depthWrite: false,
+          side: THREE.DoubleSide, blending: THREE.AdditiveBlending, toneMapped: false
         });
-        const sprite = new THREE.Sprite(material);
-        sprite.scale.set(2.25, 1.27, 1);
-        sprite.position.set((index - 1) * 3.2, 0.15 + (index % 2) * 0.72, 3.2);
-        sprite.userData.baseX = sprite.position.x;
-        sprite.userData.baseY = sprite.position.y;
-        sprite.userData.index = index;
-        world.add(sprite);
-        cardSprites.push(sprite);
-      });
+        const mesh = new THREE.Mesh(new THREE.PlaneGeometry(0.62 + rand() * 0.35, 0.62 + rand() * 0.35), material);
+        const anchor = new THREE.Group();
+        anchor.position.set(Math.cos(angle) * radius, 0.10 + rand() * 0.08, Math.sin(angle) * radius * 0.72);
+        anchor.rotation.x = -Math.PI / 2;
+        anchor.add(mesh);
+        anchor.userData = { angle: angle, radius: radius, index: index, phase: rand() * Math.PI * 2 };
+        galaxyGroup.add(anchor);
+        orbitStickers.push({ anchor: anchor, material: material });
+      }
+
+      // Story cards are presented as separate full-screen panels by the viewer timeline.
+      // No simultaneous 3D card cluster is added here; this matches the reference cut-in sequence.
+      const cardSprites = [];
 
       let width = 1;
       let height = 1;
@@ -3928,46 +4178,58 @@
         pointerX += (targetPointerX - pointerX) * 0.035;
         pointerY += (targetPointerY - pointerY) * 0.035;
 
-        const reveal = reducedMotion ? 1 : clampNumber(elapsed / 5.0, 0, 1);
+        const galaxyReveal = reducedMotion ? 1 : clampNumber(elapsed / 3.0, 0, 1);
+        const heartReveal = reducedMotion ? 1 : clampNumber((elapsed - 1.15) / 4.0, 0, 1);
         galaxyPoints.material.uniforms.uTime.value = elapsed;
-        galaxyPoints.material.uniforms.uReveal.value = reducedMotion ? 1 : clampNumber(elapsed / 2.8, 0, 1);
+        galaxyPoints.material.uniforms.uReveal.value = galaxyReveal;
         heartPoints.material.uniforms.uTime.value = elapsed;
-        heartPoints.material.uniforms.uReveal.value = reveal;
+        heartPoints.material.uniforms.uReveal.value = heartReveal;
         starPoints.material.uniforms.uTime.value = elapsed;
         starPoints.material.uniforms.uReveal.value = 1;
 
-        galaxyGroup.rotation.y = elapsed * 0.085 * speed;
+        const cameraEase = clampNumber(elapsed / 4.4, 0, 1);
+        const cameraSmooth = cameraEase * cameraEase * (3 - 2 * cameraEase);
+        camera.position.z = (preview ? 25.5 : 31.5) - cameraSmooth * (preview ? 3.8 : 8.2);
+        camera.position.y = 11.2 - cameraSmooth * 2.7;
+        camera.lookAt(0, -0.22, 0);
+
+        galaxyGroup.rotation.y = elapsed * 0.11 * speed;
         galaxyGroup.rotation.x = -0.035 + Math.sin(elapsed * 0.19) * 0.018;
+        heartGroup.position.y = -1.35 + cameraSmooth * 1.25;
         heartGroup.rotation.y = Math.sin(elapsed * 0.32) * 0.12 + pointerX * 0.45;
         heartGroup.rotation.z = Math.sin(elapsed * 0.55) * 0.025;
-        const pulse = 1 + Math.sin(elapsed * 2.4) * 0.028;
+        const pulse = 1 + Math.sin(elapsed * 2.4) * 0.035;
         heartGroup.scale.set(pulse, pulse, pulse);
-        ringGroup.rotation.y = -elapsed * 0.22 * speed;
+        ringGroup.rotation.y = -elapsed * 0.28 * speed;
         ringGroup.rotation.z = Math.sin(elapsed * 0.31) * 0.07;
-        vortexGlow.material.rotation = 0;
-        vortexGlow.rotation.z = elapsed * 0.045 * speed;
-        beam.material.opacity = 0.17 + Math.max(0, Math.sin(elapsed * 1.5)) * 0.20;
+        vortexGlow.rotation.z = elapsed * 0.06 * speed;
+        const beamFade = 1 - clampNumber((elapsed - 3.8) / 2.0, 0, 1);
+        beam.material.opacity = 0.05 + beamFade * (0.35 + Math.max(0, Math.sin(elapsed * 1.5)) * 0.18);
         pinkLight.intensity = 2.1 + Math.sin(elapsed * 1.4) * 0.8;
 
-        textSprites.forEach(function (sprite, index) {
-          const data = sprite.userData;
-          const t = elapsed * 0.08 * speed + data.angle;
-          const radius = data.radius + Math.sin(elapsed * 0.42 + index) * 0.22;
-          sprite.position.x = Math.cos(t) * radius;
-          sprite.position.z = Math.sin(t) * radius * 0.68;
-          sprite.position.y = data.baseY + Math.sin(elapsed * 0.65 + index * 1.2) * 0.3;
-          sprite.material.opacity = clampNumber((elapsed - 2.8) / 1.3, 0, 0.82);
+        orbitLabels.forEach(function (item, index) {
+          const data = item.anchor.userData;
+          const t = elapsed * 0.035 * speed + data.angle;
+          const radius = data.radius + Math.sin(elapsed * 0.38 + index) * 0.16;
+          item.anchor.position.x = Math.cos(t) * radius;
+          item.anchor.position.z = Math.sin(t) * radius * 0.72;
+          item.anchor.position.y = data.baseY + Math.sin(elapsed * 0.58 + index * 1.17) * 0.025;
+          item.material.opacity = clampNumber((elapsed - 3.1) / 1.5, 0, 0.9);
         });
 
-        cardSprites.forEach(function (sprite, index) {
-          const cardReveal = clampNumber((elapsed - 4.8 - index * 0.65) / 1.0, 0, 1);
-          sprite.material.opacity = cardReveal * 0.88;
-          sprite.position.y = sprite.userData.baseY + Math.sin(elapsed * 0.8 + index) * 0.12;
-          sprite.position.x = sprite.userData.baseX + Math.sin(elapsed * 0.3 + index) * 0.16;
+        orbitStickers.forEach(function (item, index) {
+          const data = item.anchor.userData;
+          const t = elapsed * 0.07 * speed + data.angle;
+          item.anchor.position.x = Math.cos(t) * data.radius;
+          item.anchor.position.z = Math.sin(t) * data.radius * 0.72;
+          item.anchor.position.y = 0.10 + Math.sin(elapsed * 1.3 + data.phase) * 0.10;
+          item.anchor.rotation.z = Math.sin(elapsed * 0.7 + index) * 0.06;
+          item.material.opacity = clampNumber((elapsed - 3.8) / 1.0, 0, 0.95);
         });
 
-        world.rotation.y = pointerX;
-        world.rotation.x = pointerY;
+        // Pointer parallax stays subtle so the scene remains comfortable on phones.
+        world.rotation.y = pointerX * 0.55;
+        world.rotation.x = pointerY * 0.55;
         renderer.render(scene, camera);
 
         if (!reducedMotion || preview) {
@@ -4004,14 +4266,99 @@
 
     function normalizeSurpriseSettings(value) {
       const input = value && typeof value === "object" ? value : {};
+      const cards = Array.isArray(input.cards) ? input.cards.slice(0, 3).map(function (card, index) {
+        const defaults = [
+          { title: "มีเธอในจักรวาลนี้", body: "ทุกช่วงเวลาที่มีเธอ คือเรื่องราวที่สวยงาม", icon: "💗" },
+          { title: "ขอบคุณที่เข้ามา", body: "ขอบคุณที่ทำให้วันธรรมดากลายเป็นวันที่พิเศษ", icon: "✨" },
+          { title: "จากใจของฉัน", body: "ขอให้เธอพบแต่เรื่องราวที่ทำให้ยิ้มได้เสมอ", icon: "🌷" }
+        ];
+        const fallback = defaults[index];
+        return {
+          title: String(card && card.title || fallback.title).slice(0, 48),
+          body: String(card && card.body || fallback.body).slice(0, 180),
+          icon: String(card && card.icon || fallback.icon).slice(0, 8)
+        };
+      }) : [];
+      while (cards.length < 3) {
+        const defaults = [
+          { title: "มีเธอในจักรวาลนี้", body: "ทุกช่วงเวลาที่มีเธอ คือเรื่องราวที่สวยงาม", icon: "💗" },
+          { title: "ขอบคุณที่เข้ามา", body: "ขอบคุณที่ทำให้วันธรรมดากลายเป็นวันที่พิเศษ", icon: "✨" },
+          { title: "จากใจของฉัน", body: "ขอให้เธอพบแต่เรื่องราวที่ทำให้ยิ้มได้เสมอ", icon: "🌷" }
+        ];
+        cards.push(defaults[cards.length]);
+      }
+      const orbitMessages = Array.isArray(input.orbitMessages)
+        ? input.orbitMessages.map(function (item) { return String(item || "").trim().slice(0, 56); }).filter(Boolean).slice(0, 10)
+        : [];
       return {
+        version: 2,
         scene: SURPRISE_SCENES.includes(input.scene) ? input.scene : "off",
         palette: Object.prototype.hasOwnProperty.call(SURPRISE_PALETTES, input.palette) ? input.palette : "rose-nebula",
-        density: clampNumber(Number(input.density) || 600, 300, 1200),
+        density: clampNumber(Number(input.density) || 900, 300, 1200),
         speed: clampNumber(Number(input.speed) || 1, 0.6, 1.8),
-        duration: clampNumber(Number(input.duration) || 8, 5, 14),
-        phrase: String(input.phrase || "มีของขวัญเล็ก ๆ จากใจ ♡").slice(0, 64)
+        duration: clampNumber(Number(input.duration) || 16, 12, 30),
+        phrase: String(input.phrase || "จักรวาลนี้มีเธอเสมอ ♡").slice(0, 64),
+        introTitle: String(input.introTitle || "จักรวาลแห่งรัก...เพื่อเธอ").slice(0, 80),
+        introSubtitle: String(input.introSubtitle || "A little universe made just for you").slice(0, 120),
+        decorSet: ["romance", "kawaii", "stardust", "birthday"].includes(input.decorSet) ? input.decorSet : "romance",
+        cardStyle: ["wine", "midnight", "rose", "gold"].includes(input.cardStyle) ? input.cardStyle : "wine",
+        orbitMessages: orbitMessages,
+        cards: cards
       };
+    }
+
+    function buildSurpriseStorySlides(gift, config) {
+      const photos = Array.isArray(gift.photos) ? gift.photos : [];
+      const safePhotos = photos.map(function (photo) {
+        return safeHttpsUrl(photo && (photo.image_url || photo.thumbnail_url));
+      }).filter(Boolean);
+      return config.cards.slice(0, 3).map(function (card, index) {
+        return {
+          title: card.title || ["มีเธอในจักรวาลนี้", "ขอบคุณที่เข้ามา", "จากใจของฉัน"][index],
+          body: card.body || gift.message || config.phrase,
+          icon: card.icon || ["💗", "✨", "🌷"][index],
+          imageUrl: safePhotos[index] || safePhotos[0] || ""
+        };
+      });
+    }
+
+    function renderSurpriseStorySlide(slide, index, total, config) {
+      const layer = $("#surpriseStoryLayer");
+      const card = $("#surpriseStoryCard");
+      const art = $("#surpriseStoryArt");
+      const artIcon = $("#surpriseStoryIcon");
+      const style = config.cardStyle || "wine";
+      card.dataset.cardStyle = style;
+      $("#surpriseStoryTitle").textContent = slide.title;
+      $("#surpriseStoryBody").textContent = slide.body;
+      $("#surpriseStoryCount").textContent = String(index + 1).padStart(2, "0") + " / " + String(total).padStart(2, "0");
+      art.innerHTML = "";
+      if (slide.imageUrl) {
+        const image = document.createElement("img");
+        image.src = slide.imageUrl;
+        image.alt = "ภาพประกอบของขวัญ";
+        image.loading = "eager";
+        image.onerror = function () {
+          art.innerHTML = "";
+          const fallback = document.createElement("span");
+          fallback.textContent = slide.icon;
+          art.appendChild(fallback);
+        };
+        art.appendChild(image);
+      } else {
+        const iconNode = document.createElement("span");
+        iconNode.textContent = slide.icon;
+        art.appendChild(iconNode);
+      }
+      layer.classList.remove("hidden");
+      requestAnimationFrame(function () { layer.classList.add("is-visible"); });
+    }
+
+    function hideSurpriseStorySlide() {
+      const layer = $("#surpriseStoryLayer");
+      if (!layer) return;
+      layer.classList.remove("is-visible");
+      window.setTimeout(function () { layer.classList.add("hidden"); }, 360);
     }
 
     function showSurpriseIntro(gift) {
@@ -4021,26 +4368,49 @@
 
       if (surprisePreviewEngine) { surprisePreviewEngine.stop(); surprisePreviewEngine = null; }
       const overlay = $("#surpriseOverlay");
+      const stage = $("#surpriseOverlayStage");
+      const intro = $("#surpriseIntroScreen");
+      const runHud = $("#surpriseRunHud");
       const recipientName = String(gift.recipient_name || "คนพิเศษ");
-      $("#surpriseOverlayTitle").textContent = "มีจักรวาลเล็ก ๆ เตรียมไว้ให้ " + recipientName;
-      $("#surpriseOverlayPhrase").textContent = config.phrase || "จักรวาลนี้มีเธอเสมอ ♡";
-      $("#surpriseRecipientLine").textContent = gift.sender_name ? "จาก " + gift.sender_name + " · ด้วยความรู้สึกดี ๆ" : "ของขวัญชิ้นนี้ทำขึ้นเพื่อคุณโดยเฉพาะ";
-      $("#surpriseOverlayKicker").textContent = config.scene === "cosmic-heart" ? "A HEART MADE OF STARDUST" : "A LITTLE UNIVERSE FOR YOU";
+      const senderName = String(gift.sender_name || "");
+      $("#surpriseOverlayTitle").textContent = config.introTitle || "จักรวาลแห่งรัก...เพื่อเธอ";
+      $("#surpriseOverlayPhrase").textContent = config.introSubtitle || "A little universe made just for you";
+      $("#surpriseRecipientLine").textContent = (senderName ? "จาก " + senderName + " · " : "") + "สร้างขึ้นเพื่อ " + recipientName;
+      $("#surpriseOverlayKicker").textContent = "UNA GALAXIA DE AMOR PARA TI";
+      $("#surpriseRunKicker").textContent = "A HEART MADE OF STARDUST";
+      $("#surpriseRunningPhrase").textContent = config.phrase || "จักรวาลนี้มีเธอเสมอ ♡";
       $("#surpriseStartButton").classList.remove("hidden");
+      $("#surpriseStartButton").disabled = false;
+      $("#surpriseStartButton").innerHTML = '<i class="fa-solid fa-sparkles"></i> แตะเพื่อเข้าสู่จักรวาล';
       $("#surpriseOpenGiftButton").classList.add("hidden");
-      $("#surpriseProgressTrack").classList.add("hidden");
       $("#surpriseProgressBar").style.width = "0%";
+      $("#surpriseFinalGlow").style.opacity = "0";
+      runHud.classList.add("hidden");
+      intro.classList.remove("is-hidden");
+      stage.classList.remove("is-running", "is-final");
+      hideSurpriseStorySlide();
       overlay.classList.remove("hidden", "closing");
 
       const startButton = $("#surpriseStartButton");
       const openButton = $("#surpriseOpenGiftButton");
       const skipButton = $("#surpriseSkipButton");
+      const storyContinue = $("#surpriseStoryContinue");
       let hasStarted = false;
       let finished = false;
+      let storyTimers = [];
+      let progressTimer = 0;
+
+      function clearStoryTimers() {
+        storyTimers.forEach(function (timer) { window.clearTimeout(timer); });
+        storyTimers = [];
+      }
 
       function closeOverlay() {
+        window.clearInterval(progressTimer);
         window.clearInterval(surpriseProgressTimer);
         window.clearTimeout(surpriseViewerTimer);
+        clearStoryTimers();
+        hideSurpriseStorySlide();
         if (surpriseViewerEngine) surpriseViewerEngine.stop();
         surpriseViewerEngine = null;
         overlay.classList.add("closing");
@@ -4050,36 +4420,58 @@
       function completeScene() {
         if (finished) return;
         finished = true;
+        window.clearInterval(progressTimer);
         window.clearInterval(surpriseProgressTimer);
         $("#surpriseProgressBar").style.width = "100%";
-        $("#surpriseOverlayKicker").textContent = "MADE WITH LOVE · JUST FOR YOU";
+        $("#surpriseRunKicker").textContent = "MADE WITH LOVE · JUST FOR YOU";
+        $("#surpriseFinalGlow").style.opacity = "1";
+        stage.classList.add("is-final");
+        hideSurpriseStorySlide();
         openButton.classList.remove("hidden");
-        startButton.classList.add("hidden");
+      }
+
+      function scheduleStory() {
+        const slides = buildSurpriseStorySlides(gift, config);
+        const durationMs = config.duration * 1000;
+        const starts = [0.535, 0.685, 0.835];
+        const visibleMs = Math.min(2200, durationMs * 0.135);
+        slides.forEach(function (slide, index) {
+          const showAt = Math.round(durationMs * starts[index]);
+          storyTimers.push(window.setTimeout(function () {
+            if (finished) return;
+            renderSurpriseStorySlide(slide, index, slides.length, config);
+            storyTimers.push(window.setTimeout(hideSurpriseStorySlide, visibleMs));
+          }, showAt));
+        });
       }
 
       startButton.onclick = function () {
         if (hasStarted) return;
         hasStarted = true;
         startButton.disabled = true;
-        startButton.innerHTML = '<span class="spinner"></span> กำลังประกอบร่างจากดวงดาว...';
-        $("#surpriseProgressTrack").classList.remove("hidden");
+        intro.classList.add("is-hidden");
+        stage.classList.add("is-running");
+        runHud.classList.remove("hidden");
         const canvas = $("#surpriseViewerCanvas");
-        surpriseViewerEngine = createSurpriseParticleScene(canvas, Object.assign({}, config, {
-          recipientName: gift.recipient_name || "",
-          senderName: gift.sender_name || "",
+        const engineOptions = Object.assign({}, config, {
+          recipientName: recipientName,
+          senderName: senderName,
           giftTitle: gift.title || "",
           giftMessage: gift.message || ""
-        }), { preview: false });
+        });
+        surpriseViewerEngine = createSurpriseParticleScene(canvas, engineOptions, { preview: false });
         const durationMs = config.duration * 1000;
         const startAt = Date.now();
-        surpriseProgressTimer = window.setInterval(function () {
+        progressTimer = window.setInterval(function () {
           const percent = clampNumber(((Date.now() - startAt) / durationMs) * 100, 0, 100);
           $("#surpriseProgressBar").style.width = percent.toFixed(1) + "%";
         }, 80);
+        scheduleStory();
         surpriseViewerTimer = window.setTimeout(completeScene, durationMs);
       };
       openButton.onclick = closeOverlay;
       skipButton.onclick = closeOverlay;
+      storyContinue.onclick = hideSurpriseStorySlide;
     }
 
     /* =====================================================================
@@ -4368,14 +4760,36 @@
       state.theme = "rose";
       state.style = "soft";
       state.animation = "3d";
-      state.surprise = { scene: "cosmic-heart", palette: "rose-nebula", density: 600, speed: 1, duration: 8, phrase: "จักรวาลนี้มีเธอเสมอ ♡" };
+      state.surprise = {
+        scene: "cosmic-heart", palette: "rose-nebula", density: 900, speed: 1, duration: 16,
+        phrase: "จักรวาลนี้มีเธอเสมอ ♡",
+        introTitle: "จักรวาลแห่งรัก...เพื่อเธอ",
+        introSubtitle: "A little universe made just for you",
+        decorSet: "romance", cardStyle: "wine",
+        orbitMessages: ["AMOR ETERNO", "FOREVER WITH YOU", "HAPPY MOMENTS ♡", "มีเธอในจักรวาลนี้"],
+        cards: [
+          { title: "มีเธอในจักรวาลนี้", body: "ทุกช่วงเวลาที่มีเธอ คือเรื่องราวที่สวยงาม", icon: "💗" },
+          { title: "ขอบคุณที่เข้ามา", body: "ขอบคุณที่ทำให้วันธรรมดากลายเป็นวันที่พิเศษ", icon: "✨" },
+          { title: "จากใจของฉัน", body: "ขอให้เธอพบแต่เรื่องราวที่ทำให้ยิ้มได้เสมอ", icon: "🌷" }
+        ]
+      };
       $("#surprisePalette").value = "rose-nebula";
-      $("#surpriseDensity").value = "600";
+      $("#surpriseDensity").value = "900";
       $("#surpriseSpeed").value = "1";
-      $("#surpriseDuration").value = "8";
+      $("#surpriseDuration").value = "16";
       $("#surprisePhrase").value = "จักรวาลนี้มีเธอเสมอ ♡";
+      $("#surpriseIntroTitle").value = "จักรวาลแห่งรัก...เพื่อเธอ";
+      $("#surpriseIntroSubtitle").value = "A little universe made just for you";
+      $("#surpriseDecorSet").value = "romance";
+      $("#surpriseCardStyle").value = "wine";
+      $("#surpriseOrbitMessages").value = "AMOR ETERNO\nFOREVER WITH YOU\nHAPPY MOMENTS ♡\nมีเธอในจักรวาลนี้";
+      [[1,"มีเธอในจักรวาลนี้","ทุกช่วงเวลาที่มีเธอ คือเรื่องราวที่สวยงาม","💗"],[2,"ขอบคุณที่เข้ามา","ขอบคุณที่ทำให้วันธรรมดากลายเป็นวันที่พิเศษ","✨"],[3,"จากใจของฉัน","ขอให้เธอพบแต่เรื่องราวที่ทำให้ยิ้มได้เสมอ","🌷"]].forEach(function (item) {
+        $("#surpriseCard" + item[0] + "Title").value = item[1];
+        $("#surpriseCard" + item[0] + "Body").value = item[2];
+        $("#surpriseCard" + item[0] + "Icon").value = item[3];
+      });
       $("#surpriseSpeedValue").textContent = "1.0×";
-      $("#surpriseDurationValue").textContent = "8 วินาที";
+      $("#surpriseDurationValue").textContent = "16 วินาที";
       $$("[data-surprise-scene]").forEach(function (item) {
         const active = item.dataset.surpriseScene === "cosmic-heart";
         item.classList.toggle("active", active);
