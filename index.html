@@ -3009,6 +3009,195 @@ HAPPY MOMENTS ♡
       return SONG_PRESENTATION_IDS.includes(normalized) ? normalized : "spotify-card";
     }
 
+    let heartMateSongPlayerCounter = 0;
+    let heartMateYouTubeApiPromise = null;
+
+    function ensureYouTubeIframeApi() {
+      if (window.YT && typeof window.YT.Player === "function") {
+        return Promise.resolve(window.YT);
+      }
+      if (heartMateYouTubeApiPromise) return heartMateYouTubeApiPromise;
+
+      heartMateYouTubeApiPromise = new Promise((resolve, reject) => {
+        let settled = false;
+        const timeout = window.setTimeout(() => {
+          if (settled) return;
+          settled = true;
+          reject(new Error("โหลดเครื่องเล่น YouTube ไม่สำเร็จ"));
+        }, 18000);
+
+        const previousReady = window.onYouTubeIframeAPIReady;
+        window.onYouTubeIframeAPIReady = function () {
+          if (typeof previousReady === "function") {
+            try { previousReady(); } catch (error) { console.warn("Previous YouTube API callback failed", error); }
+          }
+          if (settled) return;
+          settled = true;
+          window.clearTimeout(timeout);
+          if (window.YT && typeof window.YT.Player === "function") resolve(window.YT);
+          else reject(new Error("YouTube Player API ไม่พร้อมใช้งาน"));
+        };
+
+        let script = document.querySelector('script[data-heart-mate-youtube-api="true"]');
+        if (!script) {
+          script = document.createElement("script");
+          script.src = "https://www.youtube.com/iframe_api";
+          script.async = true;
+          script.dataset.heartMateYoutubeApi = "true";
+          script.onerror = () => {
+            if (settled) return;
+            settled = true;
+            window.clearTimeout(timeout);
+            reject(new Error("ไม่สามารถเชื่อมต่อ YouTube Player API ได้"));
+          };
+          document.head.appendChild(script);
+        }
+      });
+
+      return heartMateYouTubeApiPromise;
+    }
+
+    function setSongPlayerStatus(card, message, kind) {
+      const status = card ? card.querySelector("[data-song-player-status]") : null;
+      if (!status) return;
+      status.textContent = String(message || "");
+      status.classList.remove("is-error", "is-success", "is-info");
+      if (kind) status.classList.add("is-" + kind);
+    }
+
+    function setSongPlayButtonState(card, playing) {
+      const button = card ? card.querySelector("[data-song-play]") : null;
+      if (!button) return;
+      const icon = button.querySelector("i");
+      const label = button.querySelector("span");
+      if (icon) icon.className = playing ? "fa-solid fa-pause" : "fa-solid fa-play";
+      if (label) label.textContent = playing ? "กำลังเล่นเพลง · แตะเพื่อหยุด" : "กดเพื่อฟังเพลงนี้";
+      button.setAttribute("aria-label", playing ? "หยุดเพลง" : "เล่นเพลง");
+    }
+
+    function songPlayerErrorMessage(code) {
+      const messages = {
+        2: "รหัสวิดีโอไม่ถูกต้อง กรุณาเลือกเพลงใหม่",
+        5: "เครื่องเล่น YouTube ของเบราว์เซอร์มีปัญหา ลองเปิดเพลงใน YouTube โดยตรง",
+        100: "เพลงนี้ถูกลบหรือเปลี่ยนเป็นวิดีโอส่วนตัวแล้ว",
+        101: "เจ้าของวิดีโอไม่อนุญาตให้เล่นเพลงนี้บนเว็บไซต์อื่น",
+        150: "เจ้าของวิดีโอไม่อนุญาตให้เล่นเพลงนี้บนเว็บไซต์อื่น",
+        153: "เบราว์เซอร์ไม่ส่งข้อมูลอ้างอิงที่ YouTube ต้องการ ลองเปิดผ่านเบราว์เซอร์หลัก"
+      };
+      return messages[Number(code)] || "ไม่สามารถเล่นเพลงนี้ได้ กรุณาลองเปิดใน YouTube";
+    }
+
+    function showSongExternalFallback(card, videoId, message) {
+      setSongPlayerStatus(card, message || "หากเพลงยังไม่เริ่ม ให้กดปุ่มเล่นในวิดีโอด้านล่าง หรือเปิดใน YouTube", "error");
+      const slot = card.querySelector("[data-song-player-slot]");
+      if (!slot) return;
+      let link = slot.querySelector("[data-song-open-youtube]");
+      if (!link) {
+        link = document.createElement("a");
+        link.dataset.songOpenYoutube = "true";
+        link.className = "hm-song-card__open-youtube";
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = "เปิดเพลงใน YouTube";
+        slot.appendChild(link);
+      }
+      link.href = "https://www.youtube.com/watch?v=" + encodeURIComponent(videoId);
+    }
+
+    function mountNativeYouTubeFallback(card, host, videoId) {
+      if (!host || !videoId || host.dataset.fallbackMounted === "true") return;
+      host.dataset.fallbackMounted = "true";
+      const iframe = document.createElement("iframe");
+      const params = new URLSearchParams({
+        autoplay: "0",
+        controls: "1",
+        enablejsapi: "1",
+        origin: window.location.origin,
+        playsinline: "1",
+        rel: "0",
+        fs: "1"
+      });
+      iframe.src = "https://www.youtube.com/embed/" + encodeURIComponent(videoId) + "?" + params.toString();
+      iframe.title = "เครื่องเล่นเพลง YouTube";
+      iframe.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+      iframe.allowFullscreen = true;
+      iframe.loading = "eager";
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
+      iframe.className = "hm-song-player-iframe";
+      host.replaceChildren(iframe);
+      setSongPlayerStatus(card, "แตะปุ่มเล่นในวิดีโอ YouTube เพื่อเริ่มฟังเพลง", "info");
+    }
+
+    function initialiseSongPlayer(card) {
+      if (!card || card.dataset.songPlayerInitialised === "true") return;
+      const videoId = card.dataset.videoId || "";
+      const host = card.querySelector("[data-song-player-host]");
+      if (!host || !/^[A-Za-z0-9_-]{11}$/.test(videoId)) return;
+      card.dataset.songPlayerInitialised = "true";
+      setSongPlayerStatus(card, "กำลังเชื่อมต่อเครื่องเล่น YouTube…", "info");
+
+      ensureYouTubeIframeApi().then((YT) => {
+        if (!host.isConnected || !card.isConnected) return;
+        const player = new YT.Player(host.id, {
+          width: "640",
+          height: "360",
+          videoId: videoId,
+          playerVars: {
+            autoplay: 0,
+            controls: 1,
+            enablejsapi: 1,
+            origin: window.location.origin,
+            playsinline: 1,
+            rel: 0,
+            fs: 1,
+            iv_load_policy: 3
+          },
+          events: {
+            onReady: (event) => {
+              card._heartMateYouTubePlayer = event.target;
+              card.dataset.songPlayerReady = "true";
+              setSongPlayerStatus(card, "พร้อมแล้ว · กดปุ่มสีชมพูเพื่อฟังเพลง หรือกด ▶ ในวิดีโอ", "success");
+              if (card.dataset.pendingSongPlay === "true") {
+                card.dataset.pendingSongPlay = "false";
+                try { event.target.playVideo(); } catch (error) {
+                  showSongExternalFallback(card, videoId, "เบราว์เซอร์ยังไม่อนุญาตให้เริ่มเพลงอัตโนมัติ กรุณากด ▶ ในวิดีโอด้านล่าง");
+                }
+              }
+            },
+            onStateChange: (event) => {
+              const playing = event.data === YT.PlayerState.PLAYING;
+              const paused = event.data === YT.PlayerState.PAUSED;
+              const ended = event.data === YT.PlayerState.ENDED;
+              if (playing) {
+                card.classList.add("is-playing");
+                setSongPlayButtonState(card, true);
+                setSongPlayerStatus(card, "กำลังเล่นเพลงนี้อยู่ ♡", "success");
+              } else if (paused || ended) {
+                card.classList.remove("is-playing");
+                setSongPlayButtonState(card, false);
+                setSongPlayerStatus(card, ended ? "เพลงจบแล้ว · กดเพื่อฟังอีกครั้ง" : "หยุดเพลงชั่วคราว", "info");
+              } else if (event.data === YT.PlayerState.BUFFERING) {
+                setSongPlayerStatus(card, "กำลังโหลดเพลง…", "info");
+              }
+            },
+            onError: (event) => {
+              card.classList.remove("is-playing");
+              setSongPlayButtonState(card, false);
+              showSongExternalFallback(card, videoId, songPlayerErrorMessage(event.data));
+            },
+            onAutoplayBlocked: () => {
+              showSongExternalFallback(card, videoId, "เบราว์เซอร์บล็อกการสั่งเล่นเพลง กรุณากดปุ่ม ▶ ในวิดีโอ YouTube ด้านล่าง");
+            }
+          }
+        });
+        card._heartMateYouTubePlayer = player;
+      }).catch((error) => {
+        console.warn("Heart Mate YouTube player fallback:", error);
+        mountNativeYouTubeFallback(card, host, videoId);
+        showSongExternalFallback(card, videoId, "เครื่องเล่นพิเศษโหลดไม่สำเร็จ แต่ยังสามารถกด ▶ ในวิดีโอด้านล่างเพื่อฟังได้");
+      });
+    }
+
     function buildSongCardMarkup(song, presentation, previewMode) {
       const style = normalizeSongPresentation(presentation);
       const videoId = /^[A-Za-z0-9_-]{11}$/.test(String(song && song.video_id || "")) ? String(song.video_id) : "";
@@ -3030,6 +3219,14 @@ HAPPY MOMENTS ♡
         vinyl: "VINYL LOVE • SIDE A",
         polaroid: "A SONG TO REMEMBER"
       })[style];
+      const playerHostId = "heart-mate-youtube-player-" + (++heartMateSongPlayerCounter);
+      const playerMarkup = videoId
+        ? `<div class="hm-song-card__player-slot" data-song-player-slot>
+             <div class="hm-song-player-host" id="${playerHostId}" data-song-player-host></div>
+             <div class="hm-song-card__player-status is-info" data-song-player-status role="status" aria-live="polite">กำลังเตรียมเครื่องเล่น YouTube…</div>
+             <a class="hm-song-card__open-youtube" data-song-open-youtube href="https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}" target="_blank" rel="noopener noreferrer">เปิดเพลงใน YouTube</a>
+           </div>`
+        : `<div class="hm-song-card__player-slot" data-song-player-slot><div class="hm-song-card__player-status is-error" role="status">ไม่พบรหัสวิดีโอ YouTube ที่ถูกต้อง</div></div>`;
       return `<div class="hm-song-card-wrap ${previewMode ? "hm-song-card-wrap--preview" : ""}">
         <article class="hm-song-card hm-song-card--${style} ${previewMode ? "hm-song-card--preview" : ""}" data-song-player-card data-video-id="${escapeHtml(videoId)}">
           <div class="hm-song-card__cover">${cover}</div>
@@ -3043,10 +3240,20 @@ HAPPY MOMENTS ♡
             </button>
             <div class="hm-song-card__brand">${brand}</div>
           </div>
-          <div class="hm-song-card__player-slot" data-song-player-slot></div>
+          ${playerMarkup}
         </article>
         ${previewMode ? `<div class="song-preview-caption"><span>ตัวอย่างการ์ดเพลงของคุณ</span><button type="button" data-song-restart>รีเซ็ตตัวอย่าง</button></div>` : ""}
       </div>`;
+    }
+
+    function disposeSongPlayers(root) {
+      const scope = root || document;
+      scope.querySelectorAll("[data-song-player-card]").forEach((card) => {
+        if (card._heartMateYouTubePlayer && typeof card._heartMateYouTubePlayer.destroy === "function") {
+          try { card._heartMateYouTubePlayer.destroy(); } catch (error) { console.warn("Unable to dispose YouTube player", error); }
+        }
+        card._heartMateYouTubePlayer = null;
+      });
     }
 
     function bindSongPlayerCards(root) {
@@ -3055,41 +3262,58 @@ HAPPY MOMENTS ♡
         if (card.dataset.songBound === "true") return;
         card.dataset.songBound = "true";
         const playButton = card.querySelector("[data-song-play]");
-        const slot = card.querySelector("[data-song-player-slot]");
         const videoId = card.dataset.videoId || "";
-        if (playButton && slot && videoId) {
+        const status = card.querySelector("[data-song-player-status]");
+
+        if (playButton && videoId) {
           playButton.addEventListener("click", () => {
-            if (card.classList.contains("is-playing")) return;
-            const iframe = document.createElement("iframe");
-            iframe.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(videoId) + "?autoplay=1&rel=0&playsinline=1&modestbranding=1";
-            iframe.title = "เครื่องเล่นเพลง YouTube";
-            iframe.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
-            iframe.allowFullscreen = true;
-            iframe.loading = "eager";
-            iframe.referrerPolicy = "strict-origin-when-cross-origin";
-            const stop = document.createElement("button");
-            stop.type = "button";
-            stop.className = "hm-song-card__stop";
-            stop.textContent = "ปิดเครื่องเล่น";
-            stop.addEventListener("click", () => {
-              slot.replaceChildren();
-              card.classList.remove("is-playing");
-            });
-            slot.replaceChildren(iframe, stop);
-            card.classList.add("is-playing");
+            const player = card._heartMateYouTubePlayer;
+            if (!player || card.dataset.songPlayerReady !== "true") {
+              card.dataset.pendingSongPlay = "true";
+              setSongPlayerStatus(card, "กำลังเตรียมเพลง… หากยังไม่เริ่ม สามารถกด ▶ ในวิดีโอด้านล่างได้", "info");
+              const host = card.querySelector("[data-song-player-host]");
+              if (host && !card.dataset.songPlayerInitialised) initialiseSongPlayer(card);
+              return;
+            }
+            try {
+              const YT = window.YT;
+              const currentState = player.getPlayerState();
+              if (currentState === YT.PlayerState.PLAYING || currentState === YT.PlayerState.BUFFERING) {
+                player.pauseVideo();
+              } else {
+                player.playVideo();
+                setSongPlayerStatus(card, "กำลังเริ่มเล่นเพลง…", "info");
+              }
+            } catch (error) {
+              showSongExternalFallback(card, videoId, "ไม่สามารถสั่งเล่นเพลงได้ กรุณากด ▶ ในวิดีโอ YouTube ด้านล่าง");
+            }
           });
         }
+
+        const openLink = card.querySelector("[data-song-open-youtube]");
+        if (openLink) openLink.addEventListener("click", () => {
+          setSongPlayerStatus(card, "กำลังเปิดเพลงใน YouTube…", "info");
+        });
+
+        initialiseSongPlayer(card);
       });
+
       scope.querySelectorAll("[data-song-restart]").forEach((button) => {
         if (button.dataset.bound === "true") return;
         button.dataset.bound = "true";
         button.addEventListener("click", () => {
           const card = button.closest(".hm-song-card-wrap");
           if (!card) return;
-          const slot = card.querySelector("[data-song-player-slot]");
-          const player = card.querySelector("[data-song-player-card]");
-          if (slot) slot.replaceChildren();
-          if (player) player.classList.remove("is-playing");
+          const playerCard = card.querySelector("[data-song-player-card]");
+          const player = playerCard && playerCard._heartMateYouTubePlayer;
+          if (player && typeof player.pauseVideo === "function") {
+            try { player.pauseVideo(); player.seekTo(0, true); } catch (error) { console.warn(error); }
+          }
+          if (playerCard) {
+            playerCard.classList.remove("is-playing");
+            setSongPlayButtonState(playerCard, false);
+            setSongPlayerStatus(playerCard, "พร้อมเล่นแล้ว · กดปุ่มเพื่อฟังเพลง", "success");
+          }
         });
       });
     }
@@ -3097,6 +3321,7 @@ HAPPY MOMENTS ♡
     function renderSelectedSong() {
       const host = $("#selectedSongBox");
       if (!host) return;
+      disposeSongPlayers(host);
       host.innerHTML = "";
       if (!state.selectedSong) return;
       const presentation = normalizeSongPresentation(selectValue("songPresentation", "spotify-card"));
@@ -5938,5 +6163,66 @@ HAPPY MOMENTS ♡
 
     document.addEventListener("DOMContentLoaded", bootstrap);
   </script>
+
+  <style id="heart-mate-youtube-playback-fix">
+    .hm-song-card__player-slot {
+      display: block !important;
+      padding: 12px;
+      margin-top: 8px;
+      background: rgba(0,0,0,.055);
+      border-radius: 0 0 16px 16px;
+    }
+    .hm-song-player-host {
+      width: 100%;
+      min-height: 200px;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #101014;
+    }
+    .hm-song-player-host iframe,
+    .hm-song-player-iframe {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+      min-height: 200px;
+      aspect-ratio: 16 / 9;
+      border: 0;
+      border-radius: 12px;
+      background: #101014;
+    }
+    .hm-song-card__player-status {
+      margin: 9px 2px 0;
+      padding: 8px 10px;
+      border-radius: 10px;
+      color: #796774;
+      background: rgba(255,255,255,.72);
+      font-size: 11px;
+      line-height: 1.55;
+      text-align: center;
+    }
+    .hm-song-card__player-status.is-success { color: #397653; background: #edf8f0; }
+    .hm-song-card__player-status.is-info { color: #776276; background: #fbf2f7; }
+    .hm-song-card__player-status.is-error { color: #9c5362; background: #fff0f2; }
+    .hm-song-card__open-youtube {
+      display: block;
+      width: fit-content;
+      margin: 8px auto 0;
+      padding: 8px 13px;
+      border-radius: 999px;
+      color: #fff !important;
+      background: #e74b5b;
+      font-size: 11px;
+      font-weight: 800;
+      text-decoration: none !important;
+    }
+    .hm-song-card__open-youtube:active { transform: scale(.98); }
+    .hm-song-card.is-playing .hm-song-card__play { filter: saturate(1.1); }
+    @media (max-width: 480px) {
+      .hm-song-card__player-slot { padding: 8px; }
+      .hm-song-player-host { min-height: 200px; }
+    }
+  </style>
+
 </body>
 </html>
